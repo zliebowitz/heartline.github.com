@@ -18,8 +18,9 @@ var PLAYER_HURT_CD = 25; //Invul frames after getting hurt
 var PlayerStatus = {
 	IDLE: 0,
 	JUMP: 1,
-	RUN: 2,
-	LANDING: 3
+	FALL: 2,
+	RUN: 3,
+	LANDING: 4
 };
 function Player(room, x, y) {
 	this.type = PLAYER;
@@ -42,8 +43,10 @@ function Player(room, x, y) {
 	this.movingRight = false;
 	this.dead = false;
 	
-	this.runAnim = assetManager.getAnim("gfx/player_walk.png");
-	this.idleAnim = assetManager.getAnim("gfx/player_stand.png");
+	this.runAnim = assetManager.getAnim("gfx/player/walk.png");
+	this.idleAnim = assetManager.getAnim("gfx/player/stand.png");
+	this.jumpAnim = assetManager.getAnim("gfx/player/jump.png");
+	this.fallAnim = assetManager.getAnim("gfx/player/fall.png");
 } 
 
 Player.prototype.moveLeft = function() {
@@ -66,7 +69,7 @@ Player.prototype.jumpPress = function() {
 	{
 		this.status = PlayerStatus.JUMP;
 
-		this.dy = -15;
+		this.dy = -10;
 		this.landed = false;
 		this.jumping = true;
 		this.jumpAnim.reset();
@@ -146,8 +149,6 @@ Player.prototype.update = function() {
 
 	this.collideRoom();
 
-
-
 	//Friction
 	if(this.landed) {
 		this.landFunction();
@@ -155,22 +156,13 @@ Player.prototype.update = function() {
 	if(Math.abs(this.dx) < PLAYER_MIN_SPEED)
 		this.dx = 0;
 
-	if(this.hurtTimer > 0 ){
-		this.hurtTimer--;
-	}
-
-
 	//Update animation statuses.
 
-
 	if(!this.landed && !this.landedEntity) {
-		if(this.status != PlayerStatus.JUMP && this.status != PlayerStatus.JUMP_ATTACK){
+		if(this.status != PlayerStatus.FALL && this.dy > 0){
 			//Then we're falling.
-			if(!this.blocking)
-			{
-				this.status = PlayerStatus.JUMP;
-				this.jumpAnim.reset();
-			}
+			this.status = PlayerStatus.FALL;
+			this.fallAnim.reset();
 		}
 	}
 	this.landedEntity = false;
@@ -189,14 +181,11 @@ Player.prototype.draw = function(context) {
 	switch(this.status) {
 		case(PlayerStatus.JUMP):
 			this.jumpAnim.draw(context, this.x, this.y, this.facingLeft);
-			if(this.jumpAnim.frame < this.jumpAnim.length-2) {
-				this.jumpAnim.tick();
-			}
-			break;
-		case(PlayerStatus.LANDING):
-			this.jumpAnim.draw(context, this.x, this.y, this.facingLeft);
-			this.jumpAnim.timer = this.jumpAnim.speed;
 			this.jumpAnim.tick();
+			break;
+		case(PlayerStatus.FALL):
+			this.fallAnim.draw(context, this.x, this.y, this.facingLeft);
+			this.fallAnim.tick();
 
 			break;
 		case(PlayerStatus.IDLE):

@@ -1,5 +1,6 @@
 function EntityManager() {
     this.entities = new Array();
+	this.showBoundingBoxes = false;
 };
 
 EntityManager.prototype.update = function() {
@@ -23,7 +24,11 @@ EntityManager.prototype.update = function() {
 EntityManager.prototype.draw = function(context) {
 	for(var i = 0; i < this.entities.length; i++) {
 		this.entities[i].draw(context);
-		this.entities[i].drawBoundingBox(context);
+	}
+	if(this.showBoundingBoxes) {
+		for(var i = 0; i < this.entities.length; i++) {
+			this.entities[i].drawBoundingBox(context);
+		}
 	}
 };
 

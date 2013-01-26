@@ -1,7 +1,7 @@
 /*
 	These constants are used in saving/loading entity data.
 */
-var GRAVITY = 0.8;
+var GRAVITY = 0.6;
 
 var PLAYER = 0;
 var WIZARD = 3;
@@ -161,9 +161,7 @@ Entity.prototype.collideEntity = function(other) {
 	this.x += resolve_x;
 }
 
-//lastY only used for DRAGON BOULDERS~
-//note to self: coding while tired makes for some silly badness
-Entity.prototype.collideRoom = function(lastY) {
+Entity.prototype.collideRoom = function() {
 	var resolve_x = 0;
 	var resolve_y = 0;
 	
@@ -234,12 +232,6 @@ Entity.prototype.collideRoom = function(lastY) {
 		}
 	}
 	
-	if(lastY !== undefined && this.y < lastY) {
-		resolve_y = 0;
-	}
-	if(lastY !== undefined) {
-		resolve_x = 0;
-	}
 	if(this.dx>0 && resolve_x>0)
 		resolve_x = 0;
 	else if(this.dx < 0 && resolve_x < 0)
