@@ -23,7 +23,8 @@ var roomID;
 var currRoom;
 
 var entityManager;
-var player;
+var playerA;
+var playerB;
 
 var CAMERA_SHAKE_FACTOR = 10;
 var camera = {
@@ -44,19 +45,6 @@ var camera = {
 	}
 };
 
-var keys = new Array();
-var prevKeys = new Array();
-
-
-var doKeyDown = function(e) {
-	keys[e.keyCode] = true;
-	//console.log(e.keyCode);
-	e.preventDefault();
-};
-var doKeyUp = function(e) {
-	keys[e.keyCode] = false;
-	e.preventDefault();
-};
 var loadNextRoom = function() {
 	currRoom = assetManager.rooms[roomID];
 	if(currRoom === undefined) {
@@ -65,12 +53,14 @@ var loadNextRoom = function() {
 		return;
 	}
 	roomID++;
-	if(player==undefined)
-		player = new Player(currRoom, 0, 0);
 	
+	controller1.addEventListener(controller1.JUMP_PRESS_EVENT, function() {playerA.jumpPress()});
+	controller1.addEventListener(controller1.JUMP_RELEASE_EVENT, function() {playerA.jumpRelease()});
+
 	entityManager.clear();
-	currRoom.loadEntities(entityManager, player);
-	player.room =currRoom;
+	var players = currRoom.loadEntities(entityManager);
+	playerA = players.a;
+	playerB = players.b;
 	//Calculate the minimum zoom based on room dimensions.
 	var a = W / (currRoom.width * TILE_SIZE); 
 	var b = H / (currRoom.height * TILE_SIZE);
@@ -85,42 +75,39 @@ var loadNextRoom = function() {
 	else {
 		cutScene = new Cutscene();
 	}
-	player.health = PLAYER_MAX_HEALTH;
 }
 var tryAgain = function() {
 	roomID--;
 	entityManager = new EntityManager();
-	player = undefined;
 	loadNextRoom();
 };
+
+var controller1 =
+	new keyboard_controller(defaultPlayer1);
+	
+
 var game_logic = function() {
-	if(keys[DOWN]) {
-		//player.block(); 
+	controller1.poll();
+	if(controller1.dir.x < 0)
+		playerA.moveLeft();
+	else if (controller1.dir.x > 0)
+		playerA.moveRight();
+	
+	if(keyPressed['G'.charCodeAt(0)])
+		entityManager.showBoundingBoxes = true
+	else if (keyPressed['H'.charCodeAt(0)])
+		entityManager.showBoundingBoxes = false
+	if (keyPressed['C'.charCodeAt(0)])
+	{
+		if (navigator.webkitGetGamepads()[0] != null)
+		{
+			controller1.detach()
+			controller1 = new gamepad_controller(0, null)
+			controller1.addEventListener(controller1.JUMP_PRESS_EVENT, function() {playerA.jumpPress()});
+			controller1.addEventListener(controller1.JUMP_RELEASE_EVENT, function() {playerA.jumpRelease()});
+		}
 	}
-	if(keys[LEFT]) {
-		player.moveLeft(); 
-	}
-	if(keys[RIGHT]) {
-		player.moveRight();
-	}
-	if((keys[Z] && !prevKeys[Z]) ||
-		(keys[UP] && !prevKeys[UP])){
-		player.jumpPress();
-	}
-	else if((!keys[Z] && prevKeys[Z]) ||
-		  ((!keys[UP] && prevKeys[UP]) )) {
-		player.jumpRelease();
-	}
-	if((keys[X] && !prevKeys[X]) ||
-		(keys[SPACE] && !prevKeys[SPACE]))
-		entityManager.showBoundingBoxes = !entityManager.showBoundingBoxes;	
 	entityManager.update();
-	//Keep track of last frame's key state, so we can detect key presses properly
-	prevKeys[Z] = keys[Z];
-	prevKeys[X] = keys[X];
-	prevKeys[UP] = keys[UP];
-	prevKeys[SHIFT] = keys[SHIFT];
-	prevKeys[SPACE] = keys[SPACE];
 };
 var game_draw = function() {
 	if(currRoom === undefined)
@@ -137,36 +124,25 @@ var game_draw = function() {
 	else {
 		context.translate(-camera.x + W/(2*camera.zoom), -camera.y + H/(2*camera.zoom));
 	}
-	if(!player.dead) {
-		currRoom.draw(context);
-		entityManager.draw(context);
-		context.restore();
-	}
-	else {
-		context.restore();
-	
-		player.draw(context);
-	}
+
+	currRoom.draw(context);
+	entityManager.draw(context);
+	context.restore();
 };
 
 
 var step = function() {
-	if(keys[M] && !prevKeys[M]) {
-		for(var i in soundManager.sounds) {
-		    soundManager.sounds[i].toggleMute();
-		}
-	}
 	switch(state) {
 		case States.STATE_PLAY:
 			game_logic();
 			game_draw();
 		break;
 	}
-	prevKeys[M] = keys[M];
-	camera.moveTo(player.x, player.y);
+	camera.moveTo(playerA.x, playerA.y);
 };
 
 var initialize_game = function() {
+	console.log("Initializing game...");
 	tileSet = assetManager.getTileset("gfx/tileset.png");
 	roomID = 0;
 	entityManager = new EntityManager();
@@ -180,9 +156,6 @@ window.onload = function() {
 	canvas = document.getElementById("gamecanvas");
 	context = canvas.getContext("2d");
 	context.font = "12pt Calibri";
-	
-	window.addEventListener('keydown', doKeyDown, true);
-	window.addEventListener('keyup', doKeyUp, true);
 	
 	context.fillStyle = "#6666aa";
 	context.fillRect(0, 0, W, H);

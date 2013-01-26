@@ -2,19 +2,12 @@
 	These constants are used in saving/loading entity data.
 */
 var GRAVITY = 0.6;
+//var GRAVITY = 0;
 
-var PLAYER = 0;
-var WIZARD = 3;
-var WIZARDBALL = 4;
-var WIZARDBLOCK = 5;
-var PLAYERATTACK=6;
-var DRAGON = 7;
-var DRAGONLINK = 8;
-var DRAGONBOULDER = 9;
-var KNIGHT = 10;
-var KNIGHTATTACK = 11;
-var WIZARDLASER = 12;
+var SPAWN = 0;
+var EXIT = 1;
 
+var PLAYER = 99;
 
 function Entity(room) {
     this.x = 0;
