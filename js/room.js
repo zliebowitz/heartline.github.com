@@ -4,45 +4,27 @@ var TILE_SIZE = 32;
 var SCREEN_HEIGHT = 16;
 var SCREEN_WIDTH = 25;
 
-var TileType = {
-	VOID: -1,
-	WALL: 1,
-	FLOOR: 2
-};
+function Room(json) {
+	this.fg = null;
+	this.bg = null;
+	this.coll = null;
 
-function Room(tileset, w, h) {
-	if(w === undefined) { 
-		//Rooms are passed the tileset on creation.
-		this.loadFromJSON(tileset);
-	}
-	else {
-		//Empty room
-		this.width = w;
-		this.height = h;
-		this.tileset = tileset;
-		
-		this.data = new Array(this.height);
-		this.entities = new Array();	
-		for(var i = 0; i < this.height; i++) {
-			this.data[i] = new Array(this.width);
-			for(var j = 0; j < this.width; j++) {
-				this.data[i][j] = TileType.VOID;
-			}
-		}
-	}
+	this.fgTileset = assetManager.getTileset("gfx/tilesets/foreground.png");
+	this.bgTileset = assetManager.getTileset("gfx/tilesets/foreground.png");
+	console.log(this.fgTileset);
+	this.loadFromJSON(json);
 	
 	this.rightCameraBound = this.width*TILE_SIZE;
 	this.botCameraBound = this.height*TILE_SIZE;
-	this.half_x = this.width*TILE_SIZE / 2;
-	
+	this.half_x = this.width*TILE_SIZE / 2;	
 	
 	this.processCollision();
 }
 
 Room.prototype.solid = function(y, x) {
 	if(y<0 || y >= this.height || x < 0 || x >= this.width)
-		return true;
-	if(this.data[y][x] != TileType.VOID)
+		return true;	
+	if(this.coll[y][x] === 1)
 		return true;
 	return false;
 };
@@ -54,15 +36,16 @@ Room.prototype.draw = function(context) {
 	var endY = Math.min(Math.ceil((camera.y+H/camera.zoom) / TILE_SIZE), this.height);
 	for(var i = startY; i < endY; i++) {
 		for(var j = startX; j < endX; j++) {
-			if(this.data[i][j] === TileType.VOID)
+			if(this.fg[i][j] < 0)
 				continue;
-			//tileSet.draw(context, j*TILE_SIZE, i*TILE_SIZE, this.data[i][j]);
+			this.fgTileset.draw(context, j*TILE_SIZE, i*TILE_SIZE, this.fg[i][j]);
 		}
 	}
 };
 
 //I was going to use bitfields... but memory is free, right? :)
 Room.prototype.processCollision = function() {
+	console.log(this.coll);
 	//console.log("Processing collision data for room "+ this.id);
 	this.collideFlags = new Array(this.height);
 	for(var i = 0; i < this.height; i++) {
@@ -104,27 +87,67 @@ Room.prototype.getFlagState = function(x, y, direction) {
 };
 
 Room.prototype.loadFromJSON = function(d) {
-	this.id = d.id;
 	this.width = d.width;
 	this.height = d.height;
-	this.data = new Array(this.height);
-		
+	this.fg = new Array(this.height);
+	this.bg = new Array(this.height);	
+	this.coll = new Array(this.height);
+	this.entities = new Array();
 	for(var i = 0; i < this.height; i++) {
-		this.data[i] = new Array(this.width);
+		this.fg[i] = new Array(this.width);
+		this.bg[i] = new Array(this.width);
+		this.coll[i] = new Array(this.width);
 	}
-	
-	for(var i = 0; i < this.height; i++) {
-		for(var j = 0; j < this.width; j++) {
-			this.data[i][j] = d.data[i*this.width + j]-1;
-			if(this.data[i][j] === 63)
-				this.data[i][j] = TileType.VOID;
+	var gids = {
+		"foreground": 0,
+		"background": 0,
+		"entities": 0,
+		"collision": 0
+	};
+	for(var i = 0; i < d.tilesets.length; i++) {
+		gids[d.tilesets[i].name] = d.tilesets[i].firstgid;
+	}
+	for(var i = 0; i < d.layers.length; i++) {
+		var layer = d.layers[i];
+		console.log("Loading layer: " + layer.name);
+		if(layer.name === "foreground") {
+			this.loadLayer(this.fg, layer, gids["foreground"]);
+		}
+		else if(layer.name === "background") {
+			this.loadLayer(this.bg, layer, gids["background"]);
+		}	
+		else if(layer.name === "collision") {
+			this.loadLayer(this.coll, layer, gids["collision"]);
+		}
+		else if(layer.name === "entities") {
+			this.loadEntityLayer(layer, gids["entities"]);
 		}
 	}
-	this.entities = d.entities;
-	this.cutscenes = d.cutscenes;
 };
 
+ 
+Room.prototype.loadLayer = function(dest, layer, gidStart) {
+	for(var i = 0; i < this.height; i++) {
+		for(var j = 0; j < this.width; j++) {
+			dest[i][j] = layer.data[i*this.width + j] - gidStart;
+		}
+	}
+};
 
+Room.prototype.loadEntityLayer = function(layer, gidStart) {
+	for(var i = 0; i < this.height; i++) {
+		for(var j = 0; j < this.width; j++) {
+			var entId = layer.data[i*this.width + j] - gidStart;
+			if(entId < 0)
+				continue;
+			this.entities[this.entities.length] = {
+				"type": entId,
+				"x": j * TILE_SIZE,
+				"y": i * TILE_SIZE 
+			}
+		}
+	}
+};
 
 /*
 	Saves data FROM the entityManager to the room.
@@ -140,11 +163,13 @@ Room.prototype.saveEntities = function(entityManager) {
 		a reference to the player object when it is loaded into 
 		the room.
 */
-Room.prototype.loadEntities = function(entityManager, player) {
+Room.prototype.loadEntities = function(entityManager, playerA, playerB) {
+	console.log("Loading entities...");
 	for(var i = 0; i < this.entities.length; i++) {
+		console.log(this.entities[i]);
 		switch(this.entities[i].type) {
-			case PLAYER:
-//				console.log("Player loaded!");
+			case SPAWN:
+				console.log("Spawn loading!");
 				player.x = this.entities[i].x;
 				player.y = this.entities[i].y;
 				entityManager.add(player);
@@ -152,21 +177,4 @@ Room.prototype.loadEntities = function(entityManager, player) {
 		}
 	}
 };
-
-
-
-
-/*
-	ROOM EDITING FUNCTIONS
-	=====================
-	for level editor use only
-*/
-
-Room.prototype.resize = function(w, h) {
-	if(w === undefined || h === undefined || w < 1 || h < 1) {
-		console.log("Room.resize(w, h) failed!")
-		return;
-	}
-};
-
 

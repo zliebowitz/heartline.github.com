@@ -110,6 +110,15 @@ assetManager.imageQueue = [
 		"offsetY": 7,
 		"flipOffsetX": 7,
 		"hasFacing": true
+	},
+	//TILESETS BELOW
+	{
+		"type": "tileset",
+		"source": "gfx/tilesets/foreground.png",
+		"width": 8,
+		"height": 6
 	}
+
+
 
 ];

@@ -229,15 +229,24 @@ AssetManager.prototype.levelAll = function(successCallback, errorCallback, compl
 	var that = this;
 	for (var i = 0; i < this.levelQueue.length; i++) {
 		var d = this.levelQueue[i];
-		var r = new Room(d);
-		
-		this.rooms[d["id"]] = r;
-		
-		successCallback("Room " + d["id"]);
-		this.successCount++;
-	}
-	if(this.isDone()) {
-		completeCallback();
+		var json = (function() {
+			var json = null;
+			$.ajax({
+				'global': false,
+				'url': d.source,
+				'dataType': "json",
+				'success': function(data) {
+					successCallback("Level " + d.source);
+					that.successCount++;
+					var r = new Room(data);	
+					that.rooms[d.id] = r;
+					
+					if(that.isDone()) {
+						completeCallback();
+					}
+				}
+			});
+		})();
 	}
 };
 

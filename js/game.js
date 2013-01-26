@@ -52,7 +52,7 @@ var loadNextRoom = function() {
 		return;
 	}
 	roomID++;
-	if(player==undefined)
+	if(player === undefined)
 		player = new Player(currRoom, 0, 0);
 	
 	controller1.addEventListener(controller1.JUMP_PRESS_EVENT, function() {player.jumpPress()});
@@ -138,6 +138,7 @@ var step = function() {
 };
 
 var initialize_game = function() {
+	console.log("Initializing game...");
 	tileSet = assetManager.getTileset("gfx/tileset.png");
 	roomID = 0;
 	entityManager = new EntityManager();
