@@ -30,10 +30,10 @@ Room.prototype.solid = function(y, x) {
 };
 
 Room.prototype.draw = function(context) {
-	var startX = Math.max(Math.floor(camera.x / TILE_SIZE), 0);
-	var endX = Math.min(Math.ceil((camera.x + W/camera.zoom) / TILE_SIZE), this.width);
-	var startY = Math.max(Math.floor(camera.y / TILE_SIZE), 0);
-	var endY = Math.min(Math.ceil((camera.y+H/camera.zoom) / TILE_SIZE), this.height);
+	var startX = Math.max(Math.floor(camera.x / TILE_SIZE - W/(2*camera.zoom)), 0);
+	var endX = Math.min(Math.ceil((camera.x + W/(2*camera.zoom)) / TILE_SIZE), this.width);
+	var startY = Math.max(Math.floor(camera.y / TILE_SIZE - H/(2*camera.zoom)), 0);
+	var endY = Math.min(Math.ceil((camera.y + H/(2*camera.zoom)) / TILE_SIZE), this.height);
 	for(var i = startY; i < endY; i++) {
 		for(var j = startX; j < endX; j++) {
 			if(this.fg[i][j] < 0)

@@ -126,16 +126,10 @@ var game_draw = function() {
 	else {
 		context.translate(-camera.x + W/(2*camera.zoom), -camera.y + H/(2*camera.zoom));
 	}
-	if(!player.dead) {
-		currRoom.draw(context);
-		entityManager.draw(context);
-		context.restore();
-	}
-	else {
-		context.restore();
-	
-		player.draw(context);
-	}
+
+	currRoom.draw(context);
+	entityManager.draw(context);
+	context.restore();
 };
 
 
