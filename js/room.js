@@ -163,18 +163,25 @@ Room.prototype.saveEntities = function(entityManager) {
 		a reference to the player object when it is loaded into 
 		the room.
 */
-Room.prototype.loadEntities = function(entityManager, playerA, playerB) {
+Room.prototype.loadEntities = function(entityManager) {
+	var players = {
+		
+	};
 	console.log("Loading entities...");
 	for(var i = 0; i < this.entities.length; i++) {
 		console.log(this.entities[i]);
 		switch(this.entities[i].type) {
 			case SPAWN:
-				console.log("Spawn loading!");
-				player.x = this.entities[i].x;
-				player.y = this.entities[i].y;
-				entityManager.add(player);
+				var playerA= new Player(this, this.entities[i].x, this.entities[i].y);
+
+				var playerB = new Player(this, this.entities[i].x, this.entities[i].y);
+				entityManager.add(playerA);
+				entityManager.add(playerB);
+				players.a = playerA;
+				players.b = playerB;
 				break;
 		}
 	}
+	return players;
 };
 

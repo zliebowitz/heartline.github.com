@@ -23,7 +23,8 @@ var roomID;
 var currRoom;
 
 var entityManager;
-var player;
+var playerA;
+var playerB;
 
 var CAMERA_SHAKE_FACTOR = 10;
 var camera = {
@@ -52,15 +53,14 @@ var loadNextRoom = function() {
 		return;
 	}
 	roomID++;
-	if(player === undefined)
-		player = new Player(currRoom, 0, 0);
 	
-	controller1.addEventListener(controller1.JUMP_PRESS_EVENT, function() {player.jumpPress()});
-	controller1.addEventListener(controller1.JUMP_RELEASE_EVENT, function() {player.jumpRelease()});
+	controller1.addEventListener(controller1.JUMP_PRESS_EVENT, function() {playerA.jumpPress()});
+	controller1.addEventListener(controller1.JUMP_RELEASE_EVENT, function() {playerA.jumpRelease()});
 
 	entityManager.clear();
-	currRoom.loadEntities(entityManager, player);
-	player.room =currRoom;
+	var players = currRoom.loadEntities(entityManager);
+	playerA = players.a;
+	playerB = players.b;
 	//Calculate the minimum zoom based on room dimensions.
 	var a = W / (currRoom.width * TILE_SIZE); 
 	var b = H / (currRoom.height * TILE_SIZE);
@@ -75,12 +75,10 @@ var loadNextRoom = function() {
 	else {
 		cutScene = new Cutscene();
 	}
-	player.health = PLAYER_MAX_HEALTH;
 }
 var tryAgain = function() {
 	roomID--;
 	entityManager = new EntityManager();
-	player = undefined;
 	loadNextRoom();
 };
 
@@ -91,9 +89,9 @@ var controller1 =
 var game_logic = function() {
 	controller1.poll();
 	if(controller1.dir.x < 0)
-		player.moveLeft();
+		playerA.moveLeft();
 	else if (controller1.dir.x > 0)
-		player.moveRight();
+		playerA.moveRight();
 	
 	if(keyPressed['G'.charCodeAt(0)])
 		entityManager.showBoundingBoxes = true
@@ -105,8 +103,8 @@ var game_logic = function() {
 		{
 			controller1.detach()
 			controller1 = new gamepad_controller(0, null)
-			controller1.addEventListener(controller1.JUMP_PRESS_EVENT, function() {player.jumpPress()});
-			controller1.addEventListener(controller1.JUMP_RELEASE_EVENT, function() {player.jumpRelease()});
+			controller1.addEventListener(controller1.JUMP_PRESS_EVENT, function() {playerA.jumpPress()});
+			controller1.addEventListener(controller1.JUMP_RELEASE_EVENT, function() {playerA.jumpRelease()});
 		}
 	}
 	entityManager.update();
@@ -140,7 +138,7 @@ var step = function() {
 			game_draw();
 		break;
 	}
-	camera.moveTo(player.x, player.y);
+	camera.moveTo(playerA.x, playerA.y);
 };
 
 var initialize_game = function() {
