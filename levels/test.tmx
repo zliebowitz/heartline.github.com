@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <map version="1.0" orientation="orthogonal" width="75" height="34" tilewidth="32" tileheight="32">
  <tileset firstgid="1" name="foreground" tilewidth="32" tileheight="32">
-  <image source="../../../media/Storage_/svn lol/LQ/graphics/tilesets/sunken tileset.PNG" trans="000000" width="256" height="256"/>
+  <image source="sunken tileset.PNG" trans="000000" width="256" height="256"/>
  </tileset>
  <layer name="main FG" width="75" height="34">
   <data encoding="base64" compression="zlib">
