@@ -87,7 +87,10 @@ var keyPressed = {}
 
 window.addEventListener("keydown", function(e)
 {
+<<<<<<< HEAD
 	console.log('a')
+=======
+>>>>>>> 2e025fcc99f77a2b6f1f89ce781ac03c643a63df
 	keyPressed[e.keyCode] = true
 }, true)
 window.addEventListener("keyup", function(e)
