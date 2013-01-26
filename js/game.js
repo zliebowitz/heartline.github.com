@@ -25,16 +25,6 @@ var currRoom;
 var entityManager;
 var player;
 
-var cutScene ;
-
-var continueMenu;
-
-
-var Difficulty = {
-	NORMAL: 0,
-	HARDCORE: 1
-};
-
 var CAMERA_SHAKE_FACTOR = 10;
 var camera = {
 	x: 0,
@@ -135,7 +125,7 @@ var game_logic = function() {
 var game_draw = function() {
 	if(currRoom === undefined)
 		return;
-	context.fillStyle = "black";
+	context.fillStyle = "gray";
 	context.fillRect(0, 0, W, H);
 	
 	context.save();
@@ -145,7 +135,7 @@ var game_draw = function() {
 		camera.shake--;
 	}
 	else {
-		context.translate(-camera.x, -camera.y);
+		context.translate(-camera.x + W/(2*camera.zoom), -camera.y + H/(2*camera.zoom));
 	}
 	if(!player.dead) {
 		currRoom.draw(context);
@@ -156,71 +146,7 @@ var game_draw = function() {
 		context.restore();
 	
 		player.draw(context);
-		
-		//draw Continue? options
 	}
-};
-var menuStage = 0; // 0: splash , 1: A GAME BY, 2: NAMES 3:SMILE, 4:forword, 5:open eyes
-var menuAnimTimer = 0;
-var which = false;
-
-var menu_logic = function() {
-	if((keys[Z] && ! prevKeys[Z]) || (keys[SPACE] && ! prevKeys[SPACE])) {
-		menuStage++;
-		if(menuStage > 5) {
-			state = States.STATE_PLAY;
-			
-		}
-	}
-	prevKeys[Z] = keys[Z];
-	prevKeys[SPACE] = keys[SPACE];
-};
-
-
-var endingFrame = 0;
-var ending_step = function() {
-	if((keys[Z] && ! prevKeys[Z]) || (keys[SPACE] && ! prevKeys[SPACE])) {
-		endingFrame++;
-		if(endingFrame > 2) {
-			endingFrame = 2;
-		}
-	}
-	menuAnimTimer++;
-	if(menuAnimTimer === 8) {
-		menuAnimTimer = 0;
-		which = !which;
-	}
-	switch(endingFrame) {
-		case 0:
-			if(which) {
-				context.drawImage(assetManager.getAsset("gfx/ending1.png"), 0, 0);
-			}
-			else {
-				context.drawImage(assetManager.getAsset("gfx/ending2.png"), 0, 0);
-			}
-			break;
-		case 1:
-		
-			if(which) {
-				context.drawImage(assetManager.getAsset("gfx/smile1.png"), 0, 0);
-			}
-			else {
-				context.drawImage(assetManager.getAsset("gfx/smile2.png"), 0, 0);
-			}
-		break;
-		case 2:
-		
-			if(which) {
-				context.drawImage(assetManager.getAsset("gfx/credits1.png"), 0, 0);
-			}
-			else {
-				context.drawImage(assetManager.getAsset("gfx/credits2.png"), 0, 0);
-			}
-		break;
-	}
-	
-	prevKeys[Z] = keys[Z];
-	prevKeys[SPACE] = keys[SPACE]
 };
 
 
@@ -235,11 +161,9 @@ var step = function() {
 			game_logic();
 			game_draw();
 		break;
-		case States.STATE_ENDING:
-			ending_step();
-		break;
 	}
 	prevKeys[M] = keys[M];
+	camera.moveTo(player.x, player.y);
 };
 
 var initialize_game = function() {
@@ -260,9 +184,10 @@ window.onload = function() {
 	window.addEventListener('keydown', doKeyDown, true);
 	window.addEventListener('keyup', doKeyUp, true);
 	
-	context.fillStyle = "#7777cc";
+	context.fillStyle = "#6666aa";
 	context.fillRect(0, 0, W, H);
-	
+
+	// downloadAll ( success, fail, complete )
 	assetManager.downloadAll( function(path){
 					console.log("Loaded: " + path);
 					context.fillStyle = "white";
