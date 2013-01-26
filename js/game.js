@@ -84,7 +84,9 @@ var tryAgain = function() {
 	loadNextRoom();
 };
 
-var controller1 = new keyboard_controller(defaultPlayer1);
+var controller1 =
+	new keyboard_controller(defaultPlayer1);
+	
 
 var game_logic = function() {
 	controller1.poll();
@@ -97,6 +99,16 @@ var game_logic = function() {
 		entityManager.showBoundingBoxes = true
 	else if (keyPressed['H'.charCodeAt(0)])
 		entityManager.showBoundingBoxes = false
+	if (keyPressed['C'.charCodeAt(0)])
+	{
+		if (navigator.webkitGetGamepads()[0] != null)
+		{
+			controller1.detach()
+			controller1 = new gamepad_controller(0, null)
+			controller1.addEventListener(controller1.JUMP_PRESS_EVENT, function() {player.jumpPress()});
+			controller1.addEventListener(controller1.JUMP_RELEASE_EVENT, function() {player.jumpRelease()});
+		}
+	}
 	entityManager.update();
 };
 var game_draw = function() {
