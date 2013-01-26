@@ -14,7 +14,6 @@ var state = States.STATE_PLAY;
 
 var musicOn = true;
 
-var bossHealthAmount = 1;
 var assetManager = new AssetManager();
 var canvas;
 var context;
@@ -25,7 +24,6 @@ var currRoom;
 
 var entityManager;
 var player;
-var boss;
 
 var cutScene ;
 
@@ -36,12 +34,6 @@ var Difficulty = {
 	NORMAL: 0,
 	HARDCORE: 1
 };
-
-var GUI = {
-	BOSS_FILL: 1
-};
-
-var difficulty = Difficulty.NORMAL;
 
 var CAMERA_SHAKE_FACTOR = 10;
 var camera = {
@@ -87,7 +79,7 @@ var loadNextRoom = function() {
 		player = new Player(currRoom, 0, 0);
 	
 	entityManager.clear();
-	currRoom.loadEntities(entityManager, player, boss);
+	currRoom.loadEntities(entityManager, player);
 	player.room =currRoom;
 	//Calculate the minimum zoom based on room dimensions.
 	var a = W / (currRoom.width * TILE_SIZE); 
@@ -103,14 +95,7 @@ var loadNextRoom = function() {
 	else {
 		cutScene = new Cutscene();
 	}
-	bossHealthAmount = 1;
-	if(difficulty === Difficulty.NORMAL) {
-		player.health = PLAYER_MAX_HEALTH;
-	}
-	else {
-		//No recharged health if you're hardcore!
-	}
-	GUI.BOSS_FILL = 1;
+	player.health = PLAYER_MAX_HEALTH;
 }
 var tryAgain = function() {
 	roomID--;
@@ -120,7 +105,7 @@ var tryAgain = function() {
 };
 var game_logic = function() {
 	if(keys[DOWN]) {
-		player.block(); 
+		//player.block(); 
 	}
 	if(keys[LEFT]) {
 		player.moveLeft(); 
@@ -138,7 +123,7 @@ var game_logic = function() {
 	}
 	if((keys[X] && !prevKeys[X]) ||
 		(keys[SPACE] && !prevKeys[SPACE]))
-		player.attack();
+		entityManager.showBoundingBoxes = !entityManager.showBoundingBoxes;	
 	entityManager.update();
 	//Keep track of last frame's key state, so we can detect key presses properly
 	prevKeys[Z] = keys[Z];
@@ -244,7 +229,6 @@ var step = function() {
 		for(var i in soundManager.sounds) {
 		    soundManager.sounds[i].toggleMute();
 		}
-		//assetManager.getAsset("sfx/boss1.ogg").toggleMute();
 	}
 	switch(state) {
 		case States.STATE_PLAY:
