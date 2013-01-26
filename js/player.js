@@ -7,8 +7,8 @@ Player.constructor = Player;
 var PLAYER_H = 82;
 var PLAYER_W = 58;
 var PLAYER_ACCEL = 2;
-var PLAYER_MIN_SPEED = 0.5;
-var PLAYER_WALK_SPEED = 5;
+var PLAYER_MIN_SPEED = 0.2;
+var PLAYER_WALK_SPEED = 2;
 var PLAYER_RUN_SPEED = 8;
 var PLAYER_ROLL_SPEED = 7;
 
@@ -49,15 +49,15 @@ function Player(room, x, y) {
 
 	this.w = PLAYER_W;
 	this.h = PLAYER_H;  
-	this.runAnim = //assetManager.getAnim("gfx/prince_armor_running_strip.png");
-	this.runAttackAnim = assetManager.getAnim("gfx/hero_running_strike.png");
-	this.jumpAnim = assetManager.getAnim("gfx/hero_jumping.png");
-	this.jumpAttackAnim = assetManager.getAnim("gfx/hero_jump_attack.png");
-	this.standAttackAnim = assetManager.getAnim("gfx/hero_standing_strike.png");
-	this.idleAnim = assetManager.getAnim("gfx/hero_idle.png");
-	this.blockAnim = assetManager.getAnim("gfx/hero_block.png");
+	this.runAnim = assetManager.getAnim("gfx/walk.png");
+	this.idleAnim = assetManager.getAnim("gfx/stand.png");
+	//this.runAttackAnim = assetManager.getAnim("gfx/hero_running_strike.png");
+	//this.jumpAnim = assetManager.getAnim("gfx/hero_jumping.png");
+	//this.jumpAttackAnim = assetManager.getAnim("gfx/hero_jump_attack.png");
+	//this.standAttackAnim = assetManager.getAnim("gfx/hero_standing_strike.png");
+	//this.blockAnim = assetManager.getAnim("gfx/hero_block.png");
 	
-	this.deathAnim = assetManager.getAnim("gfx/hero_defeated.png");
+	//this.deathAnim = assetManager.getAnim("gfx/hero_defeated.png");
 	
 	this.status = PlayerStatus.IDLE;
 	this.facingLeft = false;
@@ -422,8 +422,8 @@ function PlayerAttack(room, x, y, player) {
 PlayerAttack.prototype.update = function() {
 	this.x = player.x + this.offsetX;
 	this.y = player.y + this.offsetY;
-	if(this.life <= 0)
-		this.die = true;
+	//if(this.life <= 0)
+		//this.die = true;
 	this.life--;
 };
 

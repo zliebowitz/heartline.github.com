@@ -150,8 +150,8 @@ var game_logic = function() {
 var game_draw = function() {
 	if(currRoom === undefined)
 		return;
-	//context.fillStyle = "black";
-	//context.fillRect(0, 0, W, H);
+	context.fillStyle = "black";
+	context.fillRect(0, 0, W, H);
 	
 	context.save();
 	context.scale(camera.zoom, camera.zoom);

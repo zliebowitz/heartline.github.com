@@ -56,7 +56,7 @@ Room.prototype.draw = function(context) {
 		for(var j = startX; j < endX; j++) {
 			if(this.data[i][j] === TileType.VOID)
 				continue;
-			tileSet.draw(context, j*TILE_SIZE, i*TILE_SIZE, this.data[i][j]);
+			//tileSet.draw(context, j*TILE_SIZE, i*TILE_SIZE, this.data[i][j]);
 		}
 	}
 };

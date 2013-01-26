@@ -17,14 +17,14 @@ TileSet.prototype.draw = function(context, x, y, tile) {
 		Math.floor(x), Math.floor(y), TILE_SIZE,TILE_SIZE);
 }
 
-//As of now, this class assumes several things:
-//	Frame: 128x128
-//	Sheet: 4 frames wide.
-function Animation(img, numFrames, speed, nloop, ox, oy, fox, f) {
+function Animation(img, numFrames, nC, frameW, frameH, speed, nloop, ox, oy, fox, f) {
 	this.img = img;
 	this.flipped = f;
 	this.frame = 0;
 	this.length = numFrames;
+	this.frameWidth = frameW;
+	this.frameHeight = frameH;
+	this.numCols = nC;
 	this.timer = 0;
 	this.speed = speed;
 	this.loop = nloop;
@@ -56,19 +56,20 @@ Animation.prototype.tick = function() {
 				this.frame--;
 		}
 		//console.log(this.frame + " / " + this.length);
-		this.ssX = (this.frame%4) * 128;
-		this.ssY = Math.floor(this.frame/4) * 128;
+		this.ssX = (this.frame%this.numCols) * this.frameWidth;
+		this.ssY = Math.floor(this.frame/this.numCols) * this.frameHeight;
 	}
 }
 
 Animation.prototype.draw = function(context, x, y, flip) {
+	//console.log(this.frameWidth + " : " + this.frameHeight);
 	if(flip){
-		context.drawImage(this.flipped,this.img.width - this.ssX - 128,this.ssY,128,128,
-			x-this.flipOffsetX,y-this.offsetY,128,128);
+		context.drawImage(this.flipped,this.img.width - this.ssX - this.frameWidth,this.ssY,this.frameWidth,this.frameHeight,
+			x-this.flipOffsetX,y-this.offsetY,this.frameWidth,this.frameHeight);
 	}
 	else{
-		context.drawImage(this.img,this.ssX,this.ssY,128,128,
-			x-this.offsetX,y-this.offsetY,128,128);
+		context.drawImage(this.img,this.ssX,this.ssY,this.frameWidth,this.frameHeight,
+			x-this.offsetX,y-this.offsetY,this.frameWidth,this.frameHeight);
 	}
 }
 
@@ -123,7 +124,7 @@ AssetManager.prototype.getAsset = function(path) {
 //Note this function returns a clone of the animation object.
 AssetManager.prototype.getAnim = function(animName) {
 	var t = this.anims[animName];
-	var toReturn = new Animation(t.img, t.length, t.speed, t.loop, t.offsetX, t.offsetY, t.flipOffsetX, t.flipped);
+	var toReturn = new Animation(t.img, t.length, t.numCols, t.frameWidth, t.frameHeight, t.speed, t.loop, t.offsetX, t.offsetY, t.flipOffsetX, t.flipped);
 	return toReturn;
 }
 
@@ -142,7 +143,7 @@ AssetManager.prototype.isDone = function() {
 //Note: When this function is called, the image cache does NOT exist yet.
 //	It is actually set in setImage()
 AssetManager.prototype.addAnimation = function(img) {
-	this.anims[img["source"]] = new Animation(this.cache[img["source"]], img["frames"], img["speed"], img["loop"], img["offsetX"], img["offsetY"], img["flipOffsetX"]);
+	this.anims[img["source"]] = new Animation(this.cache[img["source"]], img["frames"], img["numCols"], img["frameWidth"], img["frameHeight"], img["speed"], img["loop"], img["offsetX"], img["offsetY"], img["flipOffsetX"]);
 }
 AssetManager.prototype.addTileset = function(img) {
 	this.tilesets[img["source"]] = new TileSet(this.cache[img["source"]], img["width"], img["height"]);
