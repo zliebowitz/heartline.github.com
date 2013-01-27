@@ -120,6 +120,14 @@ var game_draw = function() {
 	entityManager.draw(context);
 	context.restore();
 };
+var game_gui_draw = function() {
+	context.fillStyle = "#000000";
+	context.fillRect(0, H-30, W, 30);
+	context.fillStyle = "#0000FF";
+	context.fillRect(10, H-20, (W/2 - 40) * playerA.health / PLAYER_MAX_HEALTH, 10);
+	context.fillRect(W/2 + 10 + (W/2-20 - (W/2 - 20) * playerB.health / PLAYER_MAX_HEALTH), H-20, (W/2 - 20) * playerB.health / PLAYER_MAX_HEALTH, 10);
+	
+};
 
 
 var step = function() {
@@ -127,6 +135,7 @@ var step = function() {
 		case States.STATE_PLAY:
 			game_logic();
 			game_draw();
+			game_gui_draw();
 		break;
 	}
 	camera.moveTo((playerA.x + playerB.x) / 2, (playerA.y + playerB.y) / 2 );
@@ -139,9 +148,9 @@ var initialize_game = function() {
 	entityManager = new EntityManager();
 	loadNextRoom();
 	continueMenu = 0;
-	grd = context.createLinearGradient(0, 0, 0, H/2);
-	grd.addColorStop(0, '8ED6FF');
-	grd.addColorStop(1, '#932C00');
+	grd = context.createLinearGradient(0, H/4, 0, H/2);
+	grd.addColorStop(0, '8ED6DD');
+	grd.addColorStop(1, '#631C00');
 	return setInterval(step, 20); 
 };
 
