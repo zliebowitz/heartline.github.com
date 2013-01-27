@@ -148,9 +148,9 @@ assetManager.imageQueue = [
 		"frameHeight": 32,
 		"numCols": 3,
 		"loop": true,
-		"offsetX": 0,
-		"offsetY": 0,
-		"flipOffsetX": 0,
+		"offsetX": 16,
+		"offsetY": 16,
+		"flipOffsetX": 16,
 		"hasFacing": false 
 	},
 	{
@@ -162,9 +162,9 @@ assetManager.imageQueue = [
 		"frameHeight": 32,
 		"numCols": 3,
 		"loop": false,
-		"offsetX": 0,
-		"offsetY": 0,
-		"flipOffsetX": 0,
+		"offsetX": 16,
+		"offsetY": 16,
+		"flipOffsetX": 16,
 		"hasFacing": false 
 	},
 

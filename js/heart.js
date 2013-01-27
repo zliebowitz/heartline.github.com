@@ -8,6 +8,7 @@ Heart.constructor = Heart;
 var HEART_W = 16;
 var HEART_H = 16;
 var HEART_FRICTION = 0.8;
+var HEART_RELEASED_TIMER = 200;
 
 function Heart(room, x, y) {
 	this.type = HEART;
@@ -19,7 +20,10 @@ function Heart(room, x, y) {
 	this.w = HEART_W;
 	this.h = HEART_H;  
 	
-	this.isHeld = false;
+	this.isHeldBy = null;
+	this.lastHeldBy = null;
+	this.releasedTimer =
+
 	this.landTimer = 0;
 	this.landedEntity = false;
 	
@@ -31,7 +35,7 @@ Heart.prototype.landFunction = function() {
 };
 
 Heart.prototype.update = function() {
-	if(!this.isHeld) {
+	if(this.isHeldBy === null) {
 		//Gravity
 		this.dy+=GRAVITY;
 		
@@ -59,9 +63,10 @@ Heart.prototype.draw = function(context) {
 };
 Heart.prototype.collide = function(other) {
 	if(other.type === PLAYER) {
-		if(other.held === null && !this.isHeld) {
+		if(other.held === null && !this.isHeldBy) {
 			other.held = this;
-			this.isHeld = true;
+			this.isHeldBy = other;
+			this.lastHeldBy = other;
 		}
 	}
 };

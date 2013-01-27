@@ -8,7 +8,7 @@ var PLAYER_H = 20;
 var PLAYER_W = 20;
 var PLAYER_ACCEL = 2;
 var PLAYER_MIN_SPEED = 0.2;
-var PLAYER_WALK_SPEED = 2;
+var PLAYER_WALK_SPEED = 2.3;
 var PLAYER_RUN_SPEED = 8;
 var PLAYER_MAX_HEALTH = 100;
 var PLAYER_FRICTION = 0.7;
@@ -91,7 +91,6 @@ Player.prototype.jumpRelease = function() {
 
 Player.prototype.shoot = function() {
 	entityManager.add(new Goo(this.room, this.x, this.y, this.dx, this.dy-10, this));
-	var dir = controller.getDir()
 };
 
 Player.prototype.throwPress = function() {
@@ -102,9 +101,13 @@ Player.prototype.throwPress = function() {
 };
 Player.prototype.throwRelease = function() {
 	if(this.carry) {
-		this.carry.isHeld = false;
-		this.carry.dx = this.dx + (this.facingLeft ? -5 : 5);
-		this.carry.dy = this.dy - 5;
+		var dir = this.controller.getDir();
+		console.log("dir is");
+		console.log(dir);
+
+		this.carry.isHeldBy = null;
+		this.carry.dx = this.dx + dir.x * 5;
+		this.carry.dy = this.dy - 5 + dir.y * -3;
 		this.carry = null;
 	}
 };

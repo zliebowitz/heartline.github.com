@@ -15,6 +15,7 @@ var PLAYER = 99;
 var HEART = 100;
 var BREAK_PARTICLE = 101;
 var GOO = 102;
+var FIRE_PARTICLE = 103;
 
 function Entity(room) {
     this.x = 0;
