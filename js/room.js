@@ -49,6 +49,12 @@ Room.prototype.generateLevelSelectRoom = function(openRooms, lastLevel){
 			}
 		}
 	}
+	//HEART^vLINE//
+	for(var i = 3; i <= 5; i++){
+		for(var j = 8; j <= 14; j++){
+			this.bg[i][j] = 16*i + j;
+		}
+	}
 	for(var d = 0; d < openRooms.length; d++){
 		this.entities[this.entities.length] = {
 			"type": DOOR,
