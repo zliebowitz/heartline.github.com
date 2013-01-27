@@ -789,6 +789,7 @@ Room.prototype.loadEntities = function(entityManager, openRooms) {
 				var door = new Door(this, this.entities[i].x, this.entities[i].y);
 				door.doorRoomID = this.entities[i].id;
 				door.time = openRooms[door.doorRoomID] ? openRooms[door.doorRoomID].time : null;
+				door.name = openRooms[door.doorRoomID] ? openRooms[door.doorRoomID].name : null;
 				door.doorIsNew = this.entities[i].isNew;
 				entityManager.add(door);
 				break;

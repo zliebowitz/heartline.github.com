@@ -258,7 +258,9 @@ AssetManager.prototype.levelAll = function(successCallback, errorCallback, compl
 					successCallback("Level " + d.source);
 					that.successCount++;
 					var r = new Room(data);	
+					r.name = d.name;
 					that.rooms[d.id] = r;
+					
 					
 					if(that.isDone()) {
 						completeCallback();
