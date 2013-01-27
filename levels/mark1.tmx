@@ -14,7 +14,7 @@
  </tileset>
  <layer name="entities" width="80" height="16">
   <data encoding="base64" compression="zlib">
-   eJztleEKgCAMhF3Z+79yBEkhkradbJN9sF+Knjc9UwqCQIuDeGMWuPShi6OBM4bCeo96aPkn6bk2tfad2oWCGmtJ/UO9v1GKH9z98j0/gzR6vn8WWMk7C+f4kxfI/xPByL7l7Uo11j6hs/a95leez878mXjS60FjsCaZnpKyGb/HnjIhwHECyo8CHA==
+   eJztlt0KwCAIhXNz7//KY7BgRGylJ9ThB10VefDnVClJklhxkGzPA5c+9JJokOyh8F6jL6zyp6m5Na32nfoLBXXu0uYPNX/auKPwfZ5BGi36r8aK2PMtFrO7Kn8e6jHjF8j3E8FI3Dq7Wo1tntBe+7zzzc9Xe/5KIumNoDH5Jwz8b2zO+ziSJyQ4TnxwAis=
   </data>
  </layer>
  <layer name="background" width="80" height="16">
@@ -24,12 +24,12 @@
  </layer>
  <layer name="foreground" width="80" height="16">
   <data encoding="base64" compression="zlib">
-   eJztlEsOwCAIRO39L91Vk4YgODP4WUhC2lSE8RV5WmvP9esHujVkH5O/wpTzVeRV8lTEqxblrahb8U8qeM+y2fz+eVacayc/W8erzfA+YSZFsWot+26fmbZML8Kvgu0J/NgZjfKz9ZH+RDRGORRD76+3X+Xn/Temdm8ty5GtjfJnNdhYhh86H1HWUZ5sjeX3fVPnlsKPnQWRZT0/ci+8mh5vZG9Pv8qvol89PSP6spjeOVGb1XuzWWYaVxl7305gu1vL9XX+Ai9tAtI=
+   eJztlUESxSAIQ+n9L/23/YxAgChdyAybSkN8VfqIyHPz5gdTR+a9ij4jVvqM/lVmGR1GfTcQLwz9zp4YvHfFbn5vnRP7muRn3WNdj2itnk/MpKgP437pvp52Za5l+DHYTvJDtJn8Vt8PZZj5j3ganbD4ZffQ4afnR7W3tRZpRGtoTdWDrq3wy87HLGtPJ1qr8ns/78ytDr/qLPAiOvPIvbBqRP59oH49/11+jPO68oP4Q2u6d2HX2dvNMvJ4Kqyek/xQLtNebp7LH1ZFAtg=
   </data>
  </layer>
  <layer name="collision" width="80" height="16">
   <data encoding="base64" compression="zlib">
-   eJzVVdsKxTAIG/v/j97rKGou2l0ChcNaY0w99jjexXnG6+/I6kK1OeemV7c+lxedz/aiOIZrB6Z9jnirMyxPpBWdr75NAdXXzYtqVThUv9U8Dnb7V/HsqOtN/5i+d/zu9p8KVfNUrvucybidWan4587biAPlR3tsrvU3O6PZfmNnvfpmMbN14g1DGjIupQbEg+LVuDV3pp3hQHus/66GNVfHBzZO7dWKB+25/mU61bnVqa26U9fDtecRH5sz8luJVd4JFur9KZxIH+NDplXFRF1duP/nHfeuwplhT+lh+sbheGp9DX/QmOECIygFhQ==
+   eJzVVUkOxDAIq/r/R/daRYCXQBdLkToTAsYJcBzv4jzj9XdkeaHcHLvuFfnviK9qxmrj8p9AFLPjjTPnFI0jXsi++q8LKpdu/4oPVW81joNp/So/E3m9qV9WxywXVafJmmLjdNTX/Xv9Hdmrs0PRz+23kQ8UH+2xsTJfqK7Z98b2B3VmMb21Y4YhDtm3koNzD/fz6rk1djZzGR9oj7VxOTB+0Fm31+7W+6R+GU+1b+3kVt2pq2E0Myt/is2aL8uX6UUO1PtTfCJ+rA7RvoqOvHbh5jBx7yqcHvYUH/R+K/2+sL6GP3DMcAHcowWt
   </data>
  </layer>
 </map>
