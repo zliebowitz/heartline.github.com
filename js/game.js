@@ -61,10 +61,14 @@ var loadNextRoom = function() {
 
 	controller1.addEventListener(controller1.JUMP_PRESS_EVENT, function() {playerA.jumpPress()});
 	controller1.addEventListener(controller1.JUMP_RELEASE_EVENT, function() {playerA.jumpRelease()});
+	controller1.addEventListener(controller1.LIFT_PRESS_EVENT, function() {playerA.throwPress()});
+	controller1.addEventListener(controller1.LIFT_RELEASE_EVENT, function() {playerA.throwRelease()});
 
 	controller2.addEventListener(controller2.JUMP_PRESS_EVENT, function() {playerB.jumpPress()});
 	controller2.addEventListener(controller2.JUMP_RELEASE_EVENT, function() {playerB.jumpRelease()});
-	
+	controller2.addEventListener(controller2.LIFT_PRESS_EVENT, function() {playerB.throwPress()});
+	controller2.addEventListener(controller2.LIFT_RELEASE_EVENT, function() {playerB.throwRelease()});
+
 	//Calculate the minimum zoom based on room dimensions.
 	var a = W / (currRoom.width * TILE_SIZE); 
 	var b = H / (currRoom.height * TILE_SIZE);
@@ -128,6 +132,8 @@ var game_logic = function() {
 			controller2 = new gamepad_controller(1, null)
 			controller2.addEventListener(controller2.JUMP_PRESS_EVENT, function() {playerB.jumpPress()});
 			controller2.addEventListener(controller2.JUMP_RELEASE_EVENT, function() {playerB.jumpRelease()});
+			controller2.addEventListener(controller2.LIFT_PRESS_EVENT, function() {playerB.throwPress()});
+			controller2.addEventListener(controller2.LIFT_RELEASE_EVENT, function() {playerB.throwRelease()});
 		}
 	}
 	entityManager.update();
