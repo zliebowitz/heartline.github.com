@@ -28,6 +28,7 @@ function Animation(img, numFrames, nC, frameW, frameH, speed, nloop, ox, oy, fox
 	this.timer = 0;
 	this.speed = speed;
 	this.loop = nloop;
+	this.reverse = false;
 	
 	//Location in image.
 	this.offsetX = ox;
@@ -40,13 +41,23 @@ function Animation(img, numFrames, nC, frameW, frameH, speed, nloop, ox, oy, fox
 }
 
 Animation.prototype.tick = function() {
-	if(!(this.loop) && this.frame == this.length-1){
-		return;
+	if(!this.loop) { 
+		if(!this.reverse && this.frame == this.length-1){
+			return;
+		}
+		if(this.reverse && this.frame == 0){
+			return;
+		}
 	}
 	this.timer++;
 	
 	if(this.timer >= this.speed){
-		this.frame++;
+		if(this.reverse) {
+			this.frame--;
+		}
+		else {
+			this.frame++;
+		}
 		this.timer = 0;
 		
 		if(this.frame === this.length) {
@@ -54,6 +65,12 @@ Animation.prototype.tick = function() {
 				this.frame = 0;
 			else
 				this.frame--;
+		}
+		if(this.frame === -1) {
+			if(this.loop)
+				this.frame = this.length - 1;
+			else
+				this.frame++;
 		}
 		//console.log(this.frame + " / " + this.length);
 		this.ssX = (this.frame%this.numCols) * this.frameWidth;

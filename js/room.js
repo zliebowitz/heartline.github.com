@@ -784,6 +784,9 @@ Room.prototype.loadEntities = function(entityManager) {
 			case FAN:
 				entityManager.add(new Fan(this, this.entities[i].x, this.entities[i].y));
 				break;
+			case DOOR:
+				entityManager.add(new Door(this, this.entities[i].x, this.entities[i].y));
+				break;
 		}
 	}
 	return ents;

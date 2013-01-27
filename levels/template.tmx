@@ -14,7 +14,7 @@
  </tileset>
  <layer name="entities" width="50" height="32">
   <data encoding="base64" compression="zlib">
-   eJzt0zEOwCAIQFFpbe9/5A4sxjh2Ed9L/sAICa0BAPC3J7LdVd4jhrlHtnJHNrsK3AVO9vphAIDyPrMAAEM=
+   eJzt0zEOgDAMA8CmQPn/jxnCgBBjF9I7ycpsS2kNAIDZjsj8XcUe533j0WuPzJctMm+9wC6wsuGHAQDKuwAjDgBL
   </data>
  </layer>
  <layer name="background" width="50" height="32">
