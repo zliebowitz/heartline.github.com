@@ -248,19 +248,16 @@ AssetManager.prototype.levelAll = function(successCallback, errorCallback, compl
 		var d = this.levelQueue[i];
 		var json = (function(d) {
 			var json = null;
-			console.log("attempting to load : " + d.id);
 			$.ajax({
 				'global': false,
 				'url': d.source,
 				'dataType': "json",
 				'success': function(data) {
-					console.log("Loaded thing");
 					successCallback("Level " + d.source);
 					that.successCount++;
 					var r = new Room(data);	
 					r.name = d.name;
 					that.rooms[d.id] = r;
-					
 					
 					if(that.isDone()) {
 						completeCallback();
