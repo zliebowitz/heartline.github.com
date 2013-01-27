@@ -9,9 +9,17 @@
  <tileset firstgid="513" name="collision" tilewidth="32" tileheight="32">
   <image source="../gfx/tilesets/collision.png" width="512" height="512"/>
  </tileset>
+ <tileset firstgid="769" name="background" tilewidth="32" tileheight="32">
+  <image source="../gfx/tilesets/background.png" width="512" height="512"/>
+ </tileset>
  <layer name="entities" width="80" height="16">
   <data encoding="base64" compression="zlib">
    eJztlksOwCAIBbWf+1+5K9M2EUTCg9A6iSs/4MQWSlksvs1Z34Oa84rvEdOKUc6Iu3AxtP62QNejnNH+ejn0HGeAytPan+QNouJnR+sP4XCv98iA5D8RUcO8OZR30dQqpD/pPaz7AoS/Ns/tsSa7P0mdyNYTotD0eBl7ahTR/iqzF1WHn+dKzu+tb4PyN7uHW7+g+fO3G8UFE5gD7Q==
+  </data>
+ </layer>
+ <layer name="background" width="80" height="16">
+  <data encoding="base64" compression="zlib">
+   eJztwQENAAAAwqD3T20PBxQAAAAA8GoUAAAB
   </data>
  </layer>
  <layer name="foreground" width="80" height="16">
