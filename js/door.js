@@ -54,12 +54,19 @@ Door.prototype.draw = function(context) {
 		context.fillStyle = "black";
 		context.fillText("" + (this.time / 50), this.x, this.y);
 	}
-	if(this.name && this.touchingPlayer) {
+	if(this.touchingPlayer) {
+		if(this.doorRoomID !== undefined) {
+			var name = assetManager.rooms[this.doorRoomID] ? assetManager.rooms[this.doorRoomID].name : "";
+			
+			context.font = "20pt Disposable";
+			context.fillStyle = "black";
+			context.fillText(name, this.x, this.y-20);
+		}
 	}
 };
 Door.prototype.collide = function(other) {
 	/// DEBUG CODE
-	if(other.type === PLAYER) {
+	if(other.type === PLAYER && other.held) {
 		this.touchingPlayer = true;
 	}
 	//else if(other.type === GOO) {
