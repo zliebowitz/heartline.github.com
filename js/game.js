@@ -98,6 +98,7 @@ var controller2 =
 
 var game_logic = function() {
 	controller1.poll();
+	controller2.poll();
 	if(controller1.dir.x < 0)
 		playerA.moveLeft();
 	else if (controller1.dir.x > 0)
