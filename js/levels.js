@@ -5,8 +5,8 @@ assetManager.levelQueue = [
 	id: 0
 },
 {
-	name: "TEST",
-	source: "levels/template.json",
+	name: "Stay Afloat",
+	source: "levels/eugene0.json",
 	id: 1
 }
 ]

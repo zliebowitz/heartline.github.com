@@ -172,8 +172,9 @@ var game_draw = function() {
 		context.translate(-camera.x + W/(2*camera.zoom), -camera.y + H/(2*camera.zoom));
 	}
 
-	currRoom.draw(context);
+	currRoom.drawBg(context);
 	entityManager.draw(context);
+	currRoom.drawFg(context);
 	context.restore();
 };
 var game_gui_draw = function() {
