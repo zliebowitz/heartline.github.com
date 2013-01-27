@@ -45,6 +45,13 @@ var camera = {
 	}
 };
 
+var controller1 =
+	new keyboard_controller(defaultPlayer1);
+
+var controller2 =
+	new keyboard_controller(defaultPlayer2);
+
+
 var loadNextRoom = function() {
 	currRoom = assetManager.rooms[roomID];
 	if(currRoom === undefined) {
@@ -85,13 +92,6 @@ var tryAgain = function() {
 	entityManager = new EntityManager();
 	loadNextRoom();
 };
-
-var controller1 =
-	new keyboard_controller(defaultPlayer1);
-
-var controller2 =
-	new keyboard_controller(defaultPlayer2);
-
 var game_logic = function() {
 	controller1.poll();
 	if(controller1.dir.x < 0)
@@ -128,6 +128,8 @@ var game_logic = function() {
 			controller2 = new gamepad_controller(1, null)
 			controller2.addEventListener(controller2.JUMP_PRESS_EVENT, function() {playerB.jumpPress()});
 			controller2.addEventListener(controller2.JUMP_RELEASE_EVENT, function() {playerB.jumpRelease()});
+			controller2.addEventListener(controller1.LIFT_PRESS_EVENT, function() {playerB.throwPress()});
+			controller2.addEventListener(controller1.LIFT_RELEASE_EVENT, function() {playerB.throwRelease()});
 		}
 	}
 	entityManager.update();

@@ -87,15 +87,15 @@ Player.prototype.jumpRelease = function() {
 			this.dy = this.dy/2;
 	}
 };
+Player.prototype.shoot = function(dir) {
+};
 Player.prototype.throwPress = function() {
-	console.log("thorwpress");
 	if(this.held && !this.carry) {
 		this.carry = this.held;
 		this.held = null;
 	}
 };
-Player.prototype.throwRelease = function() {
-	console.log("throwrelase");
+Player.prototype.throwRelease = function(dir) {
 	if(this.carry) {
 		this.carry.isHeld = false;
 		this.carry.dx = this.dx + (this.facingLeft ? -5 : 5);

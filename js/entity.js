@@ -14,7 +14,7 @@ var BREAKABLE = 4;
 var PLAYER = 99;
 var HEART = 100;
 var BREAK_PARTICLE = 101;
-var WATER_PARTICLE = 102;
+var GOO = 102;
 
 function Entity(room) {
     this.x = 0;
