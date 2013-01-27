@@ -7,7 +7,7 @@ Fan.constructor = Fan;
 
 var FAN_W = 32;
 var FAN_H = 32;
-var FAN_SPAWN_TIMER = 2;
+var FAN_SPAWN_TIMER = 1;
 var FAN_MAX_POWER = 200;
 var FAN_POWER_THRESHOLD = 100; //How much power needed to spin
 var FAN_GOO_POWER = 50; //How much power one goo gives
@@ -72,10 +72,10 @@ Fan.prototype.collide = function(other) {
 FanParticle.prototype = new Entity();
 FanParticle.constructor = FanParticle;
 
-var FAN_PARTICLE_DRAG = 0.15;
+var FAN_PARTICLE_DRAG = 0.13;
 var FAN_PARTICLE_INITIAL_SPEED = -8;
-var FAN_PARTICLE_LIFETIME = 55;
-var FAN_PUSH_FACTOR = 0.5;
+var FAN_PARTICLE_LIFETIME = 65;
+var FAN_PUSH_FACTOR = 0.4;
 function FanParticle(room, x, y) {
 	this.room = room;
 	this.x = x;
@@ -94,7 +94,8 @@ FanParticle.prototype.update = function() {
 	}
 };
 FanParticle.prototype.draw = function(context) {
-	context.strokeStyle = "white";
+	context.strokeStyle = "rgba(255, 255, 255, 100)";
+	context.lineWidth = 1;
 	context.beginPath();
 	context.moveTo(this.x, this.y);
 	context.lineTo(this.dx+this.x, this.dy+this.y);
@@ -105,7 +106,9 @@ FanParticle.prototype.collide = function(other) {
 	if(other.type === PLAYER || other.type === HEART ||
 			other.type === GOO) {
 		this.die = true;
-		other.dy += this.dy * FAN_PUSH_FACTOR;
+		if(other.dy > this.dy)
+			other.dy += this.dy * FAN_PUSH_FACTOR;
+		
 	}
 	
 };
