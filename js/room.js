@@ -757,6 +757,18 @@ Room.prototype.loadEntities = function(entityManager) {
 			case FIRE:
 				entityManager.add(new Fire(this, this.entities[i].x, this.entities[i].y));
 				break;
+			case GOAL:
+				entityManager.add(new Goal(this, this.entities[i].x, this.entities[i].y));
+				break;
+			case GRATE:
+				entityManager.add(new Grate(this, this.entities[i].x, this.entities[i].y));
+				break;
+			case BREAKABLE:
+				entityManager.add(new Breakable(this, this.entities[i].x, this.entities[i].y));
+				break;
+			case FAN:
+				entityManager.add(new Fan(this, this.entities[i].x, this.entities[i].y));
+				break;
 		}
 	}
 	return players;

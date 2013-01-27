@@ -141,6 +141,62 @@ assetManager.imageQueue = [
 	},
 	{
 		"type": "anim",
+		"source": "gfx/misc/goal.png",
+		"frames": 4,
+		"speed": 6,
+		"frameWidth": 32,
+		"frameHeight": 32,
+		"numCols": 2,
+		"loop": true,
+		"offsetX": 0,
+		"offsetY": 0,
+		"flipOffsetX": 0,
+		"hasFacing": false 
+	},
+	{
+		"type": "anim",
+		"source": "gfx/misc/sparkle_particle.png",
+		"frames": 9,
+		"speed": 3,
+		"frameWidth": 32,
+		"frameHeight": 32,
+		"numCols": 3,
+		"loop": false,
+		"offsetX": 16,
+		"offsetY": 16,
+		"flipOffsetX": 16,
+		"hasFacing": false 
+	},
+	{
+		"type": "anim",
+		"source": "gfx/misc/grating_block.png",
+		"frames": 1,
+		"speed": 6,
+		"frameWidth": 32,
+		"frameHeight": 32,
+		"numCols": 1,
+		"loop": false,
+		"offsetX": 0,
+		"offsetY": 0,
+		"flipOffsetX": 0,
+		"hasFacing": false 
+	},
+	{
+		"type": "anim",
+		"source": "gfx/misc/destroyable_block.png",
+		"frames": 1,
+		"speed": 6,
+		"frameWidth": 32,
+		"frameHeight": 32,
+		"numCols": 1,
+		"loop": false,
+		"offsetX": 0,
+		"offsetY": 0,
+		"flipOffsetX": 0,
+		"hasFacing": false 
+	},
+	{
+		"type": "anim",
 		"source": "gfx/misc/flare_particle.png",
 		"frames": 6,
 		"speed": 4,
@@ -167,6 +223,37 @@ assetManager.imageQueue = [
 		"flipOffsetX": 16,
 		"hasFacing": false 
 	},
+	{
+		"type": "anim",
+		"source": "gfx/misc/fan_off.png",
+		"frames": 1,
+		"speed": 4,
+		"frameWidth": 32,
+		"frameHeight": 32,
+		"numCols": 1,
+		"loop": false,
+		"offsetX": 0,
+		"offsetY": 0,
+		"flipOffsetX": 0,
+		"hasFacing": false 
+	},
+	{
+		"type": "anim",
+		"source": "gfx/misc/fan_on.png",
+		"frames": 3,
+		"speed": 4,
+		"frameWidth": 32,
+		"frameHeight": 32,
+		"numCols": 3,
+		"loop": true,
+		"offsetX": 0,
+		"offsetY": 0,
+		"flipOffsetX": 0,
+		"hasFacing": false 
+	},
+
+
+
 
 
 

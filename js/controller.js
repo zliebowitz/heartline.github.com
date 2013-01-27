@@ -40,6 +40,7 @@ var defaultPlayer2Bindings =
 
 var keyboard_controller = function(bindings)
 {
+	this.type = "KEYBOARD";
 	this.bindings = bindings
 
 	this.dir =
@@ -82,6 +83,7 @@ var gamepad_axes = {
 
 var gamepad_controller = function(controllerIndex, bindings)
 {
+	this.type = "GAMEPAD";
 	if (bindings == null)
 	this.bindings =
 	{
