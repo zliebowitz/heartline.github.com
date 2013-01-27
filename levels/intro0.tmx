@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <map version="1.0" orientation="orthogonal" width="50" height="32" tilewidth="32" tileheight="32">
  <tileset firstgid="1" name="foreground" tilewidth="32" tileheight="32">
-  <image source="../assets/tilesets/foreground.png" width="512" height="512"/>
+  <image source="../gfx/tilesets/foreground.png" width="512" height="512"/>
  </tileset>
  <tileset firstgid="257" name="entities" tilewidth="32" tileheight="32">
-  <image source="../assets/tilesets/entities.png" width="512" height="512"/>
+  <image source="../gfx/tilesets/entities.png" width="512" height="512"/>
  </tileset>
  <tileset firstgid="513" name="collision" tilewidth="32" tileheight="32">
-  <image source="../assets/tilesets/collision.png" width="512" height="512"/>
+  <image source="../gfx/tilesets/collision.png" width="512" height="512"/>
  </tileset>
  <tileset firstgid="769" name="background" tilewidth="32" tileheight="32">
-  <image source="../assets/tilesets/background.png" width="512" height="512"/>
+  <image source="../gfx/tilesets/background.png" width="512" height="512"/>
  </tileset>
  <layer name="entities" width="50" height="32">
   <data encoding="base64" compression="zlib">
