@@ -88,7 +88,7 @@ Player.prototype.jumpRelease = function() {
 };
 
 Player.prototype.shoot = function() {
-
+	entityManager.add(new Goo(this.room, this.x, this.y, this.dx, this.dy-10, this));
 };
 
 Player.prototype.throwPress = function() {

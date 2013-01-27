@@ -25,12 +25,12 @@ function Entity(room) {
     
     this.dx = 0;
     this.dy = 0;
-    
+	    
     this.die = false;
     this.room = room;
     this.landed = false;
     this.solid = true;
-    
+   	this.palpable = true; 
     this.bouncy = false;
 }
 

@@ -23,7 +23,7 @@ function Heart(room, x, y) {
 	this.landTimer = 0;
 	this.landedEntity = false;
 	
-	this.anim = assetManager.getAnim("gfx/heart.png");
+	this.anim = assetManager.getAnim("gfx/misc/heart.png");
 } 
 
 Heart.prototype.landFunction = function() {
