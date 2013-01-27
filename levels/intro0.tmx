@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.0" orientation="orthogonal" width="50" height="32" tilewidth="32" tileheight="32">
+ <tileset firstgid="1" name="foreground" tilewidth="32" tileheight="32">
+  <image source="../assets/tilesets/foreground.png" width="512" height="512"/>
+ </tileset>
+ <tileset firstgid="257" name="entities" tilewidth="32" tileheight="32">
+  <image source="../assets/tilesets/entities.png" width="512" height="512"/>
+ </tileset>
+ <tileset firstgid="513" name="collision" tilewidth="32" tileheight="32">
+  <image source="../assets/tilesets/collision.png" width="512" height="512"/>
+ </tileset>
+ <tileset firstgid="769" name="background" tilewidth="32" tileheight="32">
+  <image source="../assets/tilesets/background.png" width="512" height="512"/>
+ </tileset>
+ <layer name="entities" width="50" height="32">
+  <data encoding="base64" compression="zlib">
+   eJzt07EKACAIQEGt///naGgOWgy8A3fBZwQwsnoDfjW1AS349Z7ycvfdxZlX2gIAAKizAOJPAB4=
+  </data>
+ </layer>
+ <layer name="background" width="50" height="32">
+  <data encoding="base64" compression="zlib">
+   eJzt1ktPwkAUhmGSiYjihpuKsvECCLrxArgVUdkKKm6t3LYgij+ftwkEKNgEQ8oMOV/yrDrtnJN2prOhfD4/NhHAFrYRxA5MSYxad7GHfcRxgEMkDOpjlDQ1nyGDLM5xoXkfdeproOlhnX3m+l3yfD2e940fD/roOeZ41/wdS9Y7Hxp9f861sUg6GvUhkZgee1+w8Kmm//MtNb7mHGMN2WPac+5rr2CN2vtCF19q+j9vnyNG1ybHWHM471v2+cPLhKg9jAiiavYcbUqOqPUYJzhFEik1Pkf/Fd3e3SX1XOEaN8ghjwJuNavVLXfUWsQ9SnjAI55QNqiPZ2qtoIoXvOINNWXWWd1t/17FPvzfuO3fuq1liUQikUgkemYAufUq1A==
+  </data>
+ </layer>
+ <layer name="foreground" width="50" height="32">
+  <data encoding="base64" compression="zlib">
+   eJzt1AEKwjAMBdDWC41ewTN5f4awQvm0yU86jUgCH2Gb2X9sehRujuGTjfX63Vgc7Hyzt8XySw7pXkwn6/ybow7Z6d93PCf5pOM9D3B4LbhjthP7Yudoh2ZAB1q099LrsFgYg+RgbZpxx8EamH2lyD1HK7rbhsNisDxfxoHxOqyGcR/Ti/1fi3KUIlukrqtpimNl8RjQgd2krtrzinRI/Sy/o5fT4TXU6z6W1Kvfak8/j9/RLDsGb2aOfrwJ51eOCMPdjsg0MtE9PYboXplMJpPJZDKZe3MCx+xJbw==
+  </data>
+ </layer>
+ <layer name="collision" width="50" height="32">
+  <data encoding="base64" compression="zlib">
+   eJzt0kEOABAMBVHc/9BWErFAKS2ZxWz9vkRMIUQiMitVab3TdtOws9kzvOIYGawckt0Zg3fHrOG0Y2dXYvDqkBpw6PwLLQOOM45Vg4d+MBSH9Q1ERERERHSnDKArFtc=
+  </data>
+ </layer>
+</map>

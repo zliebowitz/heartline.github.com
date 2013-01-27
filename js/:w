@@ -189,16 +189,7 @@ var game_gui_draw = function() {
 	context.font = "10pt Disposable";
 	context.fillStyle = "black";	
 	context.fillText(""+goal.timer / 50, 20, 10);
-	
-	if(openRooms[roomID] && openRooms[roomID].time) {
-		if(goal.timer < openRooms[roomID].time) {
-			context.fillStyle = "green";
-		}
-		else {
-			context.fillStyle = "red";
-		}
-		context.fillText("" + openRooms[roomID].time / 50, 20, 20);
-	}
+
 };
 
 var mouseX;
@@ -364,13 +355,7 @@ var step = function() {
 	}
 	if(playerA.dead) {
 		camera.moveTo(playerB.x, playerB.y);
-	}
-	else if(playerB.dead) {
-		camera.moveTo(playerA.x, playerA.y);
-	}
-	else {
 		camera.moveTo((playerA.x + playerB.x) / 2, (playerA.y + playerB.y) / 2 );
-	}
 };
 
 var doKeyDown = function(e) {

@@ -246,7 +246,7 @@ AssetManager.prototype.levelAll = function(successCallback, errorCallback, compl
 	var that = this;
 	for (var i = 0; i < this.levelQueue.length; i++) {
 		var d = this.levelQueue[i];
-		var json = (function() {
+		var json = (function(d) {
 			var json = null;
 			console.log("attempting to load : " + d.id);
 			$.ajax({
@@ -254,6 +254,7 @@ AssetManager.prototype.levelAll = function(successCallback, errorCallback, compl
 				'url': d.source,
 				'dataType': "json",
 				'success': function(data) {
+					console.log("Loaded thing");
 					successCallback("Level " + d.source);
 					that.successCount++;
 					var r = new Room(data);	
@@ -264,7 +265,7 @@ AssetManager.prototype.levelAll = function(successCallback, errorCallback, compl
 					}
 				}
 			});
-		})();
+		})(d);
 	}
 };
 
