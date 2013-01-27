@@ -51,7 +51,7 @@ Entity.prototype.outsideRoom = function() {
 
 //Simple A A B B check
 Entity.prototype.checkCollide = function(other) {
-	if(!this.solid || !other.solid)
+	if(!this.palpable || !other.palpable)
 		return false;
 	if(this.x > other.x+other.w)
 		return false;
