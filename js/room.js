@@ -175,6 +175,7 @@ Room.prototype.loadEntities = function(entityManager) {
 				var playerA= new Player(this, this.entities[i].x, this.entities[i].y);
 
 				var playerB = new Player(this, this.entities[i].x, this.entities[i].y);
+				entityManager.add(new Heart(this, this.entities[i].x, this.entities[i].y));
 				entityManager.add(playerA);
 				entityManager.add(playerB);
 				players.a = playerA;
