@@ -52,6 +52,7 @@ function Player(room, x, y) {
 	this.movingRight = false;
 	this.dead = false;
 	this.touchingGrate = false;	
+	this.doorID = -1;
 	
 	this.runAnim = assetManager.getAnim("gfx/player/walk.png");
 	this.idleAnim = assetManager.getAnim("gfx/player/stand.png");
@@ -334,6 +335,12 @@ Player.prototype.collide = function(other) {
 	}
 	else if(other.type === FIRE) {
 		this.hurt(PLAYER_FIRE_DAMAGE);
+	}
+	else if(other.type === DOOR) {
+		if(this.controller.getDir().y > 0 && this.held && this.held.type === HEART){
+			this.doorID = other.doorRoomID;
+			other.open();
+		}
 	}
 };
 
