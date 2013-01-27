@@ -114,7 +114,7 @@ var game_logic = function() {
 var game_draw = function() {
 	if(currRoom === undefined)
 		return;
-	context.fillStyle = "gray";
+	context.fillStyle = "#442222";
 	context.fillRect(0, 0, W, H);
 	
 	context.save();

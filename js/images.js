@@ -123,14 +123,35 @@ assetManager.imageQueue = [
 		"offsetX": 7,
 		"offsetY": 7,
 		"flipOffsetX": 7,
-		"hasFacing": true
+		"hasFacing": false 
 	},
+	{
+		"type": "anim",
+		"source": "gfx/fire.png",
+		"frames": 4,
+		"speed": 6,
+		"frameWidth": 32,
+		"frameHeight": 32,
+		"numCols": 2,
+		"loop": true,
+		"offsetX": 0,
+		"offsetY": 0,
+		"flipOffsetX": 0,
+		"hasFacing": false 
+	},
+
 	//TILESETS BELOW
 	{
 		"type": "tileset",
 		"source": "gfx/tilesets/foreground.png",
-		"width": 8,
-		"height": 6
+		"width": 16,
+		"height": 16
+	},
+	{
+		"type": "tileset",
+		"source": "gfx/tilesets/background.png",
+		"width": 16,
+		"height": 16 
 	}
 
 

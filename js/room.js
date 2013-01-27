@@ -5,13 +5,14 @@ var SCREEN_HEIGHT = 16;
 var SCREEN_WIDTH = 25;
 
 function Room(json) {
+	console.log("Room constructor begin!");
 	this.fg = null;
 	this.bg = null;
 	this.coll = null;
 
 	this.fgTileset = assetManager.getTileset("gfx/tilesets/foreground.png");
-	this.bgTileset = assetManager.getTileset("gfx/tilesets/foreground.png");
-	console.log(this.fgTileset);
+	this.bgTileset = assetManager.getTileset("gfx/tilesets/background.png");
+
 	this.loadFromJSON(json);
 	
 	this.rightCameraBound = this.width*TILE_SIZE;
@@ -34,6 +35,14 @@ Room.prototype.draw = function(context) {
 	var endX = Math.min(Math.ceil((camera.x + W/(2*camera.zoom)) / TILE_SIZE), this.width);
 	var startY = Math.max(Math.floor(camera.y / TILE_SIZE - H/(2*camera.zoom)), 0);
 	var endY = Math.min(Math.ceil((camera.y + H/(2*camera.zoom)) / TILE_SIZE), this.height);
+
+	for(var i = startY; i < endY; i++) {
+		for(var j = startX; j < endX; j++) {
+			if(this.fg[i][j] < 0)
+				continue;
+			this.bgTileset.draw(context, j*TILE_SIZE, i*TILE_SIZE, this.bg[i][j]);
+		}
+	}
 	for(var i = startY; i < endY; i++) {
 		for(var j = startX; j < endX; j++) {
 			if(this.fg[i][j] < 0)
@@ -41,6 +50,7 @@ Room.prototype.draw = function(context) {
 			this.fgTileset.draw(context, j*TILE_SIZE, i*TILE_SIZE, this.fg[i][j]);
 		}
 	}
+	
 };
 
 //I was going to use bitfields... but memory is free, right? :)
@@ -107,6 +117,7 @@ Room.prototype.loadFromJSON = function(d) {
 	for(var i = 0; i < d.tilesets.length; i++) {
 		gids[d.tilesets[i].name] = d.tilesets[i].firstgid;
 	}
+	console.log("loading layers");
 	for(var i = 0; i < d.layers.length; i++) {
 		var layer = d.layers[i];
 		console.log("Loading layer: " + layer.name);
@@ -123,6 +134,7 @@ Room.prototype.loadFromJSON = function(d) {
 			this.loadEntityLayer(layer, gids["entities"]);
 		}
 	}
+	console.log("done loading");
 };
 
  
@@ -169,7 +181,6 @@ Room.prototype.loadEntities = function(entityManager) {
 	};
 	console.log("Loading entities...");
 	for(var i = 0; i < this.entities.length; i++) {
-		console.log(this.entities[i]);
 		switch(this.entities[i].type) {
 			case SPAWN:
 				var playerA= new Player(this, this.entities[i].x, this.entities[i].y);
@@ -180,6 +191,9 @@ Room.prototype.loadEntities = function(entityManager) {
 				entityManager.add(playerB);
 				players.a = playerA;
 				players.b = playerB;
+				break;
+			case FIRE:
+				entityManager.add(new Fire(this, this.entities[i].x, this.entities[i].y));
 				break;
 		}
 	}
