@@ -9,7 +9,7 @@ var GOAL = 1;
 var FIRE = 2;
 var GRATE = 3;
 var BREAKABLE = 4;
-
+var FAN = 5;
 
 var PLAYER = 99;
 var HEART = 100;
@@ -17,6 +17,7 @@ var BREAK_PARTICLE = 101;
 var GOO = 102;
 var FIRE_PARTICLE = 103;
 var GOAL_PARTICLE = 104;
+var FAN_PARTICLE = 105;
 
 function Entity(room) {
     this.x = 0;

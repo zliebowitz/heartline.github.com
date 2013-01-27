@@ -223,6 +223,37 @@ assetManager.imageQueue = [
 		"flipOffsetX": 16,
 		"hasFacing": false 
 	},
+	{
+		"type": "anim",
+		"source": "gfx/misc/fan_off.png",
+		"frames": 1,
+		"speed": 4,
+		"frameWidth": 32,
+		"frameHeight": 32,
+		"numCols": 1,
+		"loop": false,
+		"offsetX": 0,
+		"offsetY": 0,
+		"flipOffsetX": 0,
+		"hasFacing": false 
+	},
+	{
+		"type": "anim",
+		"source": "gfx/misc/fan_on.png",
+		"frames": 3,
+		"speed": 4,
+		"frameWidth": 32,
+		"frameHeight": 32,
+		"numCols": 3,
+		"loop": true,
+		"offsetX": 0,
+		"offsetY": 0,
+		"flipOffsetX": 0,
+		"hasFacing": false 
+	},
+
+
+
 
 
 

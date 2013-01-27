@@ -735,6 +735,9 @@ Room.prototype.loadEntities = function(entityManager) {
 			case BREAKABLE:
 				entityManager.add(new Breakable(this, this.entities[i].x, this.entities[i].y));
 				break;
+			case FAN:
+				entityManager.add(new Fan(this, this.entities[i].x, this.entities[i].y));
+				break;
 		}
 	}
 	return players;
