@@ -97,7 +97,7 @@ Player.prototype.shoot = function() {
 	{
 		xc = this.facingLeft ? -1 : 1;
 	}
-	entityManager.add(new Goo(this.room, this.x, this.y, 
+	entityManager.add(new Goo(this.room, this.x+5, this.y+5, 
 				 this.dx+xc * 15, this.dy+yc * -10, this));
 };
 
@@ -110,8 +110,6 @@ Player.prototype.throwPress = function() {
 Player.prototype.throwRelease = function() {
 	if(this.carry) {
 		var dir = this.controller.getDir();
-		console.log("dir is");
-		console.log(dir);
 
 		this.carry.isHeldBy = null;
 		this.carry.dx = this.dx + dir.x * 5;
@@ -210,6 +208,9 @@ Player.prototype.update = function() {
 	//Friction
 	if(this.landed) {
 		this.landFunction();
+	}
+	else if(this.status !== PlayerStatus.JUMP) {
+		this.status = PlayerStatus.FALL;
 	}
 	if(Math.abs(this.dx) < PLAYER_MIN_SPEED)
 		this.dx = 0;
