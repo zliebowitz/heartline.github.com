@@ -16,7 +16,9 @@ var PLAYER_MAX_HEALTH = 1000;
 var PLAYER_GOO_COST = 5;
 var PLAYER_HEART_REGEN = 2
 var PLAYER_FRICTION = 0.7;
-
+var PLAYER_FIRE_DAMAGE = 10;
+var PLAYER_DEATH_TIME = 20; //frames before respawn
+var PLAYER_GRIEVE_RATE = 6; //Damage taken if partner is dead.
 var GRAVITY_CARRY = 0.73;	//gravity is higher while carrying an item (realism is for pansies)
 
 var PLAYER_HURT_CD = 25; //Invul frames after getting hurt
@@ -38,7 +40,7 @@ function Player(room, x, y) {
 	this.carry = null;
 	this.w = PLAYER_W;
 	this.h = PLAYER_H;
-
+	this.deathTimer = 0;
 	this.controller - null;
 
 	this.status = PlayerStatus.IDLE;
@@ -95,18 +97,29 @@ Player.prototype.jumpRelease = function() {
 };
 
 Player.prototype.shoot = function() {
-	var dir = this.controller.getDir();	
-	var yc = dir.y;
-	var xc = dir.x;
-	if(xc === 0 && yc === 0)
-	{
-		xc = this.facingLeft ? -1 : 1;
+	if(this.health > PLAYER_GOO_COST) {
+		var dir = this.controller.getDir();	
+		var yc = dir.y;
+		var xc = dir.x;
+		if(xc === 0 && yc === 0)
+		{
+			xc = this.facingLeft ? -1 : 1;
+		}
+		this.health -= PLAYER_GOO_COST;
+		entityManager.add(new Goo(this.room, this.x+5, this.y+5, 
+					 xc * 10, yc * -10, this));
 	}
-	this.health -= PLAYER_GOO_COST;
-	entityManager.add(new Goo(this.room, this.x+5, this.y+5, 
-				 xc * 10, yc * -10, this));
 };
-
+Player.prototype.dropAll = function() {
+	if(this.held) {
+		this.held.isHeldBy = null;
+		this.held = null;
+	}
+	if(this.carry) {
+		this.carry.isHeldBy = null;
+		this.carry = null;
+	}
+};
 Player.prototype.throwPress = function() {
 	if(this.held && !this.carry) {
 		this.carry = this.held;
@@ -124,31 +137,37 @@ Player.prototype.throwRelease = function() {
 	}
 };
 
-//Maybe pass damage to this function later
 Player.prototype.hurt = function(amount) {
 	if(this.dead)
 		return;
+	/*
 	if(this.hurtTimer>0) {
 		//Invul Frames; no damage taken :D
 		return false;
-	}
-	else {
-		this.hurtTimer = PLAYER_HURT_CD;
-		this.health-=amount;	
-		if(this.health <= 0) {
-			this.dead = true;
-			return true;
-		}
+		this.dead = false;
+		this.deathTimer = 0;
+		this.dy = 0;
+		this.dx = 0;
+		this.health = PLAYER_MAX_HEALTH;
 
-		if(this.facingLeft) {
-			this.dx = 4;
+	}
+	this.hurtTimer = PLAYER_HURT_CD;
+	*/
+	this.health-=amount;	
+	if(this.health <= 0) {
+		this.dead = true;
+		for(var i = 0; i < 20; i++) {
+			var rand = Math.random() * 2 * Math.PI;
+			var xDir = Math.cos(rand) * 3;
+			var yDir = Math.sin(rand) * 3;
+			this.deathTimer = PLAYER_DEATH_TIME;
+			entityManager.add(new Goo(this.room, this.x+5, this.y+5, 
+				 xDir, yDir, this));
+			this.dropAll();
 		}
-		else {
-			this.dx = -4;
-		}
-		this.dy = -4;
 		return true;
 	}
+	return true;
 };
 
 Player.prototype.landFunction = function() {
@@ -163,8 +182,27 @@ Player.prototype.landFunction = function() {
 	}
 };
 
-Player.prototype.update = function() {
+Player.prototype.respawnAt = function(otherPlayer) {
+	this.dead = false;
+	this.dy = 0;
+	this.dx = 0;
+	this.health = PLAYER_MAX_HEALTH;
+	this.x = otherPlayer.x;
+	this.y = otherPlayer.y;
+	this.status = PlayerStatus.IDLE;
+	for(var i = 0; i < 16; i++) {
+		var angle = 2 * Math.PI * i / 16;
+		var dirX = Math.cos(angle);
+		var dirY = Math.sin(angle);
+		entityManager.add(new Goo(this.room, this.x - dirX * 60, this.y - dirY * 60, dirX * 10, dirY * 10, this));
+	}
+};
 
+Player.prototype.update = function() {
+	if(this.dead) {
+		this.deathTimer -= 1;
+		return;
+	}
 	this.controller.poll();
 	if(this.controller.getDir().x < 0)
 		this.moveLeft();
@@ -237,11 +275,13 @@ Player.prototype.update = function() {
 };
 Player.prototype.draw = function(context) {
 	if(this.dead) {
-		this.deathAnim.draw(context, this.x, this.y, this.facingLeft);
-		this.deathAnim.tick();
 		return;
 	}
-
+	if(this.held) {
+		this.held.drawSelf(context);
+	} else if(this.carry) {
+		this.carry.drawSelf(context);
+	}
 	switch(this.status) {
 		case(PlayerStatus.JUMP):
 			if(this.carry) {
@@ -291,6 +331,9 @@ Player.prototype.collide = function(other) {
 	}
 	else if(other.type === GRATE) {
 		this.touchingGrate = true;
+	}
+	else if(other.type === FIRE) {
+		this.hurt(PLAYER_FIRE_DAMAGE);
 	}
 };
 

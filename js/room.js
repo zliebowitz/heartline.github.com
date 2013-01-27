@@ -738,7 +738,7 @@ Room.prototype.saveEntities = function(entityManager) {
 		the room.
 */
 Room.prototype.loadEntities = function(entityManager) {
-	var players = {
+	var ents = {
 		
 	};
 	console.log("Loading entities...");
@@ -748,17 +748,20 @@ Room.prototype.loadEntities = function(entityManager) {
 				var playerA= new Player(this, this.entities[i].x, this.entities[i].y);
 
 				var playerB = new Player(this, this.entities[i].x, this.entities[i].y);
-				entityManager.add(new Heart(this, this.entities[i].x, this.entities[i].y));
+				var heart = new Heart(this, this.entities[i].x, this.entities[i].y);
 				entityManager.add(playerA);
 				entityManager.add(playerB);
-				players.a = playerA;
-				players.b = playerB;
+				entityManager.add(heart);
+				ents.a = playerA;
+				ents.b = playerB;
+				ents.heart = heart;
 				break;
 			case FIRE:
 				entityManager.add(new Fire(this, this.entities[i].x, this.entities[i].y));
 				break;
 			case GOAL:
 				entityManager.add(new Goal(this, this.entities[i].x, this.entities[i].y));
+				ents.goal = goal;
 				break;
 			case GRATE:
 				entityManager.add(new Grate(this, this.entities[i].x, this.entities[i].y));
@@ -771,6 +774,6 @@ Room.prototype.loadEntities = function(entityManager) {
 				break;
 		}
 	}
-	return players;
+	return ents;
 };
 

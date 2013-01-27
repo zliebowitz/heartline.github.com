@@ -26,6 +26,7 @@ var currRoom;
 var entityManager;
 var playerA;
 var playerB;
+var goal;
 
 var CAMERA_SHAKE_FACTOR = 10;
 var camera = {
@@ -56,11 +57,13 @@ var loadNextRoom = function() {
 	roomID++;
 	
 	entityManager.clear();
-	var players = currRoom.loadEntities(entityManager);
-	playerA = players.a;
+	var ents = currRoom.loadEntities(entityManager);
+	playerA = ents.a;
+	playerB = ents.b;
+	goal = ents.goal;
 	playerA.bind_controller(new keyboard_controller(defaultPlayer1Bindings));
-	playerB = players.b;
 	playerB.bind_controller(new keyboard_controller(defaultPlayer2Bindings));
+
 
 	//Calculate the minimum zoom based on room dimensions.
 	var a = W / (currRoom.width * TILE_SIZE); 
@@ -106,6 +109,26 @@ var game_logic = function() {
 		}
 	}
 	entityManager.update();
+	//Handle player deaths / respawn
+	if(playerA.dead && playerB.dead) {
+		//GAME OVER
+	}
+	else if(playerA.dead && playerA.deathTimer <= 0) {
+		if(playerB.held && playerB.held.type === HEART) {
+			playerA.respawnAt(playerB);
+		}
+		else {
+			playerB.hurt(PLAYER_GRIEVE_RATE);
+		}
+	}
+	else if(playerB.dead && playerB.deathTimer <= 0) {
+		if(playerA.held && playerA.held.type === HEART) {
+			playerB.respawnAt(playerA);
+		} 
+		else {
+			playerA.hurt(PLAYER_GRIEVE_RATE);
+		}
+	}
 };
 var game_draw = function() {
 	if(currRoom === undefined)

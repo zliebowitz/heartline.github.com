@@ -57,9 +57,14 @@ Heart.prototype.update = function() {
 
 	this.landedEntity = false;
 };
-Heart.prototype.draw = function(context) {
+Heart.prototype.drawSelf = function(context) {	
 	this.anim.draw(context, this.x, this.y, false);
 	this.anim.tick();
+};
+Heart.prototype.draw = function(context) {
+	if(this.isHeldBy === null) {
+		this.drawSelf(context);
+	}
 };
 Heart.prototype.collide = function(other) {
 	if(other.type === PLAYER && !other.touchingGrate) {
@@ -76,6 +81,9 @@ Heart.prototype.collide = function(other) {
 			this.isHeldBy = null;
 			this.dx = 0; this.dy = 0;
 		}
+	}
+	else if(other.type === BREAKABLE) {
+		this.collideEntity(other);
 	}
 };
 
