@@ -111,6 +111,20 @@ assetManager.imageQueue = [
 		"flipOffsetX": 7,
 		"hasFacing": true
 	},
+	{
+		"type": "anim",
+		"source": "gfx/heart.png",
+		"frames": 8,
+		"speed": 3,
+		"frameWidth": 32,
+		"frameHeight": 32,
+		"numCols": 4,
+		"loop": true,
+		"offsetX": 7,
+		"offsetY": 7,
+		"flipOffsetX": 7,
+		"hasFacing": true
+	},
 	//TILESETS BELOW
 	{
 		"type": "tileset",

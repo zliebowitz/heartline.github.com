@@ -105,6 +105,8 @@ var game_logic = function() {
 			controller1 = new gamepad_controller(0, null)
 			controller1.addEventListener(controller1.JUMP_PRESS_EVENT, function() {playerA.jumpPress()});
 			controller1.addEventListener(controller1.JUMP_RELEASE_EVENT, function() {playerA.jumpRelease()});
+			controller1.addEventListener(controller1.LIFT_PRESS_EVENT, function() {playerA.throwPress()});
+			controller1.addEventListener(controller1.LIFT_RELEASE_EVENT, function() {playerA.throwRelease()});
 		}
 	}
 	entityManager.update();

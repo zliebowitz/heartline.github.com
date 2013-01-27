@@ -8,6 +8,7 @@ var SPAWN = 0;
 var EXIT = 1;
 
 var PLAYER = 99;
+var HEART = 100;
 
 function Entity(room) {
     this.x = 0;
