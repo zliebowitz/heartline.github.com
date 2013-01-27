@@ -102,11 +102,25 @@ var game_logic = function() {
 var game_draw = function() {
 	if(currRoom === undefined)
 		return;
-	//context.fillStyle = "#442222";
 	context.fillStyle = grd;
 	context.fillRect(0, 0, W, H);
 
 	context.save();
+	// CLAMP CAMERA
+	if(camera.x < W/(2*camera.zoom)) {
+		camera.x = W/(2*camera.zoom);
+	}
+	else if(camera.x > (currRoom.width * TILE_SIZE) - (W/(2*camera.zoom))) {
+		camera.x = currRoom.width * TILE_SIZE - W/(2*camera.zoom);
+	}
+	if(camera.y < H/(2*camera.zoom)) {
+		camera.y = H/(2*camera.zoom);
+	}
+	else if(camera.y > (currRoom.height * TILE_SIZE) - (H/(2*camera.zoom))) {
+		camera.y = currRoom.height * TILE_SIZE - H/(2*camera.zoom);
+	}
+
+
 	context.scale(camera.zoom, camera.zoom);
 	if(camera.shake > 0) {
 		context.translate(-camera.x + (Math.random() - 0.5)*CAMERA_SHAKE_FACTOR, -camera.y + (Math.random() - 0.5)*CAMERA_SHAKE_FACTOR);
@@ -122,10 +136,10 @@ var game_draw = function() {
 };
 var game_gui_draw = function() {
 	context.fillStyle = "#000000";
-	context.fillRect(0, H-30, W, 30);
+	context.fillRect(9, H-21, W - 18, 12);
 	context.fillStyle = "#0000FF";
-	context.fillRect(10, H-20, (W/2 - 40) * playerA.health / PLAYER_MAX_HEALTH, 10);
-	context.fillRect(W/2 + 10 + (W/2-20 - (W/2 - 20) * playerB.health / PLAYER_MAX_HEALTH), H-20, (W/2 - 20) * playerB.health / PLAYER_MAX_HEALTH, 10);
+	context.fillRect(10, H-20, (W/2 - 20) * playerA.health / PLAYER_MAX_HEALTH, 10);
+	context.fillRect(W/2 + (W/2-10 - (W/2 - 10) * playerB.health / PLAYER_MAX_HEALTH), H-20, (W/2 - 10) * playerB.health / PLAYER_MAX_HEALTH, 10);
 	
 };
 
