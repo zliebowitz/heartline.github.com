@@ -187,8 +187,7 @@ var game_gui_draw = function() {
 	context.fillRect(W/2 + 9, H-16, (W/2 - 18), 12);
 	context.fillStyle = "#4444aa";
 	context.fillRect(10, H-15, (W/2 - 20) * playerA.health / PLAYER_MAX_HEALTH, 10);
-	context.fillRect(W/2 + (W/2 - 10 - (W/2 -20) * playerB.health / PLAYER_MAX_HEALTH), H-15, (W/2 - 20) * playerB.health / PLAYER_MAX_HEALTH, 10);	
-	
+	context.fillRect(W/2 + (W/2 - 10 - (W/2 -20) * playerB.health / PLAYER_MAX_HEALTH), H-15, (W/2 - 20) * playerB.health / PLAYER_MAX_HEALTH, 10);		
 	context.font = "10pt Disposable";
 	context.fillStyle = "black";	
 	context.fillText(""+goal.timer / 50, 20, 10);
@@ -294,6 +293,7 @@ var configClick = function() {
 				for(var i = 0; i < 4; i++) {
 					if(gamePadExists(i)) {
 						cnt = new gamepad_controller(i, allBindings[p===0 ? 'A' : 'B']["GAMEPAD"]);
+						break;
 					}
 				}
 			}
