@@ -12,7 +12,7 @@ var _controller = function() {
 
 };
 
-var defaultPlayer1 =
+var defaultPlayer1Bindings =
 {
 	jump: 'Q'.charCodeAt(0),
 	lift: 'E'.charCodeAt(0),
@@ -22,7 +22,7 @@ var defaultPlayer1 =
 	down: 'S'.charCodeAt(0),
 }
 
-var defaultPlayer2 =
+var defaultPlayer2Bindings =
 {
 	jump: 'U'.charCodeAt(0),
 	lift: 'O'.charCodeAt(0),
