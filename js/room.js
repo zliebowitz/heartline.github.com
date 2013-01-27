@@ -4,15 +4,21 @@ var TILE_SIZE = 32;
 var SCREEN_HEIGHT = 16;
 var SCREEN_WIDTH = 25;
 
-function Room(json) {
-	this.fg = null;
-	this.bg = null;
-	this.coll = null;
+var LEVEL_1_DOOR_COLUMN = 20;
 
-	this.fgTileset = assetManager.getTileset("gfx/tilesets/foreground.png");
-	this.bgTileset = assetManager.getTileset("gfx/tilesets/background.png");
+function Room(json, numLevels, lastLevel) {
+	if(lastLevel === undefined){
+		this.fg = null;
+		this.bg = null;
+		this.coll = null;
 
-	this.loadFromJSON(json);
+		this.fgTileset = assetManager.getTileset("gfx/tilesets/foreground.png");
+		this.bgTileset = assetManager.getTileset("gfx/tilesets/background.png");
+
+		this.loadFromJSON(json);
+	}else{
+		this.generateLevelSelectRoom(numLevels, lastLevel);
+	}
 	
 	this.rightCameraBound = this.width*TILE_SIZE;
 	this.botCameraBound = this.height*TILE_SIZE;
@@ -20,6 +26,31 @@ function Room(json) {
 	
 	this.processCollision();
 	this.processFGTiles();
+}
+
+Room.prototype.generateLevelSelectRoom = function(numLevels, lastLevel){
+	var lastLevelDoorCol = LEVEL_1_DOOR_COLUMN + 2*numLevels;
+	var levelSelectScreenCols = lastLevelDoorCol+1 >= SCREEN_WIDTH ? lastLevelDoorCol+2 : SCREEN_WIDTH;
+	this.width = levelSelectScreenCols;
+	this.height = SCREEN_HEIGHT;
+	this.fg = new Array(this.height);
+	this.bg = new Array(this.height);	
+	this.coll = new Array(this.height);
+	this.entities = new Array();
+	for(var i = 0; i < this.height; i++) {
+		this.fg[i] = new Array(this.width);
+		this.bg[i] = new Array(this.width);
+		this.coll[i] = new Array(this.width);
+		for(var j = 0; j < this.width; j++){
+			if(i == 0 || i == this.height - 1 || j == 0 || j == this.width - 1){
+				this.fg[i][j] = 0
+				this.coll[i][j] = 1;
+			}else{
+				this.fg[i][j] = -1;
+				this.coll[i][j] = 0;
+			}
+		}
+	}
 }
 
 Room.prototype.solid = function(y, x) {
