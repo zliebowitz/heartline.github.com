@@ -37,7 +37,7 @@ Goo.prototype.landFunction = function() {
 Goo.prototype.update = function() {
 	if(!this.isHeld) {
 		//Gravity
-		this.dy+=GRAVITY/5;
+		this.dy+=GRAVITY/2;
 		
 		//Kinematics
 		this.y+=this.dy;
@@ -63,7 +63,7 @@ Goo.prototype.update = function() {
 };
 Goo.prototype.draw = function(context) {
 	context.beginPath();
-	context.fillStyle = "rgba(0, 0, 255, "+this.dieTimer / GOO_LIFETIME+")";
+	context.fillStyle = "rgba(30, 30, 255, "+this.dieTimer / GOO_LIFETIME+")";
 	context.arc(this.x + GOO_RADIUS, 
 				this.y + GOO_RADIUS, GOO_RADIUS, 0, 2*Math.PI, false);
 	context.closePath();

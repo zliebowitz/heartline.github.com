@@ -13,7 +13,7 @@ var States = {
 var state = States.STATE_PLAY;
 
 var musicOn = true;
-
+var grd; 
 var assetManager = new AssetManager();
 var canvas;
 var context;
@@ -102,9 +102,10 @@ var game_logic = function() {
 var game_draw = function() {
 	if(currRoom === undefined)
 		return;
-	context.fillStyle = "#442222";
+	//context.fillStyle = "#442222";
+	context.fillStyle = grd;
 	context.fillRect(0, 0, W, H);
-	
+
 	context.save();
 	context.scale(camera.zoom, camera.zoom);
 	if(camera.shake > 0) {
@@ -138,7 +139,9 @@ var initialize_game = function() {
 	entityManager = new EntityManager();
 	loadNextRoom();
 	continueMenu = 0;
-	
+	grd = context.createLinearGradient(0, 0, 0, H/2);
+	grd.addColorStop(0, '8ED6FF');
+	grd.addColorStop(1, '#932C00');
 	return setInterval(step, 20); 
 };
 
