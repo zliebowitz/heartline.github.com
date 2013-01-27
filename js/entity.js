@@ -10,6 +10,7 @@ var FIRE = 2;
 var GRATE = 3;
 var BREAKABLE = 4;
 var FAN = 5;
+var DOOR = 6;
 
 var PLAYER = 99;
 var HEART = 100;

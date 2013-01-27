@@ -251,10 +251,20 @@ assetManager.imageQueue = [
 		"flipOffsetX": 0,
 		"hasFacing": false 
 	},
-
-
-
-
+	{
+		"type": "anim",
+		"source": "gfx/misc/door.png",
+		"frames": 6,
+		"speed": 4,
+		"frameWidth": 32,
+		"frameHeight": 32,
+		"numCols": 3,
+		"loop": false,
+		"offsetX": 0,
+		"offsetY": 0,
+		"flipOffsetX": 0,
+		"hasFacing": false 
+	},
 
 
 	//TILESETS BELOW
