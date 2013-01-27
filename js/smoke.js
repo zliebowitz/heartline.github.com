@@ -23,6 +23,7 @@ function Smoke(room, x, y, dx, dy) {
 	
 	this.isHeld = false;
 	this.solid = false;
+	this.palpable = false;
 	this.landTimer = 0;
 	this.landedEntity = false;
 	this.dieTimer = SMOKE_LIFETIME;
@@ -61,9 +62,5 @@ Smoke.prototype.draw = function(context) {
 	context.globalAlpha = 1.0;
 };
 Smoke.prototype.collide = function(other) {
-	if(other.type === PLAYER) {
-		this.dx += other.dx * SMOKE_PUSHEDFACTOR;
-		this.dy += other.dy * SMOKE_PUSHEDFACTOR;
-	}
 };
 

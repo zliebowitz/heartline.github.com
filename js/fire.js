@@ -7,7 +7,7 @@ Fire.constructor = Fire;
 
 var FIRE_W = 32;
 var FIRE_H = 32;
-var FIRE_SPAWN_MIN = 10;
+var FIRE_SPAWN_MIN = 70;
 var FIRE_SPAWN_RANGE = 20;
 
 function Fire(room, x, y) {
