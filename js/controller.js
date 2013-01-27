@@ -255,7 +255,7 @@ keyboard_controller.prototype.poll = function()
 	var left = keyPressed[b.left]
 	var right = keyPressed[b.right]
 	var jump = keyPressed[b.jump]
-	var lift= keyPressed[b.hold]
+	var lift= keyPressed[b.lift]
 
 	this.setDir(left,right,up,down)
 	this.setJump(jump)
