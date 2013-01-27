@@ -137,10 +137,10 @@ var game_draw = function() {
 };
 var game_gui_draw = function() {
 	context.fillStyle = "#000000";
-	context.fillRect(9, H-21, W - 18, 12);
+	context.fillRect(0, H-20, W, 20);
 	context.fillStyle = "#0000FF";
-	context.fillRect(10, H-20, (W/2 - 20) * playerA.health / PLAYER_MAX_HEALTH, 10);
-	context.fillRect(W/2 + (W/2-10 - (W/2 - 10) * playerB.health / PLAYER_MAX_HEALTH), H-20, (W/2 - 10) * playerB.health / PLAYER_MAX_HEALTH, 10);	
+	context.fillRect(10, H-15, (W/2 - 20) * playerA.health / PLAYER_MAX_HEALTH, 10);
+	context.fillRect(W/2 + (W/2-10 - (W/2 - 10) * playerB.health / PLAYER_MAX_HEALTH), H-15, (W/2 - 10) * playerB.health / PLAYER_MAX_HEALTH, 10);	
 };
 
 var menu_logic = function() {
