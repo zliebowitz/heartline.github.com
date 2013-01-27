@@ -13,10 +13,10 @@ var PLAYER_RUN_SPEED = 9;
 var PLAYER_WALK_SPEED = 2.3;
 var PLAYER_RUN_SPEED = 8;
 var PLAYER_MAX_HEALTH = 1000;
-var PLAYER_GOO_COST = 5;
-var PLAYER_HEART_REGEN = 2
+var PLAYER_GOO_COST = 9;
+var PLAYER_HEART_REGEN = 6;
 var PLAYER_FRICTION = 0.7;
-var PLAYER_FIRE_DAMAGE = 10;
+var PLAYER_FIRE_DAMAGE = 18;
 var PLAYER_DEATH_TIME = 50; //frames before respawn
 var PLAYER_GRIEVE_RATE = 6; //Damage taken if partner is dead.
 var GRAVITY_CARRY = 0.73;	//gravity is higher while carrying an item (realism is for pansies)
@@ -337,6 +337,7 @@ Player.prototype.draw = function(context) {
 	}	
 
 };
+
 Player.prototype.collide = function(other) {
 	if(other.type === BREAKABLE) {
 		this.collideEntity(other);
