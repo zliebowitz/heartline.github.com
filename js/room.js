@@ -4,7 +4,7 @@ var TILE_SIZE = 32;
 var SCREEN_HEIGHT = 16;
 var SCREEN_WIDTH = 25;
 
-var LEVEL_1_DOOR_COLUMN = 20;
+var LEVEL_1_DOOR_COLUMN = 10;
 
 function Room(json, openRooms, lastLevel) {
 	this.fgTileset = assetManager.getTileset("gfx/tilesets/foreground.png");
