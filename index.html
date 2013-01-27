@@ -38,34 +38,40 @@
 		<script>
 		var div = document.getElementById("wrapper");
 		var link = document.getElementById("click");
-		var startFS;
-		var stopFS;
-		startFS = function()
+		function fs()
 		{
-			div.webkitRequestFullscreen(Element.ALLOW_KEYBOARD_INPUT);
-			link.onclick = stopFS;
-		}
-		stopFS = function()
-		{
-			document.webkitExitFullscreen();
-			link.onclick = startFS;
+			console.log("fs")
+			if (document.webkitIsFullScreen)
+				document.webkitExitFullscreen()
+			else
+				div.webkitRequestFullscreen(Element.ALLOW_KEYBOARD_INPUT);
 		}
 
-		link.onclick = startFS;
+		link.onclick = fs;
+
+		var canvas = document.getElementById("gamecanvas");
+		var defaultHeight =  canvas.height;
+		var defaultWidth = canvas.width;
+
+		var ctx = canvas.getContext("2d");
+
+		window.onresize = function() {
+			console.log("resize");
+			var newHeight = window.innerHeight - 150;
+			var newWidth = window.innerWidth - 10;
+			console.log(newHeight, newWidth)
+			if (1.0 * defaultWidth / defaultHeight > 1.0 * newWidth / newHeight)
+				newHeight = 1.0 * newWidth / defaultWidth * defaultHeight
+			else
+				newWidth = 1.0 * newHeight / defaultHeight * defaultWidth;
+			canvas.height = newHeight;
+			canvas.width = newWidth;
+			ctx.scale(1.0 * newWidth/defaultWidth, 1.0 * newHeight/defaultHeight)
+		}
+
+		window.onresize();
+
 		//div.mozRequestFullScreen();
-		</script>
-		<script type="text/css">
-		canvas:-webkit-full-screen {
-  			width: 100%;
-		}
-		div:-webkit-full-screen {
-  			width: 100%;
-  			color: white;
-  			background-color: black;
-		}
-		:-webkit-full-screen  {
-			background-color: black;
-		}
 		</script>
 
 	</body>

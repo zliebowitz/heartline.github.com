@@ -38,6 +38,8 @@ var controllerB;
 var goal;
 var openRooms;
 
+var allBindings;
+
 var CAMERA_SHAKE_FACTOR = 10;
 var camera = {
 	x: 0,
@@ -75,10 +77,10 @@ var loadNextRoom = function() {
 	playerB = ents.b;
 	goal = ents.goal;
 	if(!controllerA) {
-		controllerA = new keyboard_controller(defaultPlayer1Bindings); 
+		controllerA = new keyboard_controller(allBindings['A']["KEYBOARD"]);
 	}
 	if(!controllerB) {
-		controllerB = new keyboard_controller(defaultPlayer2Bindings);
+		controllerB = new keyboard_controller(allBindings['B']["KEYBOARD"]);
 	}
 	playerA.bind_controller(controllerA);
 	playerB.bind_controller(controllerB);
@@ -291,7 +293,7 @@ var configClick = function() {
 			if(cnt.type === "KEYBOARD") {
 				for(var i = 0; i < 4; i++) {
 					if(gamePadExists(i)) {
-						cnt = new gamepad_controller(i, null);
+						cnt = new gamepad_controller(i, allBindings[p===0 ? 'A' : 'B']["GAMEPAD"]);
 					}
 				}
 			}
@@ -299,13 +301,13 @@ var configClick = function() {
 				for(var i = cnt.controllerIndex+1; i <= 4; i++) {
 					if(i === 4) {
 						if(p === 0)
-							cnt = new keyboard_controller(defaultPlayer1Bindings);
+							cnt = new keyboard_controller(i, allBindings[p===0 ? 'A' : 'B']["KEYBOARD"]);
 						else
-							cnt = new keyboard_controller(defaultPlayer2Bindings);
+							cnt = new keyboard_controller(i, allBindings[p===0 ? 'A' : 'B']["KEYBOARD"]);
 						break;
 					}
 					if(gamePadExists(i)) {
-						cnt = new gamepad_controller(i, null);
+						cnt = new gamepad_controller(i, allBindings[p===0 ? 'A' : 'B']["GAMEPAD"]);
 						break;
 					}
 					
@@ -355,7 +357,10 @@ var configClick = function() {
 			cnt.setBindingCode("lift");
 		}
 	}
-	
+
+	allBindings['A'][controllerA.type] = JSON.parse(JSON.stringify(controllerA.bindings));
+	allBindings['B'][controllerA.type] = JSON.parse(JSON.stringify(controllerB.bindings));
+	localStorage["bindings"] = JSON.stringify(allBindings);
 };
 var switchState = function(s) {
 	transitionTimer = TRANSITION_TIME;
@@ -441,6 +446,22 @@ var initialize_game = function() {
 	if(!openRooms) {
 		openRooms = new Array();
 		openRooms["0"] = {"finished": false};
+	}
+
+	if(localStorage["bindings"]) {
+		allBindings = JSON.parse(localStorage["bindings"]);			
+	}
+	else {
+		allBindings = {
+			'A' : {
+				'KEYBOARD': defaultPlayer1Bindings,
+				'GAMEPAD': default_gamepad_bindings 
+			},
+			'B' : {
+				'KEYBOARD': defaultPlayer2Bindings,
+				'GAMEPAD': default_gamepad_bindings 
+			}
+		};
 	}
 
 	entityManager = new EntityManager();
