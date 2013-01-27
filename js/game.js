@@ -121,7 +121,7 @@ var game_logic = function() {
 			controller1.addEventListener(controller1.JUMP_PRESS_EVENT, function() {playerA.jumpPress()});
 			controller1.addEventListener(controller1.JUMP_RELEASE_EVENT, function() {playerA.jumpRelease()});
 			controller1.addEventListener(controller1.LIFT_PRESS_EVENT, function() {playerA.throwPress()});
-			controller1.addEventListener(controller1.LIFT_RELEASE_EVENT, function() {playerA.throwRelease()});
+			controller1.addEventListener(controller1.LIFT_RELEASE_EVENT, function() {playerA.throwRelease(controller2.getDir())});
 		}
 	}
 	if (keyPressed['M'.charCodeAt(0)])
@@ -133,7 +133,7 @@ var game_logic = function() {
 			controller2.addEventListener(controller2.JUMP_PRESS_EVENT, function() {playerB.jumpPress()});
 			controller2.addEventListener(controller2.JUMP_RELEASE_EVENT, function() {playerB.jumpRelease()});
 			controller2.addEventListener(controller2.LIFT_PRESS_EVENT, function() {playerB.throwPress()});
-			controller2.addEventListener(controller2.LIFT_RELEASE_EVENT, function() {playerB.throwRelease()});
+			controller2.addEventListener(controller2.LIFT_RELEASE_EVENT, function() {playerB.throwRelease(controller2.getDir())});
 		}
 	}
 	entityManager.update();

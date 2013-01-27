@@ -54,7 +54,6 @@ function Player(room, x, y) {
 	this.jumpAnimC = assetManager.getAnim("gfx/player/jump_carry.png");
 	this.fallAnimC = assetManager.getAnim("gfx/player/fall_carry.png");
 } 
-
 Player.prototype.moveLeft = function() {
 	this.dx -= PLAYER_ACCEL;
 	if(this.dx < -PLAYER_WALK_SPEED)
@@ -87,15 +86,18 @@ Player.prototype.jumpRelease = function() {
 			this.dy = this.dy/2;
 	}
 };
-Player.prototype.shoot = function(dir) {
+
+Player.prototype.shoot = function() {
+
 };
+
 Player.prototype.throwPress = function() {
 	if(this.held && !this.carry) {
 		this.carry = this.held;
 		this.held = null;
 	}
 };
-Player.prototype.throwRelease = function(dir) {
+Player.prototype.throwRelease = function() {
 	if(this.carry) {
 		this.carry.isHeld = false;
 		this.carry.dx = this.dx + (this.facingLeft ? -5 : 5);

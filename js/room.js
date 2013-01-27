@@ -38,7 +38,7 @@ Room.prototype.draw = function(context) {
 
 	for(var i = startY; i < endY; i++) {
 		for(var j = startX; j < endX; j++) {
-			if(this.fg[i][j] < 0)
+			if(this.bg[i][j] < 0)
 				continue;
 			this.bgTileset.draw(context, j*TILE_SIZE, i*TILE_SIZE, this.bg[i][j]);
 		}
