@@ -15,6 +15,8 @@ var PLAYER_RUN_SPEED = 8;
 var PLAYER_MAX_HEALTH = 100;
 var PLAYER_FRICTION = 0.7;
 
+var GRAVITY_CARRY = 0.73;	//gravity is higher while carrying an item (realism is for pansies)
+
 var PLAYER_HURT_CD = 25; //Invul frames after getting hurt
 
 var PlayerStatus = {
@@ -188,7 +190,11 @@ Player.prototype.update = function() {
 	if (this.controller.getIsShooting())
 		this.shoot();
 	//Gravity
-	this.dy+=GRAVITY;
+	if (this.held||this.carry)
+		this.dy+=GRAVITY_CARRY;
+	else
+		this.dy+=GRAVITY;
+	
 	
 	//Kinematics
 	this.y+=this.dy;
