@@ -32,7 +32,9 @@ function Player(room, x, y) {
 	this.held = null;
 	this.carry = null;
 	this.w = PLAYER_W;
-	this.h = PLAYER_H;  
+	this.h = PLAYER_H;
+
+	this.controller - null;
 
 	this.status = PlayerStatus.IDLE;
 	this.facingLeft = false;
@@ -88,7 +90,7 @@ Player.prototype.jumpRelease = function() {
 };
 
 Player.prototype.shoot = function() {
-
+	var dir = controller.getDir()
 };
 
 Player.prototype.throwPress = function() {
@@ -162,6 +164,13 @@ Player.prototype.landFunction = function() {
 };
 
 Player.prototype.update = function() {
+
+	this.controller.poll();
+	if(this.controller.getDir().x < 0)
+		this.moveLeft();
+	else if (this.controller.getDir().x > 0)
+		this.moveRight();
+
 	//Gravity
 	this.dy+=GRAVITY;
 	
@@ -257,5 +266,27 @@ Player.prototype.draw = function(context) {
 
 };
 Player.prototype.collide = function(other) {
+};
+
+Player.prototype.bind_controller = function(controller) {
+	if (this.controller)
+		console.error("adding controller on top of other controller");
+
+	this.controller = controller;
+	var that = this;
+	controller.addEventListener(controller.JUMP_PRESS_EVENT, function() {that.jumpPress()});
+	controller.addEventListener(controller.JUMP_RELEASE_EVENT, function() {that.jumpRelease()});
+	controller.addEventListener(controller.LIFT_PRESS_EVENT, function() {that.throwPress()});
+	controller.addEventListener(controller.LIFT_RELEASE_EVENT, function() {that.throwRelease()});
+};
+
+Player.prototype.unbind_controller = function() {
+	if (!this.controller)
+		console.error("removing nonexistant controller");
+	else
+	{
+		this.controller.detach();
+		this.controller = null;
+	}
 };
 

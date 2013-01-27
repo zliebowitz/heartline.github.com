@@ -45,13 +45,6 @@ var camera = {
 	}
 };
 
-var controller1 =
-	new keyboard_controller(defaultPlayer1);
-
-var controller2 =
-	new keyboard_controller(defaultPlayer2);
-
-
 var loadNextRoom = function() {
 	currRoom = assetManager.rooms[roomID];
 	if(currRoom === undefined) {
@@ -64,17 +57,9 @@ var loadNextRoom = function() {
 	entityManager.clear();
 	var players = currRoom.loadEntities(entityManager);
 	playerA = players.a;
+	playerA.bind_controller(new keyboard_controller(defaultPlayer1Bindings));
 	playerB = players.b;
-
-	controller1.addEventListener(controller1.JUMP_PRESS_EVENT, function() {playerA.jumpPress()});
-	controller1.addEventListener(controller1.JUMP_RELEASE_EVENT, function() {playerA.jumpRelease()});
-	controller1.addEventListener(controller1.LIFT_PRESS_EVENT, function() {playerA.throwPress()});
-	controller1.addEventListener(controller1.LIFT_RELEASE_EVENT, function() {playerA.throwRelease()});
-
-	controller2.addEventListener(controller2.JUMP_PRESS_EVENT, function() {playerB.jumpPress()});
-	controller2.addEventListener(controller2.JUMP_RELEASE_EVENT, function() {playerB.jumpRelease()});
-	controller2.addEventListener(controller2.LIFT_PRESS_EVENT, function() {playerB.throwPress()});
-	controller2.addEventListener(controller2.LIFT_RELEASE_EVENT, function() {playerB.throwRelease()});
+	playerB.bind_controller(new keyboard_controller(defaultPlayer2Bindings));
 
 	//Calculate the minimum zoom based on room dimensions.
 	var a = W / (currRoom.width * TILE_SIZE); 
@@ -97,18 +82,7 @@ var tryAgain = function() {
 	loadNextRoom();
 };
 var game_logic = function() {
-	controller1.poll();
-	controller2.poll();
-	if(controller1.dir.x < 0)
-		playerA.moveLeft();
-	else if (controller1.dir.x > 0)
-		playerA.moveRight();
 
-	if(controller2.dir.x < 0)
-		playerB.moveLeft();
-	else if (controller2.dir.x > 0)
-		playerB.moveRight();
-	
 	if(keyPressed['G'.charCodeAt(0)])
 		entityManager.showBoundingBoxes = true
 	else if (keyPressed['H'.charCodeAt(0)])
@@ -117,24 +91,16 @@ var game_logic = function() {
 	{
 		if (navigator.webkitGetGamepads()[0] != null)
 		{
-			controller1.detach()
-			controller1 = new gamepad_controller(0, null)
-			controller1.addEventListener(controller1.JUMP_PRESS_EVENT, function() {playerA.jumpPress()});
-			controller1.addEventListener(controller1.JUMP_RELEASE_EVENT, function() {playerA.jumpRelease()});
-			controller1.addEventListener(controller1.LIFT_PRESS_EVENT, function() {playerA.throwPress()});
-			controller1.addEventListener(controller1.LIFT_RELEASE_EVENT, function() {playerA.throwRelease(controller2.getDir())});
+			playerA.unbind_controller()
+			playerA.bind_controller(new gamepad_controller(0, null));
 		}
 	}
 	if (keyPressed['M'.charCodeAt(0)])
 	{
 		if (navigator.webkitGetGamepads()[1] != null)
 		{
-			controller2.detach()
-			controller2 = new gamepad_controller(1, null)
-			controller2.addEventListener(controller2.JUMP_PRESS_EVENT, function() {playerB.jumpPress()});
-			controller2.addEventListener(controller2.JUMP_RELEASE_EVENT, function() {playerB.jumpRelease()});
-			controller2.addEventListener(controller2.LIFT_PRESS_EVENT, function() {playerB.throwPress()});
-			controller2.addEventListener(controller2.LIFT_RELEASE_EVENT, function() {playerB.throwRelease(controller2.getDir())});
+			playerB.unbind_controller();
+			playerB.bind_controller(new gamepad_controller(1, null));
 		}
 	}
 	entityManager.update();
