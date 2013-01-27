@@ -298,14 +298,19 @@ keyboard_controller.prototype.poll = function()
 
 keyboard_controller.prototype.getExistingBindings = function()
 {
-	return bindings;
+	return this.bindings;
 }
 
-keyboard_controller.prototype.getBindingCode = function()
+keyboard_controller.prototype.setBindingCode = function(val)
 {
-	for (var code in keyPressed)
-		if (keyPressed[code])
-			return code
+	var that = this
+	var process = function(e)
+		{
+			that.bindings[val] = e.keyCode
+			document.removeEventListener("keydown", process, true)
+		}
+	document.addEventListener("keydown", process
+		, true)
 }
 
 gamepad_controller.prototype = new _controller();
@@ -335,14 +340,19 @@ gamepad_controller.prototype.poll = function()
 
 gamepad_controller.prototype.getExistingBindings = function()
 {
-	return bindings;
+	return this.bindings;
 }
 
-gamepad_controller.prototype.getBindingCode = function()
+gamepad_controller.prototype.setBindingCode = function(val)
 {
-	var controller = navigator.webkitGetGamepads()[this.controllerIndex].buttons
-	for (var i = 0; i < controller.buttons.length; i++)
-		if (controller.buttons[i])
-			return i
-	return -1
+	while(true)
+	{
+		var controller = navigator.webkitGetGamepads()[this.controllerIndex]
+		for (var i = 0; i < controller.buttons.length; i++)
+			if (controller.buttons[i])
+				{
+					this.bindings[val] = i
+					return
+				}
+	}
 }

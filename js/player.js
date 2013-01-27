@@ -377,3 +377,6 @@ Player.prototype.unbind_controller = function() {
 	}
 };
 
+Player.prototype.get_controller = function() {
+	return this.controller;
+}

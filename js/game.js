@@ -311,8 +311,6 @@ var configClick = function() {
 					
 				}
 			}
-
-			
 			plyr.unbind_controller();
 			plyr.bind_controller(cnt);
 			
@@ -320,6 +318,41 @@ var configClick = function() {
 				controllerA = cnt;
 			else
 				controllerB = cnt;	
+		}
+
+		if (mouseInside(x, 32 * 4, 240, 32))
+		{
+			var vars = ["left", "right", "up", "down", "jump", "shoot", "life"];
+			var textVars = ["LEFT", "RIGHT", "UP", "DOWN", "JUMP", "SHOOT", "THROW"];
+		}
+
+		if (mouseInside(x, 32 * 6, 160 * 2, 32))
+		{
+			cnt.setBindingCode("left");
+		}
+		if (mouseInside(x, 32 * 7, 160 * 2, 32))
+		{
+			cnt.setBindingCode("right");
+		}
+		if (mouseInside(x, 32 * 8, 160 * 2, 32))
+		{
+			cnt.setBindingCode("up");
+		}
+		if (mouseInside(x, 32 * 9, 160 * 2, 32))
+		{
+			cnt.setBindingCode("down");
+		}
+		if (mouseInside(x, 32 * 10, 160 * 2, 32))
+		{
+			cnt.setBindingCode("jump");
+		}
+		if (mouseInside(x, 32 * 11, 160 * 2, 32))
+		{
+			cnt.setBindingCode("shoot");
+		}
+		if (mouseInside(x, 32 * 12, 160 * 2, 32))
+		{
+			cnt.setBindingCode("lift");
 		}
 	}
 	
