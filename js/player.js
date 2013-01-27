@@ -21,8 +21,7 @@ var PlayerStatus = {
 	IDLE: 0,
 	JUMP: 1,
 	FALL: 2,
-	RUN: 3,
-	LANDING: 4
+	RUN: 3
 };
 function Player(room, x, y) {
 	this.type = PLAYER;
@@ -41,7 +40,6 @@ function Player(room, x, y) {
 	this.status = PlayerStatus.IDLE;
 	this.facingLeft = false;
 	this.currJumpSpeed = 0;
-	this.landTimer = 0;
 	this.landedEntity = false;
 	this.blockingEntity = false;
 	this.movingLeft = false;
@@ -152,14 +150,7 @@ Player.prototype.landFunction = function() {
 	this.dx*=PLAYER_FRICTION;
 	this.jumping = false;
 
-	if(this.status === PlayerStatus.JUMP) {
-		this.status = PlayerStatus.LANDING;
-		this.landTimer = 5;
-	}
-	else if(this.landTimer > 0) {
-		this.landTimer--;
-	}
-	else if(this.dx === 0 && this.status != PlayerStatus.IDLE)
+	if(this.dx === 0 && this.status != PlayerStatus.IDLE)
 		this.status = PlayerStatus.IDLE;
 	else if(this.dx !== 0 && this.status != PlayerStatus.RUN){
 		this.status = PlayerStatus.RUN;
