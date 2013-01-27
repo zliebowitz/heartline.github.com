@@ -749,7 +749,7 @@ Room.prototype.saveEntities = function(entityManager) {
 		a reference to the player object when it is loaded into 
 		the room.
 */
-Room.prototype.loadEntities = function(entityManager) {
+Room.prototype.loadEntities = function(entityManager, openRooms) {
 	var ents = {
 		
 	};
@@ -788,6 +788,7 @@ Room.prototype.loadEntities = function(entityManager) {
 			case DOOR:
 				var door = new Door(this, this.entities[i].x, this.entities[i].y);
 				door.doorRoomID = this.entities[i].id;
+				door.time = openRooms[door.doorRoomID] ? openRooms[door.doorRoomID].time : null;
 				door.doorIsNew = this.entities[i].isNew;
 				entityManager.add(door);
 				break;

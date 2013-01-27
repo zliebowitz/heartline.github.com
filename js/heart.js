@@ -78,9 +78,11 @@ Heart.prototype.collide = function(other) {
 		this.collideEntity(other);
 		if(this.isHeldBy && this.isHeldBy.touchingGrate) {
 			this.isHeldBy.held = null;
+			this.isHeldBy.carry = null;
 			this.isHeldBy = null;
 			this.dx = 0; this.dy = 0;
 		}
+	
 	}
 	else if(other.type === BREAKABLE) {
 		this.collideEntity(other);
