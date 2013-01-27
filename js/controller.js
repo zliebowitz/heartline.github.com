@@ -237,7 +237,7 @@ _controller.prototype.setLift = function(lift)
 	else
 	{
 		if (this.event_listeners[this.LIFT_RELEASE_EVENT])
-			for (var i = 0; i < this.event_listeners[this.LIFT_RELEASE_EVENT]; i++)
+			for (var i = 0; i < this.event_listeners[this.LIFT_RELEASE_EVENT].length; i++)
 				this.event_listeners[this.LIFT_RELEASE_EVENT][i](this)
 	}
 }
