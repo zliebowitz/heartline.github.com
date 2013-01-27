@@ -44,6 +44,7 @@ Door.prototype.update = function() {
 				this.y + Math.random() * this.h));
 		}
 	}
+	this.touchingPlayer = false;
 };
 Door.prototype.draw = function(context) {
 	this.anim.draw(context, this.x, this.y, false);
@@ -53,12 +54,14 @@ Door.prototype.draw = function(context) {
 		context.fillStyle = "black";
 		context.fillText("" + (this.time / 50), this.x, this.y);
 	}
+	if(this.name && this.touchingPlayer) {
+	}
 };
 Door.prototype.collide = function(other) {
 	/// DEBUG CODE
-	//if(other.type === PLAYER) {
-	//	this.open();
-	//}
+	if(other.type === PLAYER) {
+		this.touchingPlayer = true;
+	}
 	//else if(other.type === GOO) {
 	//	this.close();
 	//}

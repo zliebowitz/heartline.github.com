@@ -98,18 +98,16 @@ Player.prototype.jumpRelease = function() {
 };
 
 Player.prototype.shoot = function() {
-	if(this.health > PLAYER_GOO_COST) {
-		var dir = this.controller.getDir();	
-		var yc = dir.y;
-		var xc = dir.x;
-		if(xc === 0 && yc === 0)
-		{
-			xc = this.facingLeft ? -1 : 1;
-		}
-		this.health -= PLAYER_GOO_COST;
-		entityManager.add(new Goo(this.room, this.x+5, this.y+5, 
-					 xc * 10, yc * -10, this));
+	var dir = this.controller.getDir();	
+	var yc = dir.y;
+	var xc = dir.x;
+	if(xc === 0 && yc === 0)
+	{
+		xc = this.facingLeft ? -1 : 1;
 	}
+	this.hurt(PLAYER_GOO_COST);
+	entityManager.add(new Goo(this.room, this.x+5, this.y+5, 
+				 xc * 10, yc * -10, this));
 };
 Player.prototype.dropAll = function() {
 	if(this.held) {
@@ -156,21 +154,24 @@ Player.prototype.hurt = function(amount) {
 	*/
 	this.health-=amount;	
 	if(this.health <= 0) {
-		this.dead = true;
-		for(var i = 0; i < 20; i++) {
-			var rand = Math.random() * 2 * Math.PI;
-			var xDir = Math.cos(rand) * 3;
-			var yDir = Math.sin(rand) * 3;
-			this.deathTimer = PLAYER_DEATH_TIME;
-			entityManager.add(new Goo(this.room, this.x+5, this.y+5, 
-				 xDir, yDir, this));
-			this.dropAll();
-		}
+		this.kill();	
 		return true;
 	}
 	return true;
 };
-
+Player.prototype.kill = function() {
+	this.health = 0;
+	this.dead = true;
+	for(var i = 0; i < 20; i++) {
+		var rand = Math.random() * 2 * Math.PI;
+		var xDir = Math.cos(rand) * 3;
+		var yDir = Math.sin(rand) * 3;
+		this.deathTimer = PLAYER_DEATH_TIME;
+		entityManager.add(new Goo(this.room, this.x+5, this.y+5, 
+			 xDir, yDir, this));
+		this.dropAll();
+	}
+};
 Player.prototype.landFunction = function() {
 	this.dx*=PLAYER_FRICTION;
 	this.jumping = false;
@@ -227,7 +228,17 @@ Player.prototype.update = function() {
 		this.dy+=GRAVITY_CARRY;
 	else
 		this.dy+=GRAVITY;
-	
+
+	//Check if within level bounds
+	if(this.x + this.width < 0) {
+		this.kill();
+	}
+	else if(this.x > this.room.width * TILE_SIZE) {
+		this.kill();
+	}
+	else if(this.y > this.room.height * TILE_SIZE) {
+		this.kill();
+	}
 	
 	//Kinematics
 	this.y+=this.dy;

@@ -33,6 +33,8 @@ var currRoom;
 var entityManager;
 var playerA;
 var playerB;
+var controllerA;
+var controllerB;
 var goal;
 var openRooms;
 
@@ -72,9 +74,14 @@ var loadNextRoom = function() {
 	playerA = ents.a;
 	playerB = ents.b;
 	goal = ents.goal;
-	playerA.bind_controller(new keyboard_controller(defaultPlayer1Bindings));
-	playerB.bind_controller(new keyboard_controller(defaultPlayer2Bindings));
-
+	if(!controllerA) {
+		controllerA = new keyboard_controller(defaultPlayer1Bindings); 
+	}
+	if(!controllerB) {
+		controllerB = new keyboard_controller(defaultPlayer2Bindings);
+	}
+	playerA.bind_controller(controllerA);
+	playerB.bind_controller(controllerB);
 
 	//Calculate the minimum zoom based on room dimensions.
 	var a = W / (currRoom.width * TILE_SIZE); 
@@ -98,22 +105,6 @@ var game_logic = function() {
 	else if (keyPressed['H'.charCodeAt(0)])
 		entityManager.showBoundingBoxes = false
 	
-	if (keyPressed['C'.charCodeAt(0)])
-	{
-		if (gamePadExists(0))
-		{
-			playerA.unbind_controller()
-			playerA.bind_controller(new gamepad_controller(0, null));
-		}
-	}
-	if (keyPressed['M'.charCodeAt(0)])
-	{
-		if (gamePadExists(1))
-		{
-			playerB.unbind_controller();
-			playerB.bind_controller(new gamepad_controller(1, null));
-		}
-	}
 	entityManager.update();
 	//Handle player deaths / respawn
 	if(playerA.dead && playerB.dead) {
@@ -138,7 +129,7 @@ var game_logic = function() {
 	//Handle win condition
 	if(goal) {
 		if(goal.won) {
-			if(!openRooms[roomID].time || openRooms[roomID] > goal.timer) { 
+			if(!openRooms[roomID].time || goal.timer < openRooms[roomID].time) { 
 				openRooms[roomID].time = goal.timer; 
 			}
 			if(!openRooms[roomID+1]) {
@@ -198,7 +189,16 @@ var game_gui_draw = function() {
 	context.font = "10pt Disposable";
 	context.fillStyle = "black";	
 	context.fillText(""+goal.timer / 50, 20, 10);
-
+	
+	if(openRooms[roomID] && openRooms[roomID].time) {
+		if(goal.timer < openRooms[roomID].time) {
+			context.fillStyle = "green";
+		}
+		else {
+			context.fillStyle = "red";
+		}
+		context.fillText("" + openRooms[roomID].time / 50, 20, 20);
+	}
 };
 
 var mouseX;
@@ -291,7 +291,6 @@ var configClick = function() {
 				for(var i = 0; i < 4; i++) {
 					if(gamePadExists(i)) {
 						cnt = new gamepad_controller(i, null);
-						break;
 					}
 				}
 			}
@@ -311,9 +310,15 @@ var configClick = function() {
 					
 				}
 			}
+
+			
 			plyr.unbind_controller();
 			plyr.bind_controller(cnt);
 			
+			if(p === 0)
+				controllerA = cnt;
+			else
+				controllerB = cnt;	
 		}
 	}
 	
@@ -357,7 +362,15 @@ var step = function() {
 			doTransition();
 		break;
 	}
-	camera.moveTo((playerA.x + playerB.x) / 2, (playerA.y + playerB.y) / 2 );
+	if(playerA.dead) {
+		camera.moveTo(playerB.x, playerB.y);
+	}
+	else if(playerB.dead) {
+		camera.moveTo(playerA.x, playerA.y);
+	}
+	else {
+		camera.moveTo((playerA.x + playerB.x) / 2, (playerA.y + playerB.y) / 2 );
+	}
 };
 
 var doKeyDown = function(e) {
@@ -393,7 +406,7 @@ var initialize_game = function() {
 		openRooms = JSON.parse(localStorage["openRooms"]);
 	if(!openRooms) {
 		openRooms = new Array();
-		openRooms[0] = {"finished": false};
+		openRooms["0"] = {"finished": false};
 	}
 
 	entityManager = new EntityManager();
