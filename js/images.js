@@ -211,6 +211,20 @@ assetManager.imageQueue = [
 	},
 	{
 		"type": "anim",
+		"source": "gfx/misc/smoke_particle.png",
+		"frames": 6,
+		"speed": 6,
+		"frameWidth": 32,
+		"frameHeight": 32,
+		"numCols": 3,
+		"loop": false,
+		"offsetX": 16,
+		"offsetY": 16,
+		"flipOffsetX": 16,
+		"hasFacing": false 
+	},
+	{
+		"type": "anim",
 		"source": "gfx/misc/breakable_particle.png",
 		"frames": 1,
 		"speed": 4,
