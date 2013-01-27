@@ -54,7 +54,6 @@ function Player(room, x, y) {
 	this.jumpAnimC = assetManager.getAnim("gfx/player/jump_carry.png");
 	this.fallAnimC = assetManager.getAnim("gfx/player/fall_carry.png");
 } 
-
 Player.prototype.moveLeft = function() {
 	this.dx -= PLAYER_ACCEL;
 	if(this.dx < -PLAYER_WALK_SPEED)
@@ -87,18 +86,21 @@ Player.prototype.jumpRelease = function() {
 			this.dy = this.dy/2;
 	}
 };
+
+Player.prototype.shoot = function() {
+
+};
+
 Player.prototype.throwPress = function() {
-	console.log("thorwpress");
 	if(this.held && !this.carry) {
 		this.carry = this.held;
 		this.held = null;
 	}
 };
 Player.prototype.throwRelease = function() {
-	console.log("throwrelase");
 	if(this.carry) {
 		this.carry.isHeld = false;
-		this.carry.dx = this.dx + (facingLeft ? -5 : 5);
+		this.carry.dx = this.dx + (this.facingLeft ? -5 : 5);
 		this.carry.dy = this.dy - 5;
 		this.carry = null;
 	}
@@ -169,11 +171,11 @@ Player.prototype.update = function() {
 
 	//Update held object's position.
 	if(this.held) {
-		this.held.x = this.x+2;
-		this.held.y = this.y+2;
+		this.held.x = this.x+1;
+		this.held.y = this.y+1;
 	}
 	else if(this.carry) {
-		this.carry.x = this.x+2;
+		this.carry.x = this.x+1;
 		this.carry.y = this.y - 20;
 	}
 

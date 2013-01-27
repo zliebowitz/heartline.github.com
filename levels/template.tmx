@@ -1,32 +1,35 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <map version="1.0" orientation="orthogonal" width="25" height="16" tilewidth="32" tileheight="32">
  <tileset firstgid="1" name="foreground" tilewidth="32" tileheight="32">
-  <image source="../assets/tilesets/foreground.png" width="256" height="192"/>
+  <image source="../assets/tilesets/foreground.png" width="512" height="512"/>
  </tileset>
- <tileset firstgid="49" name="entities" tilewidth="32" tileheight="32">
-  <image source="../assets/tilesets/entities.png" width="64" height="32"/>
+ <tileset firstgid="257" name="entities" tilewidth="32" tileheight="32">
+  <image source="../assets/tilesets/entities.png" width="512" height="512"/>
  </tileset>
- <tileset firstgid="51" name="collision" tilewidth="32" tileheight="32">
-  <image source="../assets/tilesets/collision.png" width="64" height="32"/>
+ <tileset firstgid="513" name="collision" tilewidth="32" tileheight="32">
+  <image source="../assets/tilesets/collision.png" width="512" height="512"/>
  </tileset>
- <layer name="foreground" width="25" height="16">
-  <data encoding="base64" compression="zlib">
-   eJxjYCAO6CPRxGIQYCLSfGQ7SFGvD7WDWHtItQOmh1g7kP0+Eu1gwGIHLjupaQcuQC87yNULU0coH5HrB2LtoCSc0O1AB+h2EAobXPLo/sBlDyUAV1gRYwepcQ4zD9lcQpiQ+9DtoDUGAFP6DqY=
-  </data>
- </layer>
+ <tileset firstgid="769" name="background" tilewidth="32" tileheight="32">
+  <image source="../assets/tilesets/background.png" width="512" height="512"/>
+ </tileset>
  <layer name="entities" width="25" height="16">
   <data encoding="base64" compression="zlib">
-   eJxjYBgFo2AUjIJRMBiAIYX6jajiCuIBAD3QAGQ=
+   eJxjYBgFo2AUjIKhA1gZIXg42sGIxGdhhGBsgJkRgtEBE43djA4APMAAPA==
   </data>
  </layer>
  <layer name="background" width="25" height="16">
   <data encoding="base64" compression="zlib">
-   eJxjYBgFo2AUjIJRMApIBwAGQAAB
+   eJxjYBgFo2DoA05mBgYuZtraIQk0X4pGdugAzdUAYk0g1qKxP0YaYASGJxMQMwMxC43CVhBorhAQCwOxCI3sUASaqwTEykCsMkjSCACv3QII
+  </data>
+ </layer>
+ <layer name="foreground" width="25" height="16">
+  <data encoding="base64" compression="zlib">
+   eJxjYCAO6CPRxGIQYCLSfGQ7SFGvD7WDWHtItQOmh1g7kP0+Eu1gwGIHLjupaQcuQC87yNULU0coH5HjBxYS7KAknNDtQAfodhATNkxQ9yNjdH/gsocSgCusiLED3V8cUIxPHanlKrr7CNlBawwAW84Oeg==
   </data>
  </layer>
  <layer name="collision" width="25" height="16">
   <data encoding="base64" compression="zlib">
-   eJxjYKAtMKGx+TA7aG3PqB3k20ELOwd7WBGrd7D7gxZ2EFKLS36w+YNcvfS0g9YYAKL5DTU=
+   eJxjYKAtYGKisQVQO2htz6gd5NtBCzsHe1gRq5eW/oCZO9jCihi1MDXYMC0BNeMcl1n0tIPWGAD+XQEl
   </data>
  </layer>
 </map>

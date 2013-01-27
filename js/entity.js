@@ -6,9 +6,15 @@ var GRAVITY = 0.6;
 
 var SPAWN = 0;
 var EXIT = 1;
+var FIRE = 2;
+var GRATE = 3;
+var BREAKABLE = 4;
+
 
 var PLAYER = 99;
 var HEART = 100;
+var BREAK_PARTICLE = 101;
+var GOO = 102;
 
 function Entity(room) {
     this.x = 0;

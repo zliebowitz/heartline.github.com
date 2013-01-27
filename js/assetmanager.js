@@ -231,6 +231,7 @@ AssetManager.prototype.levelAll = function(successCallback, errorCallback, compl
 		var d = this.levelQueue[i];
 		var json = (function() {
 			var json = null;
+			console.log("attempting to load : " + d.id);
 			$.ajax({
 				'global': false,
 				'url': d.source,

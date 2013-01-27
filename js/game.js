@@ -45,6 +45,13 @@ var camera = {
 	}
 };
 
+var controller1 =
+	new keyboard_controller(defaultPlayer1);
+
+var controller2 =
+	new keyboard_controller(defaultPlayer2);
+
+
 var loadNextRoom = function() {
 	currRoom = assetManager.rooms[roomID];
 	if(currRoom === undefined) {
@@ -89,13 +96,6 @@ var tryAgain = function() {
 	entityManager = new EntityManager();
 	loadNextRoom();
 };
-
-var controller1 =
-	new keyboard_controller(defaultPlayer1);
-
-var controller2 =
-	new keyboard_controller(defaultPlayer2);
-
 var game_logic = function() {
 	controller1.poll();
 	controller2.poll();
@@ -122,7 +122,7 @@ var game_logic = function() {
 			controller1.addEventListener(controller1.JUMP_PRESS_EVENT, function() {playerA.jumpPress()});
 			controller1.addEventListener(controller1.JUMP_RELEASE_EVENT, function() {playerA.jumpRelease()});
 			controller1.addEventListener(controller1.LIFT_PRESS_EVENT, function() {playerA.throwPress()});
-			controller1.addEventListener(controller1.LIFT_RELEASE_EVENT, function() {playerA.throwRelease()});
+			controller1.addEventListener(controller1.LIFT_RELEASE_EVENT, function() {playerA.throwRelease(controller2.getDir())});
 		}
 	}
 	if (keyPressed['M'.charCodeAt(0)])
@@ -134,7 +134,7 @@ var game_logic = function() {
 			controller2.addEventListener(controller2.JUMP_PRESS_EVENT, function() {playerB.jumpPress()});
 			controller2.addEventListener(controller2.JUMP_RELEASE_EVENT, function() {playerB.jumpRelease()});
 			controller2.addEventListener(controller2.LIFT_PRESS_EVENT, function() {playerB.throwPress()});
-			controller2.addEventListener(controller2.LIFT_RELEASE_EVENT, function() {playerB.throwRelease()});
+			controller2.addEventListener(controller2.LIFT_RELEASE_EVENT, function() {playerB.throwRelease(controller2.getDir())});
 		}
 	}
 	entityManager.update();
@@ -142,7 +142,7 @@ var game_logic = function() {
 var game_draw = function() {
 	if(currRoom === undefined)
 		return;
-	context.fillStyle = "gray";
+	context.fillStyle = "#442222";
 	context.fillRect(0, 0, W, H);
 	
 	context.save();
