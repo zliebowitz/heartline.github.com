@@ -68,7 +68,7 @@ var loadNextRoom = function() {
 	}
 	
 	entityManager.clear();
-	var ents = currRoom.loadEntities(entityManager);
+	var ents = currRoom.loadEntities(entityManager, openRooms);
 	playerA = ents.a;
 	playerB = ents.b;
 	goal = ents.goal;
@@ -138,10 +138,14 @@ var game_logic = function() {
 	//Handle win condition
 	if(goal) {
 		if(goal.won) {
-			if(openRooms[roomID].time && openRooms[roomID] > goal.timer) { 
+			if(!openRooms[roomID].time || openRooms[roomID] > goal.timer) { 
 				openRooms[roomID].time = goal.timer; 
 			}
+			if(!openRooms[roomID+1]) {
+				openRooms[openRooms.length] = {"finished": false};
+			}
 			openRooms[roomID].finished = true;
+			localStorage["openRooms"] = JSON.stringify(openRooms);
 			switchState(States.STATE_LEVELSELECT);
 		}
 	}
@@ -385,8 +389,12 @@ var initialize_game = function() {
 	prevState = state;
 	tileSet = assetManager.getTileset("gfx/tileset.png");
 	roomID = 0;
-	openRooms = new Array();
-	openRooms[0] = {"finished": false};
+	if(localStorage["openRooms"])
+		openRooms = JSON.parse(localStorage["openRooms"]);
+	if(!openRooms) {
+		openRooms = new Array();
+		openRooms[0] = {"finished": false};
+	}
 
 	entityManager = new EntityManager();
 	loadNextRoom();

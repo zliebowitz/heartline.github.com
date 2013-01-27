@@ -48,6 +48,11 @@ Door.prototype.update = function() {
 Door.prototype.draw = function(context) {
 	this.anim.draw(context, this.x, this.y, false);
 	this.anim.tick();
+	if(this.time) {
+		context.font = "10pt Disposable";
+		context.fillStyle = "black";
+		context.fillText("" + (this.time / 50), this.x, this.y);
+	}
 };
 Door.prototype.collide = function(other) {
 	/// DEBUG CODE
