@@ -176,6 +176,11 @@ var game_gui_draw = function() {
 	context.fillStyle = "#4444aa";
 	context.fillRect(10, H-15, (W/2 - 20) * playerA.health / PLAYER_MAX_HEALTH, 10);
 	context.fillRect(W/2 + (W/2 - 10 - (W/2 -20) * playerB.health / PLAYER_MAX_HEALTH), H-15, (W/2 - 20) * playerB.health / PLAYER_MAX_HEALTH, 10);	
+	
+	context.font = "10pt Disposable";
+	context.fillStyle = "black";	
+	context.fillText(""+goal.timer / 50, 20, 10);
+
 };
 
 var mouseX;

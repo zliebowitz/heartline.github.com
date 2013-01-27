@@ -760,7 +760,8 @@ Room.prototype.loadEntities = function(entityManager) {
 				entityManager.add(new Fire(this, this.entities[i].x, this.entities[i].y));
 				break;
 			case GOAL:
-				entityManager.add(new Goal(this, this.entities[i].x, this.entities[i].y));
+				var goal = new Goal(this, this.entities[i].x, this.entities[i].y);
+				entityManager.add(goal);
 				ents.goal = goal;
 				break;
 			case GRATE:
