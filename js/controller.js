@@ -328,6 +328,7 @@ gamepad_controller.prototype.poll = function()
 	this.setDir(left,right,up,down)
 	this.setJump(jump)
 	this.setLift(lift)
+	this.setShoot(shoot)
 }
 
 gamepad_controller.prototype.getExistingBindings = function()

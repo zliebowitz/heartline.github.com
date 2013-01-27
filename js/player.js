@@ -14,7 +14,7 @@ var PLAYER_WALK_SPEED = 2.3;
 var PLAYER_RUN_SPEED = 8;
 var PLAYER_MAX_HEALTH = 1000;
 var PLAYER_GOO_COST = 5;
-var PLAYER_HEART_REGEN = 4
+var PLAYER_HEART_REGEN = 2
 var PLAYER_FRICTION = 0.7;
 
 var GRAVITY_CARRY = 0.73;	//gravity is higher while carrying an item (realism is for pansies)

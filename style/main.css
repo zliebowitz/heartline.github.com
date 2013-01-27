@@ -14,3 +14,13 @@ body
 	background-color: black;
 	color:white;
 }
+
+:-webkit-full-screen 
+{
+	background-color: black;
+}
+
+a
+{
+	color:white;
+}
