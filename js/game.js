@@ -129,6 +129,12 @@ var game_logic = function() {
 			playerA.hurt(PLAYER_GRIEVE_RATE);
 		}
 	}
+	//Handle win condition
+	if(goal) {
+		if(goal.won) {
+			///GAME WIN!
+		}
+	}
 };
 var game_draw = function() {
 	if(currRoom === undefined)
