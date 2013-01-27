@@ -7,7 +7,7 @@ EntityManager.prototype.update = function() {
 	for(var i = 0; i < this.entities.length; i++) {
 		this.entities[i].update();
 		for(var j = 0; j < this.entities.length; j++) {
-			if(i===j)
+			if(i===j || this.entities[j].die || this.entities[i].die)
 				continue;
 			if(this.entities[i].checkCollide(this.entities[j]))
 				this.entities[i].collide(this.entities[j]);
