@@ -90,7 +90,15 @@ Player.prototype.jumpRelease = function() {
 };
 
 Player.prototype.shoot = function() {
-	entityManager.add(new Goo(this.room, this.x, this.y, this.dx, this.dy-10, this));
+	var dir = this.controller.getDir();	
+	var yc = dir.y;
+	var xc = dir.x;
+	if(xc === 0 && yc === 0)
+	{
+		xc = this.facingLeft ? -1 : 1;
+	}
+	entityManager.add(new Goo(this.room, this.x, this.y, 
+				 this.dx+xc * 15, this.dy+yc * 10, this));
 };
 
 Player.prototype.throwPress = function() {

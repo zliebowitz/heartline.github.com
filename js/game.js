@@ -69,12 +69,6 @@ var loadNextRoom = function() {
 	else
 		camera.minZoom = b;
 		
-	if(currRoom.cutscenes !== undefined && currRoom.cutscenes.length > 0) {
-		cutScene = new Cutscene(currRoom.cutscenes);
-	}
-	else {
-		cutScene = new Cutscene();
-	}
 }
 var tryAgain = function() {
 	roomID--;
@@ -134,7 +128,7 @@ var step = function() {
 			game_draw();
 		break;
 	}
-	camera.moveTo(playerA.x, playerA.y);
+	camera.moveTo((playerA.x + playerB.x) / 2, (playerA.y + playerB.y) / 2 );
 };
 
 var initialize_game = function() {
