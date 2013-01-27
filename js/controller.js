@@ -5,16 +5,8 @@ var _controller = function() {
 	this.LIFT_PRESS_EVENT = "Lift Press Event"
 	this.LIFT_RELEASE_EVENT = "Lift Release Event"
 
-	this.dir =
-	{
-		'x': 0,
-		'y': 0,
-	}
-
 	this.isLifting = false
 	this.isJumping = false
-
-	this.event_listeners = {}
 
 	var player = null
 
@@ -32,18 +24,26 @@ var defaultPlayer1 =
 
 var defaultPlayer2 =
 {
-	jump: 'I'.charCodeAt(0),
-	lift: 'P'.charCodeAt(0),
-	left: 'K'.charCodeAt(0),
-	right: ';'.charCodeAt(0),
+	jump: 'U'.charCodeAt(0),
+	lift: 'O'.charCodeAt(0),
+	left: 'J'.charCodeAt(0),
+	right: 'L'.charCodeAt(0),
 	up: 'O'.charCodeAt(0),
-	down: 'L'.charCodeAt(0),
+	down: 'K'.charCodeAt(0),
 }
 
 
 var keyboard_controller = function(bindings)
 {
 	this.bindings = bindings
+
+	this.dir =
+	{
+		'x': 0,
+		'y': 0,
+	}
+
+	this.event_listeners = {}
 
 	for (var action in bindings)
 		keyPressed[bindings[action]] = false;
@@ -75,7 +75,7 @@ var gamepad_axes = {
   RIGHT_ANALOGUE_VERT: 3
 };
 
-var gamepad_controller = function (controllerIndex, bindings)
+var gamepad_controller = function(controllerIndex, bindings)
 {
 	if (bindings == null)
 	this.bindings =
@@ -90,6 +90,12 @@ var gamepad_controller = function (controllerIndex, bindings)
 	else
 		this.bindings = bindings
 	this.controllerIndex = controllerIndex
+	this.event_listeners = {}
+	this.dir =
+	{
+		'x': 0,
+		'y': 0,
+	}
 }
 
 //Event Listeners recieve the controller object that triggered the event
@@ -158,9 +164,16 @@ window.addEventListener("keyup", function(e)
 	keyPressed[e.keyCode] = false
 }, true)
 
+_controller.prototype.getExistingBindings = function()
+{
+	console.error("Get existing bindings not implemented")
+}
 
-
-
+//return -1 for no value found or compatible value for bindings
+_controller.prototype.getBindingCode = function()
+{
+	console.error("Get binding code not implemented")
+}
 
 /** 
 (		The Following methosd should not be called by external code
@@ -249,6 +262,18 @@ keyboard_controller.prototype.poll = function()
 	this.setLift(lift)
 }
 
+keyboard_controller.prototype.getExistingBindings = function()
+{
+	return bindings;
+}
+
+keyboard_controller.prototype.getBindingCode = function()
+{
+	for (var code in keyPressed)
+		if (keyPressed[code])
+			return code
+}
+
 gamepad_controller.prototype = new _controller();
 
 gamepad_controller.prototype.poll = function()
@@ -270,4 +295,18 @@ gamepad_controller.prototype.poll = function()
 	this.setDir(left,right,up,down)
 	this.setJump(jump)
 	this.setLift(lift)
+}
+
+gamepad_controller.prototype.getExistingBindings = function()
+{
+	return bindings;
+}
+
+gamepad_controller.prototype.getBindingCode = function()
+{
+	var controller = navigator.webkitGetGamepads()[this.controllerIndex].buttons
+	for (var i = 0; i < controller.buttons.length; i++)
+		if (controller.buttons[i])
+			return i
+	return -1
 }

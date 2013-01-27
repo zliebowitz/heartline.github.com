@@ -54,13 +54,17 @@ var loadNextRoom = function() {
 	}
 	roomID++;
 	
-	controller1.addEventListener(controller1.JUMP_PRESS_EVENT, function() {playerA.jumpPress()});
-	controller1.addEventListener(controller1.JUMP_RELEASE_EVENT, function() {playerA.jumpRelease()});
-
 	entityManager.clear();
 	var players = currRoom.loadEntities(entityManager);
 	playerA = players.a;
 	playerB = players.b;
+
+	controller1.addEventListener(controller1.JUMP_PRESS_EVENT, function() {playerA.jumpPress()});
+	controller1.addEventListener(controller1.JUMP_RELEASE_EVENT, function() {playerA.jumpRelease()});
+
+	controller2.addEventListener(controller2.JUMP_PRESS_EVENT, function() {playerB.jumpPress()});
+	controller2.addEventListener(controller2.JUMP_RELEASE_EVENT, function() {playerB.jumpRelease()});
+	
 	//Calculate the minimum zoom based on room dimensions.
 	var a = W / (currRoom.width * TILE_SIZE); 
 	var b = H / (currRoom.height * TILE_SIZE);
@@ -84,7 +88,9 @@ var tryAgain = function() {
 
 var controller1 =
 	new keyboard_controller(defaultPlayer1);
-	
+
+var controller2 =
+	new keyboard_controller(defaultPlayer2);
 
 var game_logic = function() {
 	controller1.poll();
@@ -92,6 +98,11 @@ var game_logic = function() {
 		playerA.moveLeft();
 	else if (controller1.dir.x > 0)
 		playerA.moveRight();
+
+	if(controller2.dir.x < 0)
+		playerB.moveLeft();
+	else if (controller2.dir.x > 0)
+		playerB.moveRight();
 	
 	if(keyPressed['G'.charCodeAt(0)])
 		entityManager.showBoundingBoxes = true
@@ -107,6 +118,16 @@ var game_logic = function() {
 			controller1.addEventListener(controller1.JUMP_RELEASE_EVENT, function() {playerA.jumpRelease()});
 			controller1.addEventListener(controller1.LIFT_PRESS_EVENT, function() {playerA.throwPress()});
 			controller1.addEventListener(controller1.LIFT_RELEASE_EVENT, function() {playerA.throwRelease()});
+		}
+	}
+	if (keyPressed['M'.charCodeAt(0)])
+	{
+		if (navigator.webkitGetGamepads()[1] != null)
+		{
+			controller2.detach()
+			controller2 = new gamepad_controller(1, null)
+			controller2.addEventListener(controller2.JUMP_PRESS_EVENT, function() {playerB.jumpPress()});
+			controller2.addEventListener(controller2.JUMP_RELEASE_EVENT, function() {playerB.jumpRelease()});
 		}
 	}
 	entityManager.update();
