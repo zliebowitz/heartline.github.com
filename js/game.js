@@ -139,9 +139,9 @@ var initialize_game = function() {
 	entityManager = new EntityManager();
 	loadNextRoom();
 	continueMenu = 0;
-	grd = context.createLinearGradient(0, 0, 0, H/2);
-	grd.addColorStop(0, '8ED6FF');
-	grd.addColorStop(1, '#932C00');
+	grd = context.createLinearGradient(0, H/4, 0, H/2);
+	grd.addColorStop(0, '8ED6DD');
+	grd.addColorStop(1, '#631C00');
 	return setInterval(step, 20); 
 };
 
