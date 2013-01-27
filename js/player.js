@@ -8,10 +8,16 @@ var PLAYER_H = 20;
 var PLAYER_W = 20;
 var PLAYER_ACCEL = 2;
 var PLAYER_MIN_SPEED = 0.2;
-var PLAYER_WALK_SPEED = 2;
+var PLAYER_WALK_SPEED = 2.3;
+var PLAYER_RUN_SPEED = 9;
+var PLAYER_WALK_SPEED = 2.3;
 var PLAYER_RUN_SPEED = 8;
-var PLAYER_MAX_HEALTH = 100;
+var PLAYER_MAX_HEALTH = 1000;
+var PLAYER_GOO_COST = 5;
+var PLAYER_HEART_REGEN = 2
 var PLAYER_FRICTION = 0.7;
+
+var GRAVITY_CARRY = 0.73;	//gravity is higher while carrying an item (realism is for pansies)
 
 var PLAYER_HURT_CD = 25; //Invul frames after getting hurt
 
@@ -19,8 +25,7 @@ var PlayerStatus = {
 	IDLE: 0,
 	JUMP: 1,
 	FALL: 2,
-	RUN: 3,
-	LANDING: 4
+	RUN: 3
 };
 function Player(room, x, y) {
 	this.type = PLAYER;
@@ -32,12 +37,13 @@ function Player(room, x, y) {
 	this.held = null;
 	this.carry = null;
 	this.w = PLAYER_W;
-	this.h = PLAYER_H;  
+	this.h = PLAYER_H;
+
+	this.controller - null;
 
 	this.status = PlayerStatus.IDLE;
 	this.facingLeft = false;
 	this.currJumpSpeed = 0;
-	this.landTimer = 0;
 	this.landedEntity = false;
 	this.blockingEntity = false;
 	this.movingLeft = false;
@@ -88,7 +94,16 @@ Player.prototype.jumpRelease = function() {
 };
 
 Player.prototype.shoot = function() {
-
+	var dir = this.controller.getDir();	
+	var yc = dir.y;
+	var xc = dir.x;
+	if(xc === 0 && yc === 0)
+	{
+		xc = this.facingLeft ? -1 : 1;
+	}
+	this.health -= PLAYER_GOO_COST;
+	entityManager.add(new Goo(this.room, this.x+5, this.y+5, 
+				 this.dx+xc * 15, this.dy+yc * -10, this));
 };
 
 Player.prototype.throwPress = function() {
@@ -99,9 +114,11 @@ Player.prototype.throwPress = function() {
 };
 Player.prototype.throwRelease = function() {
 	if(this.carry) {
-		this.carry.isHeld = false;
-		this.carry.dx = this.dx + (this.facingLeft ? -5 : 5);
-		this.carry.dy = this.dy - 5;
+		var dir = this.controller.getDir();
+
+		this.carry.isHeldBy = null;
+		this.carry.dx = this.dx + dir.x * 5;
+		this.carry.dy = this.dy - 5 + dir.y * -3;
 		this.carry = null;
 	}
 };
@@ -115,8 +132,6 @@ Player.prototype.hurt = function(amount) {
 		return false;
 	}
 	else {
-		//soundManager.play("sfx/player_hurt.wav");
-		//assetManager.getAsset("sfx/player_hurt.wav").play();
 		this.hurtTimer = PLAYER_HURT_CD;
 		this.health-=amount;	
 		if(this.health <= 0) {
@@ -139,21 +154,7 @@ Player.prototype.landFunction = function() {
 	this.dx*=PLAYER_FRICTION;
 	this.jumping = false;
 
-	if(this.status === PlayerStatus.JUMP) {
-		this.status = PlayerStatus.LANDING;
-		this.landTimer = 5;
-	}
-	if(this.blocking || this.blockingEntity)
-		this.status = PlayerStatus.BLOCK;
-	else if(this.attackTimer > 0) {
-		if(this.status === PlayerStatus.JUMP_ATTACK) {
-			this.attackTimer = 0;
-		}
-	}
-	else if(this.landTimer > 0) {
-		this.landTimer--;
-	}
-	else if(this.dx === 0 && this.status != PlayerStatus.IDLE)
+	if(this.dx === 0 && this.status != PlayerStatus.IDLE)
 		this.status = PlayerStatus.IDLE;
 	else if(this.dx !== 0 && this.status != PlayerStatus.RUN){
 		this.status = PlayerStatus.RUN;
@@ -162,8 +163,31 @@ Player.prototype.landFunction = function() {
 };
 
 Player.prototype.update = function() {
+
+	this.controller.poll();
+	if(this.controller.getDir().x < 0)
+		this.moveLeft();
+	else if (this.controller.getDir().x > 0)
+		this.moveRight();
+	
+	if (this.controller.getIsShooting())
+		this.shoot();
+
+	//Regen Heart
+	if(this.held && this.held.type === HEART) {
+		this.health += PLAYER_HEART_REGEN;
+		if(this.health > PLAYER_MAX_HEALTH) {
+			this.health = PLAYER_MAX_HEALTH;
+		}
+	}
+
+
 	//Gravity
-	this.dy+=GRAVITY;
+	if (this.held||this.carry)
+		this.dy+=GRAVITY_CARRY;
+	else
+		this.dy+=GRAVITY;
+	
 	
 	//Kinematics
 	this.y+=this.dy;
@@ -187,6 +211,9 @@ Player.prototype.update = function() {
 	//Friction
 	if(this.landed) {
 		this.landFunction();
+	}
+	else if(this.status !== PlayerStatus.JUMP) {
+		this.status = PlayerStatus.FALL;
 	}
 	if(Math.abs(this.dx) < PLAYER_MIN_SPEED)
 		this.dx = 0;
@@ -257,5 +284,27 @@ Player.prototype.draw = function(context) {
 
 };
 Player.prototype.collide = function(other) {
+};
+
+Player.prototype.bind_controller = function(controller) {
+	if (this.controller)
+		console.error("adding controller on top of other controller");
+
+	this.controller = controller;
+	var that = this;
+	controller.addEventListener(controller.JUMP_PRESS_EVENT, function() {that.jumpPress()});
+	controller.addEventListener(controller.JUMP_RELEASE_EVENT, function() {that.jumpRelease()});
+	controller.addEventListener(controller.LIFT_PRESS_EVENT, function() {that.throwPress()});
+	controller.addEventListener(controller.LIFT_RELEASE_EVENT, function() {that.throwRelease()});
+};
+
+Player.prototype.unbind_controller = function() {
+	if (!this.controller)
+		console.error("removing nonexistant controller");
+	else
+	{
+		this.controller.detach();
+		this.controller = null;
+	}
 };
 

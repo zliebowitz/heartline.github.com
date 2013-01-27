@@ -4,15 +4,15 @@
 
 	</head>
 	<body>
+		<div id="wrapper" width="800" height"600">
 	HEARTLINE<br/>
-	
-        <canvas id="gamecanvas" width="800" height="512"></canvas>
+        <canvas id="gamecanvas" width="800" height="512"></canvas><br/>
+        <a id="click" href="#">Full Screen</a>
+    </div>
 	<br/>
 	<br/>
 		<script src='js/jquery.min.js'></script>
 		<script src='js/soundmanager2-nodebug-jsmin.js'></script>
-		<script src='js/dialog.js'></script>
-		<script src='js/cutscene.js'></script>
 		<script src='js/room.js'></script>
 		<script src='js/entitymanager.js'></script>
 		<script src='js/entity.js'></script>
@@ -28,5 +28,39 @@
 			<script src='js/images.js'></script>
 			<script src='js/sounds.js'></script>
 			<script src='js/levels.js'></script>
+
+		<script>
+		var div = document.getElementById("wrapper");
+		var link = document.getElementById("click");
+		var startFS;
+		var stopFS;
+		startFS = function()
+		{
+			div.webkitRequestFullscreen(Element.ALLOW_KEYBOARD_INPUT);
+			link.onclick = stopFS;
+		}
+		stopFS = function()
+		{
+			document.webkitExitFullscreen();
+			link.onclick = startFS;
+		}
+
+		link.onclick = startFS;
+		//div.mozRequestFullScreen();
+		</script>
+		<script type="text/css">
+		canvas:-webkit-full-screen {
+  			width: 100%;
+		}
+		div:-webkit-full-screen {
+  			width: 100%;
+  			color: white;
+  			background-color: black;
+		}
+		:-webkit-full-screen  {
+			background-color: black;
+		}
+		</script>
+
 	</body>
 </html>

@@ -4,28 +4,33 @@ var _controller = function() {
 	this.JUMP_RELEASE_EVENT = "Jump Release Event"
 	this.LIFT_PRESS_EVENT = "Lift Press Event"
 	this.LIFT_RELEASE_EVENT = "Lift Release Event"
+	this.SHOOT_PRESS_EVENT = "Shoot Press Event"
+	this.SHOOT_RELEASE_EVENT = "Shoot Release Event"
 
 	this.isLifting = false
 	this.isJumping = false
+	this.isShooting =false
 
 	var player = null
 
 };
 
-var defaultPlayer1 =
+var defaultPlayer1Bindings =
 {
 	jump: 'Q'.charCodeAt(0),
 	lift: 'E'.charCodeAt(0),
+	shoot: 'R'.charCodeAt(0),
 	left: 'A'.charCodeAt(0),
 	right: 'D'.charCodeAt(0),
 	up: 'W'.charCodeAt(0),
 	down: 'S'.charCodeAt(0),
 }
 
-var defaultPlayer2 =
+var defaultPlayer2Bindings =
 {
 	jump: 'U'.charCodeAt(0),
 	lift: 'O'.charCodeAt(0),
+	shoot: 'P'.charCodeAt(0),
 	left: 'J'.charCodeAt(0),
 	right: 'L'.charCodeAt(0),
 	up: 'O'.charCodeAt(0),
@@ -86,6 +91,7 @@ var gamepad_controller = function(controllerIndex, bindings)
 		right: gamepad_buttons.PAD_RIGHT,
 		jump: gamepad_buttons.FACE_1,
 		lift: gamepad_buttons.FACE_3,
+		shoot: gamepad_buttons.RIGHT_SHOULDER,
 	}
 	else
 		this.bindings = bindings
@@ -134,6 +140,11 @@ _controller.prototype.getIsJumping = function()
 _controller.prototype.getIsLifting = function()
 {
 	return this.isLifting
+}
+
+_controller.prototype.getIsShooting = function()
+{
+	return this.isShooting
 }
 
 _controller.prototype.getPlayer = function()
@@ -237,8 +248,27 @@ _controller.prototype.setLift = function(lift)
 	else
 	{
 		if (this.event_listeners[this.LIFT_RELEASE_EVENT])
-			for (var i = 0; i < this.event_listeners[this.LIFT_RELEASE_EVENT]; i++)
+			for (var i = 0; i < this.event_listeners[this.LIFT_RELEASE_EVENT].length; i++)
 				this.event_listeners[this.LIFT_RELEASE_EVENT][i](this)
+	}
+}
+
+_controller.prototype.setShoot = function(shoot)
+{
+	if (this.isShooting == shoot)
+		return
+	this.isShooting = shoot
+	if (shoot)
+	{
+		if (this.event_listeners[this.SHOOT_PRESS_EVENT])
+			for (var i = 0; i < this.event_listeners[this.SHOOT_PRESS_EVENT].length; i++)
+				this.event_listeners[this.SHOOT_PRESS_EVENT][i](this)
+	}
+	else
+	{
+		if (this.event_listeners[this.SHOOT_RELEASE_EVENT])
+			for (var i = 0; i < this.event_listeners[this.SHOOT_RELEASE_EVENT].length; i++)
+				this.event_listeners[this.SHOOT_RELEASE_EVENT][i](this)
 	}
 }
 
@@ -256,10 +286,12 @@ keyboard_controller.prototype.poll = function()
 	var right = keyPressed[b.right]
 	var jump = keyPressed[b.jump]
 	var lift= keyPressed[b.lift]
+	var shoot = keyPressed[b.shoot]
 
 	this.setDir(left,right,up,down)
 	this.setJump(jump)
 	this.setLift(lift)
+	this.setShoot(shoot)
 }
 
 keyboard_controller.prototype.getExistingBindings = function()
@@ -291,10 +323,12 @@ gamepad_controller.prototype.poll = function()
 	var right = pressed(b.right)
 	var jump = pressed(b.jump)
 	var lift = pressed(b.lift)
+	var shoot = pressed(b.shoot)
 
 	this.setDir(left,right,up,down)
 	this.setJump(jump)
 	this.setLift(lift)
+	this.setShoot(shoot)
 }
 
 gamepad_controller.prototype.getExistingBindings = function()

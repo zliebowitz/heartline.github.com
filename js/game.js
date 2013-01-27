@@ -13,7 +13,7 @@ var States = {
 var state = States.STATE_PLAY;
 
 var musicOn = true;
-
+var grd; 
 var assetManager = new AssetManager();
 var canvas;
 var context;
@@ -45,13 +45,6 @@ var camera = {
 	}
 };
 
-var controller1 =
-	new keyboard_controller(defaultPlayer1);
-
-var controller2 =
-	new keyboard_controller(defaultPlayer2);
-
-
 var loadNextRoom = function() {
 	currRoom = assetManager.rooms[roomID];
 	if(currRoom === undefined) {
@@ -64,17 +57,9 @@ var loadNextRoom = function() {
 	entityManager.clear();
 	var players = currRoom.loadEntities(entityManager);
 	playerA = players.a;
+	playerA.bind_controller(new keyboard_controller(defaultPlayer1Bindings));
 	playerB = players.b;
-
-	controller1.addEventListener(controller1.JUMP_PRESS_EVENT, function() {playerA.jumpPress()});
-	controller1.addEventListener(controller1.JUMP_RELEASE_EVENT, function() {playerA.jumpRelease()});
-	controller1.addEventListener(controller1.LIFT_PRESS_EVENT, function() {playerA.throwPress()});
-	controller1.addEventListener(controller1.LIFT_RELEASE_EVENT, function() {playerA.throwRelease()});
-
-	controller2.addEventListener(controller2.JUMP_PRESS_EVENT, function() {playerB.jumpPress()});
-	controller2.addEventListener(controller2.JUMP_RELEASE_EVENT, function() {playerB.jumpRelease()});
-	controller2.addEventListener(controller2.LIFT_PRESS_EVENT, function() {playerB.throwPress()});
-	controller2.addEventListener(controller2.LIFT_RELEASE_EVENT, function() {playerB.throwRelease()});
+	playerB.bind_controller(new keyboard_controller(defaultPlayer2Bindings));
 
 	//Calculate the minimum zoom based on room dimensions.
 	var a = W / (currRoom.width * TILE_SIZE); 
@@ -84,12 +69,6 @@ var loadNextRoom = function() {
 	else
 		camera.minZoom = b;
 		
-	if(currRoom.cutscenes !== undefined && currRoom.cutscenes.length > 0) {
-		cutScene = new Cutscene(currRoom.cutscenes);
-	}
-	else {
-		cutScene = new Cutscene();
-	}
 }
 var tryAgain = function() {
 	roomID--;
@@ -97,17 +76,7 @@ var tryAgain = function() {
 	loadNextRoom();
 };
 var game_logic = function() {
-	controller1.poll();
-	if(controller1.dir.x < 0)
-		playerA.moveLeft();
-	else if (controller1.dir.x > 0)
-		playerA.moveRight();
 
-	if(controller2.dir.x < 0)
-		playerB.moveLeft();
-	else if (controller2.dir.x > 0)
-		playerB.moveRight();
-	
 	if(keyPressed['G'.charCodeAt(0)])
 		entityManager.showBoundingBoxes = true
 	else if (keyPressed['H'.charCodeAt(0)])
@@ -116,24 +85,16 @@ var game_logic = function() {
 	{
 		if (navigator.webkitGetGamepads()[0] != null)
 		{
-			controller1.detach()
-			controller1 = new gamepad_controller(0, null)
-			controller1.addEventListener(controller1.JUMP_PRESS_EVENT, function() {playerA.jumpPress()});
-			controller1.addEventListener(controller1.JUMP_RELEASE_EVENT, function() {playerA.jumpRelease()});
-			controller1.addEventListener(controller1.LIFT_PRESS_EVENT, function() {playerA.throwPress()});
-			controller1.addEventListener(controller1.LIFT_RELEASE_EVENT, function() {playerA.throwRelease(controller2.getDir())});
+			playerA.unbind_controller()
+			playerA.bind_controller(new gamepad_controller(0, null));
 		}
 	}
 	if (keyPressed['M'.charCodeAt(0)])
 	{
 		if (navigator.webkitGetGamepads()[1] != null)
 		{
-			controller2.detach()
-			controller2 = new gamepad_controller(1, null)
-			controller2.addEventListener(controller2.JUMP_PRESS_EVENT, function() {playerB.jumpPress()});
-			controller2.addEventListener(controller2.JUMP_RELEASE_EVENT, function() {playerB.jumpRelease()});
-			controller2.addEventListener(controller2.LIFT_PRESS_EVENT, function() {playerB.throwPress()});
-			controller2.addEventListener(controller2.LIFT_RELEASE_EVENT, function() {playerB.throwRelease(controller2.getDir())});
+			playerB.unbind_controller();
+			playerB.bind_controller(new gamepad_controller(1, null));
 		}
 	}
 	entityManager.update();
@@ -141,10 +102,26 @@ var game_logic = function() {
 var game_draw = function() {
 	if(currRoom === undefined)
 		return;
-	context.fillStyle = "#442222";
+	//context.fillStyle = "#7DAA99";
+	context.fillStyle = grd;
 	context.fillRect(0, 0, W, H);
-	
+
 	context.save();
+	// CLAMP CAMERA
+	if(camera.x < W/(2*camera.zoom)) {
+		camera.x = W/(2*camera.zoom);
+	}
+	else if(camera.x > (currRoom.width * TILE_SIZE) - (W/(2*camera.zoom))) {
+		camera.x = currRoom.width * TILE_SIZE - W/(2*camera.zoom);
+	}
+	if(camera.y < H/(2*camera.zoom)) {
+		camera.y = H/(2*camera.zoom);
+	}
+	else if(camera.y > (currRoom.height * TILE_SIZE) - (H/(2*camera.zoom))) {
+		camera.y = currRoom.height * TILE_SIZE - H/(2*camera.zoom);
+	}
+
+
 	context.scale(camera.zoom, camera.zoom);
 	if(camera.shake > 0) {
 		context.translate(-camera.x + (Math.random() - 0.5)*CAMERA_SHAKE_FACTOR, -camera.y + (Math.random() - 0.5)*CAMERA_SHAKE_FACTOR);
@@ -158,16 +135,36 @@ var game_draw = function() {
 	entityManager.draw(context);
 	context.restore();
 };
+var game_gui_draw = function() {
+	context.fillStyle = "#000000";
+	context.fillRect(0, H-20, W, 20);
+	context.fillStyle = "#0000FF";
+	context.fillRect(10, H-15, (W/2 - 20) * playerA.health / PLAYER_MAX_HEALTH, 10);
+	context.fillRect(W/2 + (W/2-10 - (W/2 - 10) * playerB.health / PLAYER_MAX_HEALTH), H-15, (W/2 - 10) * playerB.health / PLAYER_MAX_HEALTH, 10);	
+};
 
+var menu_logic = function() {
+
+};
+
+var menu_draw = function() {
+	context.fillStyle = grd;
+	context.fillRect(0, 0, W, H);
+};
 
 var step = function() {
 	switch(state) {
 		case States.STATE_PLAY:
 			game_logic();
 			game_draw();
+			game_gui_draw();
+		break;
+		case States.STATE_CONFIG:
+			config_logic();
+			config_draw();
 		break;
 	}
-	camera.moveTo(playerA.x, playerA.y);
+	camera.moveTo((playerA.x + playerB.x) / 2, (playerA.y + playerB.y) / 2 );
 };
 
 var initialize_game = function() {
@@ -177,7 +174,10 @@ var initialize_game = function() {
 	entityManager = new EntityManager();
 	loadNextRoom();
 	continueMenu = 0;
-	
+	grd = context.createLinearGradient(0, 0, 0, H);
+	//context.fillStyle = "#7DAA99";
+	grd.addColorStop(0, '#7DAA99');
+	grd.addColorStop(1, '#6D9A66');
 	return setInterval(step, 20); 
 };
 
