@@ -94,7 +94,7 @@ FanParticle.prototype.update = function() {
 	}
 };
 FanParticle.prototype.draw = function(context) {
-	context.strokeStyle = "rgba(255, 255, 255, 100)";
+	context.strokeStyle = "rgba(255, 255, 255, .4)";
 	context.lineWidth = 1;
 	context.beginPath();
 	context.moveTo(this.x, this.y);

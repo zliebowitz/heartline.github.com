@@ -33,7 +33,7 @@ var defaultPlayer2Bindings =
 	shoot: 'P'.charCodeAt(0),
 	left: 'J'.charCodeAt(0),
 	right: 'L'.charCodeAt(0),
-	up: 'O'.charCodeAt(0),
+	up: 'I'.charCodeAt(0),
 	down: 'K'.charCodeAt(0),
 }
 

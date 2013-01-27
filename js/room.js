@@ -55,7 +55,7 @@ Room.prototype.generateLevelSelectRoom = function(openRooms, lastLevel){
 			"x": LEVEL_1_DOOR_COLUMN*TILE_SIZE + 2*d*TILE_SIZE,
 			"y": (SCREEN_HEIGHT - 2)*TILE_SIZE,
 			"id": d,
-			"isNew": !openRooms[d]
+			"isNew": !openRooms[d].finished
 		}
 	}
 	this.entities[this.entities.length] = {

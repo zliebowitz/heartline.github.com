@@ -9,10 +9,16 @@ var States = {
 	STATE_LEVELSELECT: 1,
 	STATE_PLAY: 2,
 	STATE_ENDING: 3,
-	STATE_CONFIG: 4
+	STATE_CONFIG: 4,
+	STATE_TRANSITION: 5
 };
+
+var TRANSITION_TIME = 30;
+var nextState;
+
 var state;
 var prevState;//used for going to CONFIG
+var transitionTimer;
 
 var musicOn = true;
 var grd; 
@@ -28,8 +34,7 @@ var entityManager;
 var playerA;
 var playerB;
 var goal;
-
-var openRooms;//array of room completed status.  Unavailable rooms aren't in here
+var openRooms;
 
 var CAMERA_SHAKE_FACTOR = 10;
 var camera = {
@@ -112,7 +117,7 @@ var game_logic = function() {
 	entityManager.update();
 	//Handle player deaths / respawn
 	if(playerA.dead && playerB.dead) {
-		//GAME OVER
+		switchState(States.STATE_LEVELSELECT);
 	}
 	else if(playerA.dead && playerA.deathTimer <= 0) {
 		if(playerB.held && playerB.held.type === HEART) {
@@ -133,7 +138,11 @@ var game_logic = function() {
 	//Handle win condition
 	if(goal) {
 		if(goal.won) {
-			///GAME WIN!
+			if(openRooms[roomID].time && openRooms[roomID] > goal.timer) { 
+				openRooms[roomID].time = goal.timer; 
+			}
+			openRooms[roomID].finished = true;
+			switchState(States.STATE_LEVELSELECT);
 		}
 	}
 };
@@ -158,7 +167,6 @@ var game_draw = function() {
 	else if(camera.y > (currRoom.height * TILE_SIZE) - (H/(2*camera.zoom))) {
 		camera.y = currRoom.height * TILE_SIZE - H/(2*camera.zoom);
 	}
-
 
 	context.scale(camera.zoom, camera.zoom);
 	if(camera.shake > 0) {
@@ -306,7 +314,21 @@ var configClick = function() {
 	}
 	
 };
-
+var switchState = function(s) {
+	transitionTimer = TRANSITION_TIME;
+	nextState = s;
+	state = States.STATE_TRANSITION;
+};
+var doTransition = function() {
+	if(transitionTimer === 0) {
+		state = nextState;
+		loadNextRoom();
+		return;
+	}
+	transitionTimer--;
+	context.fillStyle = "rgba(0,0,0,"+(1.0 - (transitionTimer / TRANSITION_TIME))+")";
+	context.fillRect(0, 0, W, H);
+};
 var step = function() {
 	switch(state) {
 		case States.STATE_LEVELSELECT:
@@ -315,8 +337,7 @@ var step = function() {
 			var maxDoorID = Math.max(playerA.doorID, playerB.doorID);
 			if(maxDoorID != -1){
 				roomID = maxDoorID;
-				state = States.STATE_PLAY;
-				loadNextRoom();
+				switchState(States.STATE_PLAY);
 			}
 		break;
 		case States.STATE_PLAY:
@@ -327,6 +348,9 @@ var step = function() {
 		case States.STATE_CONFIG:
 			config_logic();
 			config_draw();
+		break;
+		case States.STATE_TRANSITION:
+			doTransition();
 		break;
 	}
 	camera.moveTo((playerA.x + playerB.x) / 2, (playerA.y + playerB.y) / 2 );
@@ -362,7 +386,8 @@ var initialize_game = function() {
 	tileSet = assetManager.getTileset("gfx/tileset.png");
 	roomID = 0;
 	openRooms = new Array();
-	openRooms[openRooms.length] = false;
+	openRooms[0] = {"finished": false};
+
 	entityManager = new EntityManager();
 	loadNextRoom();
 	continueMenu = 0;
