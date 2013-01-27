@@ -98,7 +98,7 @@ Player.prototype.shoot = function() {
 		xc = this.facingLeft ? -1 : 1;
 	}
 	entityManager.add(new Goo(this.room, this.x, this.y, 
-				 this.dx+xc * 15, this.dy+yc * 10, this));
+				 this.dx+xc * 15, this.dy+yc * -10, this));
 };
 
 Player.prototype.throwPress = function() {
@@ -182,7 +182,9 @@ Player.prototype.update = function() {
 		this.moveLeft();
 	else if (this.controller.getDir().x > 0)
 		this.moveRight();
-
+	
+	if (this.controller.getIsShooting())
+		this.shoot();
 	//Gravity
 	this.dy+=GRAVITY;
 	
