@@ -30,6 +30,7 @@ function Player(room, x, y) {
 	this.x = x;
 	this.y = y;
 	this.held = null;
+	this.carry = null;
 	this.w = PLAYER_W;
 	this.h = PLAYER_H;  
 
@@ -47,6 +48,11 @@ function Player(room, x, y) {
 	this.idleAnim = assetManager.getAnim("gfx/player/stand.png");
 	this.jumpAnim = assetManager.getAnim("gfx/player/jump.png");
 	this.fallAnim = assetManager.getAnim("gfx/player/fall.png");
+	
+	this.runAnimC = assetManager.getAnim("gfx/player/walk_carry.png");
+	this.idleAnimC = assetManager.getAnim("gfx/player/stand_carry.png");
+	this.jumpAnimC = assetManager.getAnim("gfx/player/jump_carry.png");
+	this.fallAnimC = assetManager.getAnim("gfx/player/fall_carry.png");
 } 
 
 Player.prototype.moveLeft = function() {
@@ -79,6 +85,22 @@ Player.prototype.jumpRelease = function() {
 	if(this.jumping && !this.landed) {
 		if(this.dy < 0)
 			this.dy = this.dy/2;
+	}
+};
+Player.prototype.throwPress = function() {
+	console.log("thorwpress");
+	if(this.held && !this.carry) {
+		this.carry = this.held;
+		this.held = null;
+	}
+};
+Player.prototype.throwRelease = function() {
+	console.log("throwrelase");
+	if(this.carry) {
+		this.carry.isHeld = false;
+		this.carry.dx = this.dx + (facingLeft ? -5 : 5);
+		this.carry.dy = this.dy - 5;
+		this.carry = null;
 	}
 };
 
@@ -140,9 +162,20 @@ Player.prototype.landFunction = function() {
 Player.prototype.update = function() {
 	//Gravity
 	this.dy+=GRAVITY;
+	
 	//Kinematics
 	this.y+=this.dy;
 	this.x+=this.dx;
+
+	//Update held object's position.
+	if(this.held) {
+		this.held.x = this.x+2;
+		this.held.y = this.y+2;
+	}
+	else if(this.carry) {
+		this.carry.x = this.x+2;
+		this.carry.y = this.y - 20;
+	}
 
 	//Collision/Collision Flags
 	this.landed = false;
@@ -180,35 +213,42 @@ Player.prototype.draw = function(context) {
 
 	switch(this.status) {
 		case(PlayerStatus.JUMP):
-			this.jumpAnim.draw(context, this.x, this.y, this.facingLeft);
+			if(this.carry) {
+				this.jumpAnimC.draw(context, this.x, this.y, this.facingLeft);
+			}
+			else {
+				this.jumpAnim.draw(context, this.x, this.y, this.facingLeft);
+			}
+			this.jumpAnimC.tick();
 			this.jumpAnim.tick();
 			break;
 		case(PlayerStatus.FALL):
-			this.fallAnim.draw(context, this.x, this.y, this.facingLeft);
+			if(this.carry) {
+				this.fallAnimC.draw(context, this.x, this.y, this.facingLeft);
+			}
+			else {
+				this.fallAnim.draw(context, this.x, this.y, this.facingLeft);
+			}
 			this.fallAnim.tick();
-
+			this.fallAnimC.tick();
 			break;
 		case(PlayerStatus.IDLE):
-			this.idleAnim.draw(context,this.x,this.y,this.facingLeft);
-			break;
-		case(PlayerStatus.BLOCK):
-			this.blockAnim.draw(context, this.x, this.y, this.facingLeft);
+			if(this.carry) {
+				this.idleAnimC.draw(context,this.x,this.y,this.facingLeft);
+			}
+			else {
+				this.idleAnim.draw(context,this.x,this.y,this.facingLeft);
+			}
 			break;
 		case(PlayerStatus.RUN):
-			this.runAnim.draw(context, this.x, this.y, this.facingLeft);
+			if(this.carry) {
+				this.runAnimC.draw(context, this.x, this.y, this.facingLeft);
+			}
+			else {
+				this.runAnim.draw(context, this.x, this.y, this.facingLeft);
+			}
 			this.runAnim.tick();
-			break;
-		case(PlayerStatus.RUN_ATTACK):
-			this.runAttackAnim.draw(context, this.x, this.y, this.facingLeft);
-			this.runAttackAnim.tick();
-			break;
-		case(PlayerStatus.JUMP_ATTACK):
-			this.jumpAttackAnim.draw(context, this.x, this.y, this.facingLeft);
-			this.jumpAttackAnim.tick();
-			break;
-		case(PlayerStatus.STAND_ATTACK):
-			this.standAttackAnim.draw(context, this.x, this.y, this.facingLeft);
-			this.standAttackAnim.tick();
+			this.runAnimC.tick();
 			break;
 
 	}	

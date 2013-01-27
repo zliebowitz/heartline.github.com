@@ -2,7 +2,7 @@ var _controller = function() {
 	this.DIRECTION_EVENT = "Direction Event"
 	this.JUMP_PRESS_EVENT = "Jump Event"
 	this.JUMP_RELEASE_EVENT = "Jump Release Event"
-	this.LIFT_PRESS__EVENT = "Lift Press Event"
+	this.LIFT_PRESS_EVENT = "Lift Press Event"
 	this.LIFT_RELEASE_EVENT = "Lift Release Event"
 
 	this.isLifting = false
@@ -232,13 +232,13 @@ _controller.prototype.setLift = function(lift)
 	{
 		if (this.event_listeners[this.LIFT_PRESS_EVENT])
 			for (var i = 0; i < this.event_listeners[this.LIFT_PRESS_EVENT].length; i++)
-			this.event_listeners[this.LIFT_PRESS_EVENT][i](this)
+				this.event_listeners[this.LIFT_PRESS_EVENT][i](this)
 	}
 	else
 	{
 		if (this.event_listeners[this.LIFT_RELEASE_EVENT])
 			for (var i = 0; i < this.event_listeners[this.LIFT_RELEASE_EVENT]; i++)
-			this.event_listeners[this.LIFT_RELEASE_EVENT][i](this)
+				this.event_listeners[this.LIFT_RELEASE_EVENT][i](this)
 	}
 }
 
