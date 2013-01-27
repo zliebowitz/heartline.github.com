@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.0" orientation="orthogonal" width="25" height="64" tilewidth="32" tileheight="32">
+ <tileset firstgid="1" name="foreground" tilewidth="32" tileheight="32">
+  <image source="../gfx/tilesets/foreground.png" width="512" height="512"/>
+ </tileset>
+ <tileset firstgid="257" name="entities" tilewidth="32" tileheight="32">
+  <image source="../gfx/tilesets/entities.png" width="512" height="512"/>
+ </tileset>
+ <tileset firstgid="513" name="collision" tilewidth="32" tileheight="32">
+  <image source="../gfx/tilesets/collision.png" width="512" height="512"/>
+ </tileset>
+ <tileset firstgid="769" name="background" tilewidth="32" tileheight="32">
+  <image source="../gfx/tilesets/background.png" width="512" height="512"/>
+ </tileset>
+ <layer name="entities" width="25" height="64">
+  <data encoding="base64" compression="zlib">
+   eJzt10EKgCAQQFGn6AYD3f+mbQJrYxvDyPfgg4sBx6WlMLOI0RtUWzw3s3zh/XvU8ux6zrjPtGrt3au/37FGvwAAABhj8ScD+IwDYuMHAw==
+  </data>
+ </layer>
+ <layer name="background" width="25" height="64">
+  <data encoding="base64" compression="zlib">
+   eJztwQENAAAAwqD3T20PBxQAAAAAAMCXARkAAAE=
+  </data>
+ </layer>
+ <layer name="foreground" width="25" height="64">
+  <data encoding="base64" compression="zlib">
+   eJzt0TEOgCAQRUE4oq334P5WNlut4iox85PXESaE3lrrP2ovjHHdqPwfBoOxphF3nr+zrDEzBoPBYDAYDAaDwfja2CbLGOOFdzDqjRF6yoj3Zg1p9Q4KYnLJ
+  </data>
+ </layer>
+ <layer name="collision" width="25" height="64">
+  <data encoding="base64" compression="zlib">
+   eJzt0UEKACAIAMHy/4/uWt3CgqgR9uogRpQSD3VyGOvGyf8wGL1RY2y3Me/P9LqxcxgMBoPBYDAYDAbjByPbLXcw/jOk22uk1glk
+  </data>
+ </layer>
+</map>
