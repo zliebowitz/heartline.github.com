@@ -6,6 +6,9 @@
  <tileset firstgid="257" name="entities" tilewidth="32" tileheight="32">
   <image source="../gfx/tilesets/entities.png" width="512" height="512"/>
  </tileset>
+ <tileset firstgid="513" name="collision" tilewidth="32" tileheight="32">
+  <image source="../gfx/tilesets/collision.png" width="512" height="512"/>
+ </tileset>
  <layer name="entities" width="80" height="16">
   <data encoding="base64" compression="zlib">
    eJztlksOwCAIBbWf+1+5K9M2EUTCg9A6iSs/4MQWSlksvs1Z34Oa84rvEdOKUc6Iu3AxtP62QNejnNH+ejn0HGeAytPan+QNouJnR+sP4XCv98iA5D8RUcO8OZR30dQqpD/pPaz7AoS/Ns/tsSa7P0mdyNYTotD0eBl7ahTR/iqzF1WHn+dKzu+tb4PyN7uHW7+g+fO3G8UFE5gD7Q==
@@ -14,6 +17,11 @@
  <layer name="foreground" width="80" height="16">
   <data encoding="base64" compression="zlib">
    eJztVUEOwDAIsv//9E47NqIyMYsknNoQpGqPmZ3lchARsPU83UnozI/hbxrQej3vjAxv5zc/Xf3JmF3PG2M3VHv+a2TrQ/2x3ijiSTHTjPy8HurKT4XsbCEzU9kDUe8qRPNDtLqw+dWgzu5FdidFddG7EY9/za/yV1T0FGDUifyZKCMeJ+e3XCr4ALi3Aok=
+  </data>
+ </layer>
+ <layer name="collision" width="80" height="16">
+  <data encoding="base64" compression="zlib">
+   eJztlksSwCAIQzve/9DddqHAC4gumhkX9UNDBozP86MSY7BRHW8WV42xc1j5Ep2ze7wzSozdWPEhXKP6KaA13g1Lv8g+sq7GoH1cDaV/V3y9fxAeSoxVrI7aVPWj/kC4RPjNuJ7saVpLVq7WWepdin6nQH2X1q6nUQY3+AnVz4vVmcst+mXv8MyZDE5r9+XhzSk+R/bTu+CG2vty8+a879n5iE8q7wDCowNUv6wOnq9EOVrznYj6rLVWlQft08hbp2P8qMMLTDME9Q==
   </data>
  </layer>
 </map>
