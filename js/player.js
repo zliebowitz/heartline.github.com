@@ -175,12 +175,9 @@ Player.prototype.update = function() {
 		this.moveLeft();
 	else if (this.controller.getDir().x > 0)
 		this.moveRight();
-
-<<<<<<< HEAD
+	
 	if (this.controller.getIsShooting())
 		this.shoot();
-=======
->>>>>>> 293eca50d598109ddf929374b948340e3ad3789c
 	//Gravity
 	this.dy+=GRAVITY;
 	
