@@ -76,7 +76,7 @@ Heart.prototype.draw = function(context) {
 	}
 };
 Heart.prototype.collide = function(other) {
-	if(other.type === PLAYER && !other.touchingGrate) {
+	if(other.type === PLAYER && !other.touchingGrate && !other.dead) {
 		if(other.held === null && !this.isHeldBy) {
 			other.held = this;
 			this.isHeldBy = other;

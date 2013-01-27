@@ -35,6 +35,8 @@ Fire.prototype.update = function() {
 			this.spawnTimer = FIRE_SPAWN_MIN + Math.random() * FIRE_SPAWN_RANGE;
 			entityManager.add(new FireParticle(this.room, this.x + Math.random() * this.w, 
 										this.y + Math.random() * this.h));
+			entityManager.add(new Smoke(this.room, this.x + Math.random() * this.w, 
+										this.y + Math.random() * this.h, 0, 0));
 		}
 	}
 };

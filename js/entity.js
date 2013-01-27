@@ -19,6 +19,7 @@ var GOO = 102;
 var FIRE_PARTICLE = 103;
 var GOAL_PARTICLE = 104;
 var FAN_PARTICLE = 105;
+var SMOKE = 106;
 
 function Entity(room) {
     this.x = 0;
