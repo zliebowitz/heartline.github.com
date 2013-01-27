@@ -5,7 +5,7 @@ var GRAVITY = 0.56;
 //var GRAVITY = 0;
 
 var SPAWN = 0;
-var EXIT = 1;
+var GOAL = 1;
 var FIRE = 2;
 var GRATE = 3;
 var BREAKABLE = 4;
@@ -16,6 +16,7 @@ var HEART = 100;
 var BREAK_PARTICLE = 101;
 var GOO = 102;
 var FIRE_PARTICLE = 103;
+var GOAL_PARTICLE = 104;
 
 function Entity(room) {
     this.x = 0;
@@ -123,7 +124,7 @@ Entity.prototype.collideEntity = function(other) {
 	else if(this.dy < 0 && resolve_y < 0)
 		resolve_y = 0;
 	if(resolve_y < 0)
-		this.landed = true;
+		this.landedEntity = true;
 		
 	if(this.dy > 0 && resolve_y < 0) {
 		if(this.bouncy) {

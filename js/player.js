@@ -49,6 +49,7 @@ function Player(room, x, y) {
 	this.movingLeft = false;
 	this.movingRight = false;
 	this.dead = false;
+	this.touchingGrate = false;	
 	
 	this.runAnim = assetManager.getAnim("gfx/player/walk.png");
 	this.idleAnim = assetManager.getAnim("gfx/player/stand.png");
@@ -76,7 +77,7 @@ Player.prototype.moveRight = function() {
 
 };
 Player.prototype.jumpPress = function() {
-	if(this.landed)
+	if(this.landed || this.landedEntity)
 	{
 		this.status = PlayerStatus.JUMP;
 
@@ -87,7 +88,7 @@ Player.prototype.jumpPress = function() {
 	}
 };
 Player.prototype.jumpRelease = function() {
-	if(this.jumping && !this.landed) {
+	if(this.jumping && !(this.landed || this.landedEntity)) {
 		if(this.dy < 0)
 			this.dy = this.dy/2;
 	}
@@ -103,7 +104,7 @@ Player.prototype.shoot = function() {
 	}
 	this.health -= PLAYER_GOO_COST;
 	entityManager.add(new Goo(this.room, this.x+5, this.y+5, 
-				 this.dx+xc * 15, this.dy+yc * -10, this));
+				 xc * 10, yc * -10, this));
 };
 
 Player.prototype.throwPress = function() {
@@ -197,6 +198,8 @@ Player.prototype.update = function() {
 	if(this.held) {
 		this.held.x = this.x+1;
 		this.held.y = this.y+1;
+		this.held.dx = this.dx;
+		this.held.dy = this.dy;
 	}
 	else if(this.carry) {
 		this.carry.x = this.x+1;
@@ -204,12 +207,12 @@ Player.prototype.update = function() {
 	}
 
 	//Collision/Collision Flags
-	this.landed = false;
 
+	this.landed = false;
 	this.collideRoom();
 
 	//Friction
-	if(this.landed) {
+	if(this.landed || this.landedEntity) {
 		this.landFunction();
 	}
 	else if(this.status !== PlayerStatus.JUMP) {
@@ -227,9 +230,8 @@ Player.prototype.update = function() {
 			this.fallAnim.reset();
 		}
 	}
+	this.touchingGrate = false;
 	this.landedEntity = false;
-	this.blockingEntity = this.blocking;
-	this.blocking = false;
 	this.movingLeft = false;
 	this.movingRight = false;
 };
@@ -284,6 +286,12 @@ Player.prototype.draw = function(context) {
 
 };
 Player.prototype.collide = function(other) {
+	if(other.type === BREAKABLE) {
+		this.collideEntity(other);
+	}
+	else if(other.type === GRATE) {
+		this.touchingGrate = true;
+	}
 };
 
 Player.prototype.bind_controller = function(controller) {

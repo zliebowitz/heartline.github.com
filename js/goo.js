@@ -7,8 +7,8 @@ Goo.constructor = Goo;
 
 var GOO_RADIUS = 5;
 var GOO_FRICTION = 0.8;
-var GOO_LIFETIME = 60;
-
+var GOO_LIFETIME = 40;
+var GOO_AIR_DRAG = 0.99;
 //How much of goo's velocity is transferred to target?
 var GOO_PUSHFACTOR = 0.1;
 function Goo(room, x, y, dx, dy, owner) {
@@ -38,7 +38,7 @@ Goo.prototype.update = function() {
 	if(!this.isHeld) {
 		//Gravity
 		this.dy+=GRAVITY/2;
-		
+		this.dx *= GOO_AIR_DRAG;
 		//Kinematics
 		this.y+=this.dy;
 		this.x+=this.dx;
@@ -74,6 +74,9 @@ Goo.prototype.collide = function(other) {
 		other.dx += this.dx * GOO_PUSHFACTOR;
 		other.dy += this.dy * GOO_PUSHFACTOR;
 		this.die = true;
+	}
+	else if(other.type === BREAKABLE) {
+		this.collideEntity(other);
 	}
 };
 

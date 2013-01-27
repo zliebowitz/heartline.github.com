@@ -49,7 +49,7 @@ Heart.prototype.update = function() {
 	this.collideRoom();
 
 	//Friction
-	if(this.landed) {
+	if(this.landed || this.landedEntity) {
 		this.landFunction();
 	}
 
@@ -62,11 +62,19 @@ Heart.prototype.draw = function(context) {
 	this.anim.tick();
 };
 Heart.prototype.collide = function(other) {
-	if(other.type === PLAYER) {
+	if(other.type === PLAYER && !other.touchingGrate) {
 		if(other.held === null && !this.isHeldBy) {
 			other.held = this;
 			this.isHeldBy = other;
 			this.lastHeldBy = other;
+		}
+	}
+	else if(other.type === GRATE) {
+		this.collideEntity(other);
+		if(this.isHeldBy && this.isHeldBy.touchingGrate) {
+			this.isHeldBy.held = null;
+			this.isHeldBy = null;
+			this.dx = 0; this.dy = 0;
 		}
 	}
 };
