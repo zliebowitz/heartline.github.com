@@ -1,7 +1,7 @@
 /*
 	These constants are used in saving/loading entity data.
 */
-var GRAVITY = 0.6;
+var GRAVITY = 0.56;
 //var GRAVITY = 0;
 
 var SPAWN = 0;

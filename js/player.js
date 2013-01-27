@@ -9,11 +9,15 @@ var PLAYER_W = 20;
 var PLAYER_ACCEL = 2;
 var PLAYER_MIN_SPEED = 0.2;
 var PLAYER_WALK_SPEED = 2.3;
+var PLAYER_RUN_SPEED = 9;
+var PLAYER_WALK_SPEED = 2.3;
 var PLAYER_RUN_SPEED = 8;
 var PLAYER_MAX_HEALTH = 1000;
 var PLAYER_GOO_COST = 5;
 var PLAYER_HEART_REGEN = 2
 var PLAYER_FRICTION = 0.7;
+
+var GRAVITY_CARRY = 0.73;	//gravity is higher while carrying an item (realism is for pansies)
 
 var PLAYER_HURT_CD = 25; //Invul frames after getting hurt
 
@@ -179,7 +183,11 @@ Player.prototype.update = function() {
 
 
 	//Gravity
-	this.dy+=GRAVITY;
+	if (this.held||this.carry)
+		this.dy+=GRAVITY_CARRY;
+	else
+		this.dy+=GRAVITY;
+	
 	
 	//Kinematics
 	this.y+=this.dy;
