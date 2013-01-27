@@ -51,6 +51,18 @@ Room.prototype.generateLevelSelectRoom = function(numLevels, lastLevel){
 			}
 		}
 	}
+	this.entities[this.entities.length] = {
+		"type": SPAWN,
+		"x": lastLevelDoorCol*TILE_SIZE,
+		"y": (SCREEN_HEIGHT - 2)*TILE_SIZE 
+	}
+	for(var d = 0; d < numLevels; d++){
+		this.entities[this.entities.length] = {
+			"type": DOOR,
+			"x": LEVEL_1_DOOR_COLUMN*TILE_SIZE + 2*d*TILE_SIZE,
+			"y": (SCREEN_HEIGHT - 2)*TILE_SIZE 
+		}
+	}
 }
 
 Room.prototype.solid = function(y, x) {
