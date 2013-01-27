@@ -55,7 +55,7 @@ Room.prototype.generateLevelSelectRoom = function(openRooms, lastLevel){
 			"x": LEVEL_1_DOOR_COLUMN*TILE_SIZE + 2*d*TILE_SIZE,
 			"y": (SCREEN_HEIGHT - 2)*TILE_SIZE,
 			"id": d,
-			"isNew": !openRooms[d]
+			"isNew": !openRooms[d].finished
 		}
 	}
 	this.entities[this.entities.length] = {
@@ -772,7 +772,8 @@ Room.prototype.loadEntities = function(entityManager) {
 				entityManager.add(new Fire(this, this.entities[i].x, this.entities[i].y));
 				break;
 			case GOAL:
-				entityManager.add(new Goal(this, this.entities[i].x, this.entities[i].y));
+				var goal = new Goal(this, this.entities[i].x, this.entities[i].y);
+				entityManager.add(goal);
 				ents.goal = goal;
 				break;
 			case GRATE:

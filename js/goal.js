@@ -17,7 +17,7 @@ function Goal(room, x, y) {
 	this.room = room;
 	this.x = x;
 	this.y = y;
-	
+	this.timer = 0; //LEVEL TIMER!!!	
 	this.w = GOAL_W;
 	this.h = GOAL_H;  
 	this.solid = false;	
@@ -42,6 +42,7 @@ Goal.prototype.update = function() {
 			this.won = true;
 		return;
 	}
+	this.timer++;
 	if(this.spawnTimer > 0) {
 		this.spawnTimer -= 1;
 		if(this.spawnTimer <= 0) {
