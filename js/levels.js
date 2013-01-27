@@ -2,7 +2,7 @@ assetManager.levelQueue = [
 {
 	name: "PROVING GROUNDS",
 	source: "levels/mark3.json",
-	id: 0
+	id: 4
 },
 {
 	name: "BURNING BRIDGES",
@@ -20,13 +20,8 @@ assetManager.levelQueue = [
 	id: 3
 },
 {
-	name: "TEST",
-	source: "levels/template.json",
-	id: 4
-},
-{
-	name: "Stay Afloat",
+	name: "HOT POTATO",
 	source: "levels/eugene0.json",
-	id: 5
+	id: 0
 }
 ]
