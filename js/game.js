@@ -102,6 +102,7 @@ var game_logic = function() {
 var game_draw = function() {
 	if(currRoom === undefined)
 		return;
+	//context.fillStyle = "#7DAA99";
 	context.fillStyle = grd;
 	context.fillRect(0, 0, W, H);
 
@@ -139,10 +140,17 @@ var game_gui_draw = function() {
 	context.fillRect(9, H-21, W - 18, 12);
 	context.fillStyle = "#0000FF";
 	context.fillRect(10, H-20, (W/2 - 20) * playerA.health / PLAYER_MAX_HEALTH, 10);
-	context.fillRect(W/2 + (W/2-10 - (W/2 - 10) * playerB.health / PLAYER_MAX_HEALTH), H-20, (W/2 - 10) * playerB.health / PLAYER_MAX_HEALTH, 10);
-	
+	context.fillRect(W/2 + (W/2-10 - (W/2 - 10) * playerB.health / PLAYER_MAX_HEALTH), H-20, (W/2 - 10) * playerB.health / PLAYER_MAX_HEALTH, 10);	
 };
 
+var menu_logic = function() {
+
+};
+
+var menu_draw = function() {
+	context.fillStyle = grd;
+	context.fillRect(0, 0, W, H);
+};
 
 var step = function() {
 	switch(state) {
@@ -150,6 +158,10 @@ var step = function() {
 			game_logic();
 			game_draw();
 			game_gui_draw();
+		break;
+		case States.STATE_CONFIG:
+			config_logic();
+			config_draw();
 		break;
 	}
 	camera.moveTo((playerA.x + playerB.x) / 2, (playerA.y + playerB.y) / 2 );
@@ -162,9 +174,10 @@ var initialize_game = function() {
 	entityManager = new EntityManager();
 	loadNextRoom();
 	continueMenu = 0;
-	grd = context.createLinearGradient(0, H/4, 0, H/2);
-	grd.addColorStop(0, '#8ED6DD');
-	grd.addColorStop(1, '#631C00');
+	grd = context.createLinearGradient(0, 0, 0, H);
+	//context.fillStyle = "#7DAA99";
+	grd.addColorStop(0, '#7DAA99');
+	grd.addColorStop(1, '#6D9A66');
 	return setInterval(step, 20); 
 };
 
