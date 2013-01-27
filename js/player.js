@@ -17,7 +17,7 @@ var PLAYER_GOO_COST = 5;
 var PLAYER_HEART_REGEN = 2
 var PLAYER_FRICTION = 0.7;
 var PLAYER_FIRE_DAMAGE = 10;
-var PLAYER_DEATH_TIME = 20; //frames before respawn
+var PLAYER_DEATH_TIME = 50; //frames before respawn
 var PLAYER_GRIEVE_RATE = 6; //Damage taken if partner is dead.
 var GRAVITY_CARRY = 0.73;	//gravity is higher while carrying an item (realism is for pansies)
 

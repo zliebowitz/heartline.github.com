@@ -74,11 +74,6 @@ var loadNextRoom = function() {
 		camera.minZoom = b;
 		
 }
-var tryAgain = function() {
-	roomID--;
-	entityManager = new EntityManager();
-	loadNextRoom();
-};
 var gamePadExists = function(id) {
 	if (navigator.webkitGetGamepads()[id] != null) {
 		return true;
@@ -175,9 +170,12 @@ var game_draw = function() {
 var game_gui_draw = function() {
 	context.fillStyle = "#000000";
 	context.fillRect(0, H-20, W, 20);
-	context.fillStyle = "#0000FF";
+	context.fillStyle = "#aaaaff";
+	context.fillRect(9, H-16, (W/2 - 18), 12);
+	context.fillRect(W/2 + 9, H-16, (W/2 - 18), 12);
+	context.fillStyle = "#4444aa";
 	context.fillRect(10, H-15, (W/2 - 20) * playerA.health / PLAYER_MAX_HEALTH, 10);
-	context.fillRect(W/2 + (W/2-10 - (W/2 - 10) * playerB.health / PLAYER_MAX_HEALTH), H-15, (W/2 - 10) * playerB.health / PLAYER_MAX_HEALTH, 10);	
+	context.fillRect(W/2 + (W/2 - 10 - (W/2 -20) * playerB.health / PLAYER_MAX_HEALTH), H-15, (W/2 - 20) * playerB.health / PLAYER_MAX_HEALTH, 10);	
 };
 
 var mouseX;
