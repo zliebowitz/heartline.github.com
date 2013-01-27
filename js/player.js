@@ -10,7 +10,9 @@ var PLAYER_ACCEL = 2;
 var PLAYER_MIN_SPEED = 0.2;
 var PLAYER_WALK_SPEED = 2.3;
 var PLAYER_RUN_SPEED = 8;
-var PLAYER_MAX_HEALTH = 100;
+var PLAYER_MAX_HEALTH = 1000;
+var PLAYER_GOO_COST = 5;
+var PLAYER_HEART_REGEN = 4
 var PLAYER_FRICTION = 0.7;
 
 var PLAYER_HURT_CD = 25; //Invul frames after getting hurt
@@ -97,6 +99,7 @@ Player.prototype.shoot = function() {
 	{
 		xc = this.facingLeft ? -1 : 1;
 	}
+	this.health -= PLAYER_GOO_COST;
 	entityManager.add(new Goo(this.room, this.x+5, this.y+5, 
 				 this.dx+xc * 15, this.dy+yc * -10, this));
 };
@@ -127,8 +130,6 @@ Player.prototype.hurt = function(amount) {
 		return false;
 	}
 	else {
-		//soundManager.play("sfx/player_hurt.wav");
-		//assetManager.getAsset("sfx/player_hurt.wav").play();
 		this.hurtTimer = PLAYER_HURT_CD;
 		this.health-=amount;	
 		if(this.health <= 0) {
@@ -155,13 +156,6 @@ Player.prototype.landFunction = function() {
 		this.status = PlayerStatus.LANDING;
 		this.landTimer = 5;
 	}
-	if(this.blocking || this.blockingEntity)
-		this.status = PlayerStatus.BLOCK;
-	else if(this.attackTimer > 0) {
-		if(this.status === PlayerStatus.JUMP_ATTACK) {
-			this.attackTimer = 0;
-		}
-	}
 	else if(this.landTimer > 0) {
 		this.landTimer--;
 	}
@@ -183,6 +177,16 @@ Player.prototype.update = function() {
 	
 	if (this.controller.getIsShooting())
 		this.shoot();
+
+	//Regen Heart
+	if(this.held && this.held.type === HEART) {
+		this.health += PLAYER_HEART_REGEN;
+		if(this.health > PLAYER_MAX_HEALTH) {
+			this.health = PLAYER_MAX_HEALTH;
+		}
+	}
+
+
 	//Gravity
 	this.dy+=GRAVITY;
 	

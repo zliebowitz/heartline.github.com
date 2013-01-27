@@ -69,19 +69,19 @@ Room.prototype.processCollision = function() {
 	}
 	for(var i = 0; i < this.height; i++) {
 		for(var j = 0; j < this.width; j++) {
-			if(this.solid(i, j-1)) {
+			if(this.solid(i, j-1) || j === 0) {
 				this.collideFlags[i][j].LEFT = true;
 			}
 			
-			if(this.solid(i, j+1)) {
+			if(this.solid(i, j+1) || j === this.width - 1) {
 				this.collideFlags[i][j].RIGHT = true;
 			}
 			
-			if(this.solid(i-1, j)) {
+			if(this.solid(i-1, j) || i === 0) {
 				this.collideFlags[i][j].UP = true;
 			}
 			
-			if(this.solid(i+1, j)) {
+			if(this.solid(i+1, j) || i === this.height - 1) {
 				this.collideFlags[i][j].DOWN = true;
 			}
 		}
