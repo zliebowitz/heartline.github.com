@@ -80,13 +80,7 @@ var gamepad_axes = {
   RIGHT_ANALOGUE_HOR: 2,
   RIGHT_ANALOGUE_VERT: 3
 };
-
-var gamepad_controller = function(controllerIndex, bindings)
-{
-	this.type = "GAMEPAD";
-	if (bindings == null)
-	this.bindings =
-	{
+var default_gamepad_bindings = {
 		up: gamepad_buttons.PAD_TOP,
 		down: gamepad_buttons.PAD_BOTTOM,
 		left: gamepad_buttons.PAD_LEFT,
@@ -95,6 +89,12 @@ var gamepad_controller = function(controllerIndex, bindings)
 		lift: gamepad_buttons.FACE_3,
 		shoot: gamepad_buttons.RIGHT_SHOULDER,
 	}
+
+var gamepad_controller = function(controllerIndex, bindings)
+{
+	this.type = "GAMEPAD";
+	if (bindings == null)
+		this.bindings = default_gamepad_bindings;
 	else
 		this.bindings = bindings
 	this.controllerIndex = controllerIndex

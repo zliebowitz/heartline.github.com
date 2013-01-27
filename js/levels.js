@@ -38,5 +38,10 @@ assetManager.levelQueue = [
 	name: "Stay Afloat",
 	source: "levels/eugene0.json",
 	id: 7
+},
+{
+	name: "HOT POTATO",
+	source: "levels/eugene0.json",
+	id: 8
 }
 ]
