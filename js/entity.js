@@ -15,6 +15,7 @@ var PLAYER = 99;
 var HEART = 100;
 var BREAK_PARTICLE = 101;
 var GOO = 102;
+var FIRE_PARTICLE = 103;
 
 function Entity(room) {
     this.x = 0;
@@ -25,12 +26,12 @@ function Entity(room) {
     
     this.dx = 0;
     this.dy = 0;
-    
+	    
     this.die = false;
     this.room = room;
     this.landed = false;
     this.solid = true;
-    
+   	this.palpable = true; 
     this.bouncy = false;
 }
 

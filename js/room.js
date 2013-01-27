@@ -5,7 +5,6 @@ var SCREEN_HEIGHT = 16;
 var SCREEN_WIDTH = 25;
 
 function Room(json) {
-	console.log("Room constructor begin!");
 	this.fg = null;
 	this.bg = null;
 	this.coll = null;
@@ -55,7 +54,6 @@ Room.prototype.draw = function(context) {
 
 //I was going to use bitfields... but memory is free, right? :)
 Room.prototype.processCollision = function() {
-	console.log(this.coll);
 	//console.log("Processing collision data for room "+ this.id);
 	this.collideFlags = new Array(this.height);
 	for(var i = 0; i < this.height; i++) {
@@ -117,10 +115,8 @@ Room.prototype.loadFromJSON = function(d) {
 	for(var i = 0; i < d.tilesets.length; i++) {
 		gids[d.tilesets[i].name] = d.tilesets[i].firstgid;
 	}
-	console.log("loading layers");
 	for(var i = 0; i < d.layers.length; i++) {
 		var layer = d.layers[i];
-		console.log("Loading layer: " + layer.name);
 		if(layer.name === "foreground") {
 			this.loadLayer(this.fg, layer, gids["foreground"]);
 		}
@@ -134,7 +130,6 @@ Room.prototype.loadFromJSON = function(d) {
 			this.loadEntityLayer(layer, gids["entities"]);
 		}
 	}
-	console.log("done loading");
 };
 
  
