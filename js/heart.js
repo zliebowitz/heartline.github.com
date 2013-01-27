@@ -46,7 +46,16 @@ Heart.prototype.update = function() {
 	//Collision/Collision Flags
 	this.landed = false;
 
+	//mark's hackish bounce code wrapped around collideRoom
+	var oldDX = this.dx;
+	var oldDY = this.dy;
+
 	this.collideRoom();
+	
+	if (Math.abs(oldDX) > 0.2 && Math.abs(this.dx) < 0.2)
+		this.dx = -oldDX/3.0;
+	if (Math.abs(oldDY) > 0.2 && Math.abs(this.dy) < 0.2)
+		this.dy = -oldDY/3.0;
 
 	//Friction
 	if(this.landed || this.landedEntity) {
