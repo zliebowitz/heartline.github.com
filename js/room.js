@@ -6,18 +6,16 @@ var SCREEN_WIDTH = 25;
 
 var LEVEL_1_DOOR_COLUMN = 20;
 
-function Room(json, numLevels, lastLevel) {
+function Room(json, openRooms, lastLevel) {
+	this.fgTileset = assetManager.getTileset("gfx/tilesets/foreground.png");
+	this.bgTileset = assetManager.getTileset("gfx/tilesets/background.png");
 	if(lastLevel === undefined){
 		this.fg = null;
 		this.bg = null;
 		this.coll = null;
-
-		this.fgTileset = assetManager.getTileset("gfx/tilesets/foreground.png");
-		this.bgTileset = assetManager.getTileset("gfx/tilesets/background.png");
-
 		this.loadFromJSON(json);
 	}else{
-		this.generateLevelSelectRoom(numLevels, lastLevel);
+		this.generateLevelSelectRoom(openRooms, lastLevel);
 	}
 	
 	this.rightCameraBound = this.width*TILE_SIZE;
@@ -28,8 +26,8 @@ function Room(json, numLevels, lastLevel) {
 	this.processFGTiles();
 }
 
-Room.prototype.generateLevelSelectRoom = function(numLevels, lastLevel){
-	var lastLevelDoorCol = LEVEL_1_DOOR_COLUMN + 2*numLevels;
+Room.prototype.generateLevelSelectRoom = function(openRooms, lastLevel){
+	var lastLevelDoorCol = LEVEL_1_DOOR_COLUMN + 2*openRooms.length;
 	var levelSelectScreenCols = lastLevelDoorCol+1 >= SCREEN_WIDTH ? lastLevelDoorCol+2 : SCREEN_WIDTH;
 	this.width = levelSelectScreenCols;
 	this.height = SCREEN_HEIGHT;
@@ -51,17 +49,19 @@ Room.prototype.generateLevelSelectRoom = function(numLevels, lastLevel){
 			}
 		}
 	}
-	this.entities[this.entities.length] = {
-		"type": SPAWN,
-		"x": lastLevelDoorCol*TILE_SIZE,
-		"y": (SCREEN_HEIGHT - 2)*TILE_SIZE 
-	}
-	for(var d = 0; d < numLevels; d++){
+	for(var d = 0; d < openRooms.length; d++){
 		this.entities[this.entities.length] = {
 			"type": DOOR,
 			"x": LEVEL_1_DOOR_COLUMN*TILE_SIZE + 2*d*TILE_SIZE,
-			"y": (SCREEN_HEIGHT - 2)*TILE_SIZE 
+			"y": (SCREEN_HEIGHT - 2)*TILE_SIZE,
+			"id": d,
+			"isNew": !openRooms[d]
 		}
+	}
+	this.entities[this.entities.length] = {
+		"type": SPAWN,
+		"x": (LEVEL_1_DOOR_COLUMN + 2*lastLevel)*TILE_SIZE,
+		"y": (SCREEN_HEIGHT - 2)*TILE_SIZE 
 	}
 }
 
@@ -785,7 +785,10 @@ Room.prototype.loadEntities = function(entityManager) {
 				entityManager.add(new Fan(this, this.entities[i].x, this.entities[i].y));
 				break;
 			case DOOR:
-				entityManager.add(new Door(this, this.entities[i].x, this.entities[i].y));
+				var door = new Door(this, this.entities[i].x, this.entities[i].y);
+				door.doorRoomID = this.entities[i].id;
+				door.doorIsNew = this.entities[i].isNew;
+				entityManager.add(door);
 				break;
 		}
 	}

@@ -11,7 +11,8 @@ var States = {
 	STATE_ENDING: 3,
 	STATE_CONFIG: 4
 };
-var state = States.STATE_PLAY;
+var state;
+var prevState;//used for going to CONFIG
 
 var musicOn = true;
 var grd; 
@@ -27,6 +28,8 @@ var entityManager;
 var playerA;
 var playerB;
 var goal;
+
+var openRooms;//array of room completed status.  Unavailable rooms aren't in here
 
 var CAMERA_SHAKE_FACTOR = 10;
 var camera = {
@@ -48,13 +51,16 @@ var camera = {
 };
 
 var loadNextRoom = function() {
-	currRoom = assetManager.rooms[roomID];
-	if(currRoom === undefined) {
-		//we're done!
-		state = States.STATE_ENDING;
-		return;
+	if(state === States.STATE_LEVELSELECT){
+		currRoom = new Room(null, openRooms, roomID);
+	}else{
+		currRoom = assetManager.rooms[roomID];
+		if(currRoom === undefined) {
+			//we're done!
+			state = States.STATE_ENDING;
+			return;
+		}
 	}
-	roomID++;
 	
 	entityManager.clear();
 	var ents = currRoom.loadEntities(entityManager);
@@ -294,6 +300,16 @@ var configClick = function() {
 
 var step = function() {
 	switch(state) {
+		case States.STATE_LEVELSELECT:
+			game_logic();
+			game_draw();
+			var maxDoorID = Math.max(playerA.doorID, playerB.doorID);
+			if(maxDoorID != -1){
+				roomID = maxDoorID;
+				state = States.STATE_PLAY;
+				loadNextRoom();
+			}
+		break;
 		case States.STATE_PLAY:
 			game_logic();
 			game_draw();
@@ -310,11 +326,11 @@ var step = function() {
 var doKeyDown = function(e) {
 	//If escape is pressed
 	if(e.keyCode === 27) {
-		if(state === States.STATE_PLAY) {
+		if(state === States.STATE_CONFIG) {
+			state = prevState;
+		}else{
+			prevState = state;
 			state = States.STATE_CONFIG;
-		}
-		else if(state === States.STATE_CONFIG) {
-			state = States.STATE_PLAY;
 		}
 	}
 };
@@ -332,8 +348,12 @@ var doMouseDown = function(e) {
 };
 var initialize_game = function() {
 	console.log("Initializing game...");
+	state = States.STATE_LEVELSELECT;
+	prevState = state;
 	tileSet = assetManager.getTileset("gfx/tileset.png");
 	roomID = 0;
+	openRooms = new Array();
+	openRooms[openRooms.length] = false;
 	entityManager = new EntityManager();
 	loadNextRoom();
 	continueMenu = 0;
