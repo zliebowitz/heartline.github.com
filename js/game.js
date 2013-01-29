@@ -13,7 +13,7 @@ var States = {
 	STATE_TRANSITION: 5
 };
 
-var TRANSITION_TIME = 30;
+var TRANSITION_TIME = 40;
 var nextState;
 
 var state;
@@ -396,6 +396,7 @@ var step = function() {
 			config_draw();
 		break;
 		case States.STATE_TRANSITION:
+			game_draw();
 			doTransition();
 		break;
 	}
