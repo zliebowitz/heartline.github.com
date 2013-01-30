@@ -301,9 +301,9 @@ var configClick = function() {
 				for(var i = cnt.controllerIndex+1; i <= 4; i++) {
 					if(i === 4) {
 						if(p === 0)
-							cnt = new keyboard_controller(i, allBindings[p===0 ? 'A' : 'B']["KEYBOARD"]);
+							cnt = new keyboard_controller(i, allBindings['A']["KEYBOARD"]);
 						else
-							cnt = new keyboard_controller(i, allBindings[p===0 ? 'A' : 'B']["KEYBOARD"]);
+							cnt = new keyboard_controller(i, allBindings['A']["KEYBOARD"]);
 						break;
 					}
 					if(gamePadExists(i)) {
@@ -426,8 +426,8 @@ var doKeyDown = function(e) {
 
 var doMouseMove = function(e) {
 	var rect = canvas.getBoundingClientRect();
-	mouseX = e.clientX - rect.left;
-	mouseY = e.clientY - rect.top;
+	mouseX = W * (e.clientX - rect.left) / rect.width;
+	mouseY = H * (e.clientY - rect.top) / rect.height;
 };
 var doMouseDown = function(e) {
 	e.preventDefault();
