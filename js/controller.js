@@ -12,9 +12,11 @@ var _controller = function() {
 	this.isShooting =false
 
 	var player = null
+
 };
 
-var defaultPlayer1Bindings = {
+var defaultPlayer1Bindings =
+{
 	jump: 'Q'.charCodeAt(0),
 	lift: 'E'.charCodeAt(0),
 	shoot: 'R'.charCodeAt(0),
@@ -22,9 +24,10 @@ var defaultPlayer1Bindings = {
 	right: 'D'.charCodeAt(0),
 	up: 'W'.charCodeAt(0),
 	down: 'S'.charCodeAt(0),
-};
+}
 
-var defaultPlayer2Bindings = {
+var defaultPlayer2Bindings =
+{
 	jump: 'U'.charCodeAt(0),
 	lift: 'O'.charCodeAt(0),
 	shoot: 'P'.charCodeAt(0),
@@ -32,19 +35,11 @@ var defaultPlayer2Bindings = {
 	right: 'L'.charCodeAt(0),
 	up: 'I'.charCodeAt(0),
 	down: 'K'.charCodeAt(0),
-};
+}
 
-var default_gamepad_bindings = {
-		up: gamepad_buttons.PAD_TOP,
-		down: gamepad_buttons.PAD_BOTTOM,
-		left: gamepad_buttons.PAD_LEFT,
-		right: gamepad_buttons.PAD_RIGHT,
-		jump: gamepad_buttons.FACE_1,
-		lift: gamepad_buttons.FACE_3,
-		shoot: gamepad_buttons.RIGHT_SHOULDER,
-};
 
-var keyboard_controller = function(bindings) {
+var keyboard_controller = function(bindings)
+{
 	this.type = "KEYBOARD";
 	this.bindings = bindings
 
@@ -56,10 +51,9 @@ var keyboard_controller = function(bindings) {
 
 	this.event_listeners = {}
 
-	for (var action in bindings) {
+	for (var action in bindings)
 		keyPressed[bindings[action]] = false;
-	}
-};
+}
 
 var gamepad_buttons = {
   FACE_1: 0, // Face (main) buttons
@@ -86,9 +80,18 @@ var gamepad_axes = {
   RIGHT_ANALOGUE_HOR: 2,
   RIGHT_ANALOGUE_VERT: 3
 };
+var default_gamepad_bindings = {
+		up: gamepad_buttons.PAD_TOP,
+		down: gamepad_buttons.PAD_BOTTOM,
+		left: gamepad_buttons.PAD_LEFT,
+		right: gamepad_buttons.PAD_RIGHT,
+		jump: gamepad_buttons.FACE_1,
+		lift: gamepad_buttons.FACE_3,
+		shoot: gamepad_buttons.RIGHT_SHOULDER,
+	}
 
-
-var gamepad_controller = function(controllerIndex, bindings) {
+var gamepad_controller = function(controllerIndex, bindings)
+{
 	this.type = "GAMEPAD";
 	if (bindings == null)
 		this.bindings = default_gamepad_bindings;
