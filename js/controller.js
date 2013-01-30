@@ -17,9 +17,9 @@ var _controller = function() {
 
 var defaultPlayer1Bindings =
 {
-	jump: 'Q'.charCodeAt(0),
-	lift: 'E'.charCodeAt(0),
-	shoot: 'R'.charCodeAt(0),
+	jump: 'B'.charCodeAt(0),
+	lift: 'N'.charCodeAt(0),
+	shoot: 'V'.charCodeAt(0),
 	left: 'A'.charCodeAt(0),
 	right: 'D'.charCodeAt(0),
 	up: 'W'.charCodeAt(0),
@@ -28,13 +28,13 @@ var defaultPlayer1Bindings =
 
 var defaultPlayer2Bindings =
 {
-	jump: 'U'.charCodeAt(0),
-	lift: 'O'.charCodeAt(0),
-	shoot: 'P'.charCodeAt(0),
-	left: 'J'.charCodeAt(0),
-	right: 'L'.charCodeAt(0),
-	up: 'I'.charCodeAt(0),
-	down: 'K'.charCodeAt(0),
+	jump: 98,
+	lift: 99,
+	shoot: 97,
+	left: 37,
+	right: 39,
+	up: 38,
+	down: 40,
 }
 
 
