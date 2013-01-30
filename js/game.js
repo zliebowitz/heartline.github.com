@@ -359,10 +359,6 @@ var configClick = function() {
 			cnt.setBindingCode("lift");
 		}
 	}
-
-	allBindings['A'][controllerA.type] = JSON.parse(JSON.stringify(controllerA.bindings));
-	allBindings['B'][controllerA.type] = JSON.parse(JSON.stringify(controllerB.bindings));
-	localStorage["bindings"] = JSON.stringify(allBindings);
 };
 var switchState = function(s) {
 	transitionTimer = TRANSITION_TIME;
@@ -418,6 +414,10 @@ var doKeyDown = function(e) {
 	//If escape is pressed
 	if(e.keyCode === 27) {
 		if(state === States.STATE_CONFIG) {
+			allBindings['A'][controllerA.type] = JSON.parse(JSON.stringify(controllerA.bindings));
+			allBindings['B'][controllerA.type] = JSON.parse(JSON.stringify(controllerB.bindings));
+			localStorage["bindings"] = JSON.stringify(allBindings);
+			
 			state = prevState;
 		}else{
 			prevState = state;
