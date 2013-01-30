@@ -216,8 +216,8 @@ var mouseInside = function(x, y, w, h) {
 	}
 	return false;
 };
-var drawHoverText = function(text, x, y, w, h) {
-	if(mouseInside(x,y,w,h))
+var drawHoverText = function(text, x, y, w, h, b) {
+	if(b || mouseInside(x,y,w,h))
 		context.fillStyle = 'blue';
 	else
 		context.fillStyle = 'white';
@@ -233,7 +233,7 @@ var config_draw = function() {
 	for(var i = 0; i < W; i+= 80) {
 		for(var j = 0; j < H; j+= 32) {
 			if(mouseX > i && mouseY > j && mouseX < i + 80 && mouseY < j +32) {
-				context.fillStyle = 'red';
+				context.fillStyle = '#111111';
 			}	
 			else {
 				context.fillStyle = 'black';
@@ -243,7 +243,7 @@ var config_draw = function() {
 	}
 	context.fillStyle = 'white';
 	context.font = "32pt Disposable";
-	context.fillText("Configuration - ESCAPE to return", 80 * 1, 32 * 2);
+	context.fillText("CONFIGURATION MENU", 80 * 1, 32 * 2);
 
 	for(var p = 0; p < 2; p++) {
 		var cnt; //controller
@@ -254,19 +254,21 @@ var config_draw = function() {
 			cnt = playerB.controller;
 		}
 		var x = p * 400 + 80;
-		drawHoverText("Rebind  All", x, 32 * 4, 240, 32);
-		drawHoverText("LEFT", x, 32 * 6, 160, 32);
-		drawHoverText("RIGHT", x, 32 * 7, 160, 32);
-		drawHoverText("UP", x, 32 * 8, 160, 32);
-		drawHoverText("DOWN", x, 32 * 9, 160, 32);
-		drawHoverText("JUMP", x, 32 * 10, 160, 32);
-		drawHoverText("SHOOT", x, 32 * 11, 160, 32);
-		drawHoverText("THROW", x, 32 * 12, 160, 32);
+		//drawHoverText("Rebind  All", x, 32 * 4, 240, 32);
+		
+		drawHoverText("LEFT", x, 32 * 6, 160, 32, cnt.settingBind === "left");
+		drawHoverText("RIGHT", x, 32 * 7, 160, 32, cnt.settingBind === "right");
+		drawHoverText("UP", x, 32 * 8, 160, 32, cnt.settingBind === "up");
+		drawHoverText("DOWN", x, 32 * 9, 160, 32, cnt.settingBind === "down");
+		drawHoverText("JUMP", x, 32 * 10, 160, 32, cnt.settingBind === "jump");
+		drawHoverText("SHOOT", x, 32 * 11, 160, 32, cnt.settingBind === "shoot");
+		drawHoverText("THROW", x, 32 * 12, 160, 32, cnt.settingBind === "lift");
 		
 		if(cnt.type === "KEYBOARD")
 			drawHoverText(cnt.type, x, 32*14, 160, 32);
 		else	
 			drawHoverText("GAMEPAD " + cnt.controllerIndex, x, 32*14, 160, 32);
+
 		context.fillStyle = 'gray';
 		context.fillText(cnt.bindings.left, x+160, 32 * 6);
 		context.fillText(cnt.bindings.right, x+160, 32 * 7);

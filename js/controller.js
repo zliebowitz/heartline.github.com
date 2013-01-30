@@ -10,6 +10,7 @@ var _controller = function() {
 	this.isLifting = false
 	this.isJumping = false
 	this.isShooting =false
+	this.settingBind = null;
 
 	var player = null
 
@@ -301,16 +302,21 @@ keyboard_controller.prototype.getExistingBindings = function()
 	return this.bindings;
 }
 
+
 keyboard_controller.prototype.setBindingCode = function(val)
 {
 	var that = this
-	var process = function(e)
-		{
-			that.bindings[val] = e.keyCode
-			document.removeEventListener("keydown", process, true)
-		}
-	document.addEventListener("keydown", process
-		, true)
+	
+	var process = function(e) {
+		that.bindings[val] = e.keyCode;
+		document.removeEventListener("keydown", process, true);
+		that.settingBind = null;
+	};
+
+	if(this.settingBind === null) {
+		this.settingBind = val;
+		document.addEventListener("keydown", process, true)
+	}
 }
 
 gamepad_controller.prototype = new _controller();
