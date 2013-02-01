@@ -89,15 +89,13 @@ var default_gamepad_bindings = {
 		jump: gamepad_buttons.FACE_1,
 		lift: gamepad_buttons.FACE_3,
 		shoot: gamepad_buttons.RIGHT_SHOULDER,
+		use_analog: false,
 	}
 
 var gamepad_controller = function(controllerIndex, bindings)
 {
 	this.type = "GAMEPAD";
-	if (bindings == null)
-		this.bindings = default_gamepad_bindings;
-	else
-		this.bindings = bindings
+	this.bindings = bindings
 	this.controllerIndex = controllerIndex
 	this.event_listeners = {}
 	this.dir =
@@ -325,15 +323,33 @@ gamepad_controller.prototype.poll = function()
 {
 
 	var controller = navigator.webkitGetGamepads()[this.controllerIndex]
+	var threshold = .15
 	var pressed = function(button)
 	{
-		return controller.buttons[button] && (controller.buttons[button] > .3)
+		return controller.buttons[button] && (controller.buttons[button] > threshold)
 	}
 	var b = this.bindings
-	var up = pressed(b.up)
-	var down = pressed(b.down)
-	var left = pressed(b.left)
-	var right = pressed(b.right)
+
+	var up
+	var down
+	var left
+	var right
+
+	if (!b.use_analog)
+	{
+		up = pressed(b.up)
+		down = pressed(b.down)
+		left = pressed(b.left)
+		right = pressed(b.right)
+	} else
+	{
+		up = controller.axes[gamepad_axes.LEFT_ANALOGUE_VERT] < -threshold;
+		down = controller.axes[gamepad_axes.LEFT_ANALOGUE_VERT] > threshold;
+		left = controller.axes[gamepad_axes.LEFT_ANALOGUE_HOR] < -threshold;
+		right = controller.axes[gamepad_axes.LEFT_ANALOGUE_HOR] > threshold;
+		console.log(controller.axes)
+	}
+
 	var jump = pressed(b.jump)
 	var lift = pressed(b.lift)
 	var shoot = pressed(b.shoot)
