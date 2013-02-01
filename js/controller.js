@@ -347,7 +347,6 @@ gamepad_controller.prototype.poll = function()
 		down = controller.axes[gamepad_axes.LEFT_ANALOGUE_VERT] > threshold;
 		left = controller.axes[gamepad_axes.LEFT_ANALOGUE_HOR] < -threshold;
 		right = controller.axes[gamepad_axes.LEFT_ANALOGUE_HOR] > threshold;
-		console.log(controller.axes)
 	}
 
 	var jump = pressed(b.jump)
