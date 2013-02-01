@@ -416,7 +416,7 @@ var doKeyDown = function(e) {
 	if(e.keyCode === 27) {
 		if(state === States.STATE_CONFIG) {
 			allBindings['A'][controllerA.type] = JSON.parse(JSON.stringify(controllerA.bindings));
-			allBindings['B'][controllerA.type] = JSON.parse(JSON.stringify(controllerB.bindings));
+			allBindings['B'][controllerB.type] = JSON.parse(JSON.stringify(controllerB.bindings));
 			localStorage["bindings"] = JSON.stringify(allBindings);
 			
 			state = prevState;
