@@ -278,7 +278,23 @@ var config_draw = function() {
 		context.fillText(cnt.bindings.shoot, x+160, 32 * 11);
 		context.fillText(cnt.bindings.lift, x+160, 32 * 12);
 	}
+
+	//Draw gamepad state.
+	context.font = "16pt Disposable";
+	context.fillText("DETECTED GAMEPADS", W/2 - 82, H-32);
+	for(var i = 0; i < 4; i++) {
+		if(gamePadExists(i)) {
+			context.fillStyle = "green";
+		}
+		else {
+			context.fillStyle = "red";
+		}
+		context.fillRect(W/2 - 140 + i * 80, H-24, 40, 16);
+		context.fillStyle = "white";
+		context.fillText(""+i, W/2 - 124 + i * 80, H-11);
+	}
 };
+
 var configClick = function() {
 	for(var p = 0; p < 2; p++) {
 		var plyr;
