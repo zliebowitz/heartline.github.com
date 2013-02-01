@@ -490,7 +490,7 @@ window.onload = function() {
 	canvas.addEventListener('mousedown', doMouseDown, false);
 	// downloadAll ( success, fail, complete )
 	assetManager.downloadAll( function(path){
-					console.log("Loaded: " + path);
+					//console.log("Loaded: " + path);
 					context.fillStyle = "white";
 					
 					context.fillText(path, Math.floor((11+(assetManager.successCount + assetManager.errorCount)*11) / H) * W/4, 6+((assetManager.successCount + assetManager.errorCount)*11)%H);
