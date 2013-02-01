@@ -305,7 +305,7 @@ var configClick = function() {
 						if(p === 0)
 							cnt = new keyboard_controller(i, allBindings['A']["KEYBOARD"]);
 						else
-							cnt = new keyboard_controller(i, allBindings['A']["KEYBOARD"]);
+							cnt = new keyboard_controller(i, allBindings['B']["KEYBOARD"]);
 						break;
 					}
 					if(gamePadExists(i)) {
