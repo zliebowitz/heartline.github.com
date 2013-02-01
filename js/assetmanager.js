@@ -1,6 +1,3 @@
-//SoundManager configuration.
-soundManager.url = 'swf/';
-soundManager.flashVersion = 9;
 function TileSet(img, w, h) {
 	this.img = img;
 	this.width = w;
@@ -210,13 +207,12 @@ AssetManager.prototype.imageAll = function(successCallback, errorCallback, compl
 AssetManager.prototype.playSound = function(path) {
 	
 }
-//MODIFIED IMAGEALL FOR SOUND
 AssetManager.prototype.soundAll = function(successCallback, errorCallback, completeCallback) {
 	for (var i = 0; i < this.soundQueue.length; i++) {
 		var path = this.soundQueue[i]["source"];
 		var d = this.soundQueue[i];
 		var that = this;
-		
+		/*	
 		this.cache[path] = soundManager.createSound({
 			id: path,
 			url: path,
@@ -234,7 +230,7 @@ AssetManager.prototype.soundAll = function(successCallback, errorCallback, compl
 			},
 			autoLoad: true,
 			multiShot: true
-		});
+		});*/
 
 		//console.log("Loading" + path);
 		
@@ -275,11 +271,7 @@ AssetManager.prototype.downloadAll = function(successCallback, errorCallback,
 		completeCallback();
 	}
 	
-	var that = this;
-	
-	soundManager.onready( function() {
-		that.soundAll(successCallback, errorCallback, completeCallback);
-	});
+	this.soundAll(successCallback, errorCallback, completeCallback);
 	
 	this.imageAll(successCallback, errorCallback, completeCallback);
 	
