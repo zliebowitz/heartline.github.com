@@ -18,6 +18,7 @@ var PLAYER_HEART_REGEN = 6;
 var PLAYER_FRICTION = 0.7;
 var PLAYER_FIRE_DAMAGE = 18;
 var PLAYER_DEATH_TIME = 50; //frames before respawn
+var PLAYER_RESPAWNED_TIME = 20; //frames immediately after respawn to show animation
 var PLAYER_GRIEVE_RATE = 6; //Damage taken if partner is dead.
 var GRAVITY_CARRY = 0.73;	//gravity is higher while carrying an item (realism is for pansies)
 
@@ -53,6 +54,7 @@ function Player(room, x, y) {
 	this.dead = false;
 	this.touchingGrate = false;	
 	this.doorID = -1;
+	this.respawnedTimer = 0;
 	
 	this.runAnim = assetManager.getAnim("gfx/player/walk.png");
 	this.idleAnim = assetManager.getAnim("gfx/player/stand.png");
@@ -192,18 +194,23 @@ Player.prototype.respawnAt = function(otherPlayer) {
 	this.x = otherPlayer.x;
 	this.y = otherPlayer.y;
 	this.status = PlayerStatus.IDLE;
-	for(var i = 0; i < 16; i++) {
+	this.respawnedTimer = PLAYER_RESPAWNED_TIME;
+	/*for(var i = 0; i < 16; i++) {
 		var angle = 2 * Math.PI * i / 16;
 		var dirX = Math.cos(angle);
 		var dirY = Math.sin(angle);
 		entityManager.add(new Goo(this.room, this.x - dirX * 60, this.y - dirY * 60, dirX * 10, dirY * 10, this));
-	}
+	}*/
 };
 
 Player.prototype.update = function() {
 	if(this.dead) {
 		this.deathTimer -= 1;
 		return;
+	}
+	else {
+		if(this.respawnedTimer > 0)
+			this.respawnedTimer--;
 	}
 	this.controller.poll();
 	if(this.controller.getDir().x < 0)
@@ -294,48 +301,53 @@ Player.prototype.draw = function(context) {
 	} else if(this.carry) {
 		this.carry.drawSelf(context);
 	}
+	context.save();
+	context.translate(this.x, this.y);
+	if(this.respawnedTimer > 0) {
+		var factor = this.respawnedTimer / PLAYER_RESPAWNED_TIME * (this.respawnedTimer % 2 == 0 ? 1 : -1);
+		context.translate(factor * 20, 0);
+	}
 	switch(this.status) {
 		case(PlayerStatus.JUMP):
 			if(this.carry) {
-				this.jumpAnimC.draw(context, this.x, this.y, this.facingLeft);
+				this.jumpAnimC.draw(context, 0, 0, this.facingLeft);
 			}
 			else {
-				this.jumpAnim.draw(context, this.x, this.y, this.facingLeft);
+				this.jumpAnim.draw(context, 0, 0, this.facingLeft);
 			}
 			this.jumpAnimC.tick();
 			this.jumpAnim.tick();
 			break;
 		case(PlayerStatus.FALL):
 			if(this.carry) {
-				this.fallAnimC.draw(context, this.x, this.y, this.facingLeft);
+				this.fallAnimC.draw(context, 0, 0, this.facingLeft);
 			}
 			else {
-				this.fallAnim.draw(context, this.x, this.y, this.facingLeft);
+				this.fallAnim.draw(context, 0, 0, this.facingLeft);
 			}
 			this.fallAnim.tick();
 			this.fallAnimC.tick();
 			break;
 		case(PlayerStatus.IDLE):
 			if(this.carry) {
-				this.idleAnimC.draw(context,this.x,this.y,this.facingLeft);
+				this.idleAnimC.draw(context, 0, 0,this.facingLeft);
 			}
 			else {
-				this.idleAnim.draw(context,this.x,this.y,this.facingLeft);
+				this.idleAnim.draw(context, 0, 0,this.facingLeft);
 			}
 			break;
 		case(PlayerStatus.RUN):
 			if(this.carry) {
-				this.runAnimC.draw(context, this.x, this.y, this.facingLeft);
+				this.runAnimC.draw(context, 0, 0, this.facingLeft);
 			}
 			else {
-				this.runAnim.draw(context, this.x, this.y, this.facingLeft);
+				this.runAnim.draw(context, 0, 0, this.facingLeft);
 			}
 			this.runAnim.tick();
 			this.runAnimC.tick();
 			break;
-
 	}	
-
+	context.restore();
 };
 
 Player.prototype.collide = function(other) {

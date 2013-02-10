@@ -7,6 +7,7 @@ Goo.constructor = Goo;
 
 var GOO_RADIUS = 5;
 var GOO_FRICTION = 0.8;
+var GOO_SHRINKTIME = 30;
 var GOO_LIFETIME = 40;
 var GOO_AIR_DRAG = 0.99;
 //How much of goo's velocity is transferred to target?
@@ -26,7 +27,7 @@ function Goo(room, x, y, dx, dy, owner) {
 	this.isHeld = false;
 	this.landTimer = 0;
 	this.landedEntity = false;
-	this.dieTimer = GOO_LIFETIME;
+	this.dieTimer = 0;
 } 
 
 Goo.prototype.landFunction = function() {
@@ -52,20 +53,19 @@ Goo.prototype.update = function() {
 	if(this.landed) {
 		this.landFunction();
 	}
-	if(this.dieTimer > 0) {
-		this.dieTimer--;
-		if(this.dieTimer <= 0) {
-			this.die = true;
-		}
+	this.dieTimer++;
+	if(this.dieTimer >= GOO_LIFETIME) {
+		this.die = true;
 	}
 
 	this.landedEntity = false;
 };
 Goo.prototype.draw = function(context) {
 	context.beginPath();
-	context.fillStyle = "rgba(30, 30, 255, "+this.dieTimer / (2 * GOO_LIFETIME)+")";
+	context.fillStyle = "rgba(30, 30, 255, "+this.dieTimer / (1.5*GOO_LIFETIME)+")";
+	var radius = this.dieTimer < GOO_SHRINKTIME ? GOO_RADIUS : GOO_RADIUS * (GOO_LIFETIME -this.dieTimer) / (GOO_LIFETIME - GOO_SHRINKTIME);	
 	context.arc(this.x + GOO_RADIUS, 
-				this.y + GOO_RADIUS, GOO_RADIUS, 0, 2*Math.PI, false);
+				this.y + GOO_RADIUS, radius, 0, 2*Math.PI, false);
 	context.closePath();
 	context.fill();
 };
