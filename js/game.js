@@ -77,10 +77,10 @@ var loadNextRoom = function() {
 	playerB = ents.b;
 	goal = ents.goal;
 	if(!controllerA) {
-		controllerA = new keyboard_controller(allBindings['A']["KEYBOARD"]);
+		controllerA = new KeyboardController(allBindings['A']["KEYBOARD"]);
 	}
 	if(!controllerB) {
-		controllerB = new keyboard_controller(allBindings['B']["KEYBOARD"]);
+		controllerB = new KeyboardController(allBindings['B']["KEYBOARD"]);
 	}
 	playerA.bind_controller(controllerA);
 	playerB.bind_controller(controllerB);
@@ -310,7 +310,7 @@ var configClick = function() {
 			if(cnt.type === "KEYBOARD") {
 				for(var i = 0; i < 4; i++) {
 					if(gamePadExists(i)) {
-						cnt = new gamepad_controller(i, allBindings[p===0 ? 'A' : 'B']["GAMEPAD"]);
+						cnt = new GamepadController(i, allBindings[p===0 ? 'A' : 'B']["GAMEPAD"]);
 						break;
 					}
 				}
@@ -319,13 +319,13 @@ var configClick = function() {
 				for(var i = cnt.controllerIndex+1; i <= 4; i++) {
 					if(i === 4) {
 						if(p === 0)
-							cnt = new keyboard_controller(allBindings['A']["KEYBOARD"]);
+							cnt = new KeyboardController(allBindings['A']["KEYBOARD"]);
 						else
-							cnt = new keyboard_controller(allBindings['B']["KEYBOARD"]);
+							cnt = new KeyboardController(allBindings['B']["KEYBOARD"]);
 						break;
 					}
 					if(gamePadExists(i)) {
-						cnt = new gamepad_controller(i, allBindings[p===0 ? 'A' : 'B']["GAMEPAD"]);
+						cnt = new GamepadController(i, allBindings[p===0 ? 'A' : 'B']["GAMEPAD"]);
 						break;
 					}
 					
@@ -373,6 +373,20 @@ var configClick = function() {
 		if (mouseInside(x, 32 * 12, 160 * 2, 32))
 		{
 			cnt.setBindingCode("lift");
+		}
+	}
+};
+var loadPreferred = function() {
+	if(allBindings['A']['preferred'] === 'GAMEPAD') {
+		var index = allBindings['A']['index'];
+		if(gamePadExists(index)) {
+			controllerA = new GamepadController(index, allBindings['A']['GAMEPAD']);
+		}
+	}
+	if(allBindings['B']['preferred'] === 'GAMEPAD') {
+		var index = allBindings['B']['index'];
+		if(gamePadExists(index)) {
+			controllerB = new GamepadController(index, allBindings['B']['GAMEPAD']);
 		}
 	}
 };
@@ -433,8 +447,12 @@ var doKeyDown = function(e) {
 		if(state === States.STATE_CONFIG) {
 			allBindings['A'][controllerA.type] = JSON.parse(JSON.stringify(controllerA.bindings));
 			allBindings['B'][controllerB.type] = JSON.parse(JSON.stringify(controllerB.bindings));
+			allBindings['A']['preferred'] = controllerA.type;
+			allBindings['B']['preferred'] = controllerB.type;
+			allBindings['A']['index'] = controllerA.controllerIndex; 
+			allBindings['B']['index'] = controllerB.controllerIndex; 
 			localStorage["bindings"] = JSON.stringify(allBindings);
-			
+				
 			state = prevState;
 		}else{
 			prevState = state;
@@ -468,7 +486,8 @@ var initialize_game = function() {
 	}
 
 	if(localStorage["bindings"]) {
-		allBindings = JSON.parse(localStorage["bindings"]);			
+		allBindings = JSON.parse(localStorage["bindings"]);
+		loadPreferred();
 	}
 	else {
 		allBindings = {
