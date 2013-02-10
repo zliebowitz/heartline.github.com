@@ -9,7 +9,7 @@ var FAN_W = 32;
 var FAN_H = 32;
 var FAN_SPAWN_TIMER = 1;
 var FAN_MAX_POWER = 200;
-var FAN_POWER_THRESHOLD = 100; //How much power needed to spin
+var FAN_POWER_THRESHOLD = 55; //How much power needed to spin
 var FAN_GOO_POWER = 50; //How much power one goo gives
 var FAN_POWER_UPKEEP = 1; //How much power lost per frame
 

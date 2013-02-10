@@ -44,6 +44,7 @@ var CAMERA_SHAKE_FACTOR = 10;
 var camera = {
 	x: 0,
 	y: 0,
+	mode: 'shared',
 	minZoom: 0.5,//calculate this at beginning of each room.
 	zoom: 1,
 	shake: 0, //0 is normal, > 0 is a timer for shaking,
@@ -430,10 +431,10 @@ var step = function() {
 			doTransition();
 		break;
 	}
-	if(playerA.dead) {
+	if(playerA.dead || camera.mode == 'B') {
 		camera.moveTo(playerB.x, playerB.y);
 	}
-	else if(playerB.dead) {
+	else if(playerB.dead || camera.mode == 'A') {
 		camera.moveTo(playerA.x, playerA.y);
 	}
 	else {
