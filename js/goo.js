@@ -62,7 +62,7 @@ Goo.prototype.update = function() {
 };
 Goo.prototype.draw = function(context) {
 	context.beginPath();
-	context.fillStyle = "rgba(30, 30, 255, "+this.dieTimer / (1.5*GOO_LIFETIME)+")";
+	context.fillStyle = "rgba(30, 30, 255, "+ (0.2 + this.dieTimer / (2*GOO_LIFETIME))+")";
 	var radius = this.dieTimer < GOO_SHRINKTIME ? GOO_RADIUS : GOO_RADIUS * (GOO_LIFETIME -this.dieTimer) / (GOO_LIFETIME - GOO_SHRINKTIME);	
 	context.arc(this.x + GOO_RADIUS, 
 				this.y + GOO_RADIUS, radius, 0, 2*Math.PI, false);
