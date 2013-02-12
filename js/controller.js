@@ -16,40 +16,40 @@ var Controller = function() {
 };
 
 var defaultPlayer1Bindings = {
-jump: 'B'.charCodeAt(0),
-      lift: 'N'.charCodeAt(0),
-      shoot: 'V'.charCodeAt(0),
-      left: 'A'.charCodeAt(0),
-      right: 'D'.charCodeAt(0),
-      up: 'W'.charCodeAt(0),
-      down: 'S'.charCodeAt(0),
+    jump: 'B'.charCodeAt(0),
+    lift: 'N'.charCodeAt(0),
+    shoot: 'V'.charCodeAt(0),
+    left: 'A'.charCodeAt(0),
+    right: 'D'.charCodeAt(0),
+    up: 'W'.charCodeAt(0),
+    down: 'S'.charCodeAt(0),
 };
 
 var defaultPlayer2Bindings = {
-jump: 98,
-      lift: 99,
-      shoot: 97,
-      left: 37,
-      right: 39,
-      up: 38,
-      down: 40,
+    jump: 98,
+    lift: 99,
+    shoot: 97,
+    left: 37,
+    right: 39,
+    up: 38,
+    down: 40,
 };
 
 
 var KeyboardController = function(bindings) {
 	this.type = "KEYBOARD";
-	this.bindings = bindings
+	this.bindings = bindings;
 
-		this.dir =
-		{
-			'x': 0,
-			'y': 0,
-		}
+    this.dir = {
+        'x': 0,
+        'y': 0,
+    };
 
-	this.event_listeners = {}
+	this.event_listeners = {};
 
-	for (var action in bindings)
+	for (var action in bindings) {
 		keyPressed[bindings[action]] = false;
+    }
 };
 
 var gamepad_buttons = {
@@ -72,13 +72,13 @@ FACE_1: 0, // Face (main) buttons
 };
 
 var gamepad_axes = {
-LEFT_ANALOGUE_HOR: 0,
-		   LEFT_ANALOGUE_VERT: 1,
-		   RIGHT_ANALOGUE_HOR: 2,
-		   RIGHT_ANALOGUE_VERT: 3
+    LEFT_ANALOGUE_HOR: 0,
+    LEFT_ANALOGUE_VERT: 1,
+    RIGHT_ANALOGUE_HOR: 2,
+    RIGHT_ANALOGUE_VERT: 3
 };
 var default_gamepad_bindings = {
-up: gamepad_buttons.PAD_TOP,
+    up: gamepad_buttons.PAD_TOP,
     down: gamepad_buttons.PAD_BOTTOM,
     left: gamepad_buttons.PAD_LEFT,
     right: gamepad_buttons.PAD_RIGHT,
@@ -319,7 +319,8 @@ GamepadController.prototype.poll = function() {
 		down = pressed(b.down);
 		left = pressed(b.left);
 		right = pressed(b.right);
-	} else {
+	} 
+    else {
 		up = controller.axes[gamepad_axes.LEFT_ANALOGUE_VERT] < -threshold;
 		down = controller.axes[gamepad_axes.LEFT_ANALOGUE_VERT] > threshold;
 		left = controller.axes[gamepad_axes.LEFT_ANALOGUE_HOR] < -threshold;
