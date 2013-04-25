@@ -6,91 +6,90 @@
 	<body>
 		<div id="wrapper" width="800" height"600">
 			HEARTLINE<br/>
-        	<canvas id="gamecanvas" width="800" height="512"></canvas><br/>
-        	<a id="click" href="#">Full Screen</a> <a id="controlsLink" href="#">Controls</a>
-    	</div>
+			<canvas id="gamecanvas" width="800" height="512"></canvas><br/>
+			<a id="click" href="#">Full Screen</a> <a id="controlsLink" href="#">Controls</a>
+		</div>
 		<div id="controls">
 <pre>
 Press ESC to reconfigure your bindings.
+Plug in your USB Gamepad if you have one!
 
 Default Controls:
-	
+
 Player 1:
 W,A,S,D - Movement
 V - Shoot
 B - Jump
 N - Throw
-	
+
 Player 2:
 Arrow Keys - Movement
 Numpad1 - Shoot
 Numpad2 - Jump
 Numpad3 - Throw
-
-
 </pre>
 		</div>
 		<script src='js/jquery.min.js'></script>
 		<script src='js/room.js'></script>
 		<script src='js/entitymanager.js'></script>
 		<script src='js/entity.js'></script>
-			<script src='js/player.js'></script>
-			<script src='js/goo.js'></script>
-			<script src='js/door.js'></script>
-			<script src='js/heart.js'></script>
-			<script src='js/fire.js'></script>
-			<script src='js/smoke.js'></script>
-			<script src='js/grate.js'></script>
-			<script src='js/fan.js'></script>
-			<script src='js/breakable.js'></script>
-			<script src='js/goal.js'></script>
-			<script src='js/controller.js'></script>
-			
-			<script src='js/assetmanager.js'></script>
-		
+		<script src='js/player.js'></script>
+		<script src='js/goo.js'></script>
+		<script src='js/door.js'></script>
+		<script src='js/heart.js'></script>
+		<script src='js/fire.js'></script>
+		<script src='js/smoke.js'></script>
+		<script src='js/grate.js'></script>
+		<script src='js/fan.js'></script>
+		<script src='js/breakable.js'></script>
+		<script src='js/goal.js'></script>
+		<script src='js/controller.js'></script>
+
+		<script src='js/assetmanager.js'></script>
+
 		<script src='js/game.js'></script>
-			<script src='js/images.js'></script>
-			<script src='js/sounds.js'></script>
-			<script src='js/levels.js'></script>
+		<script src='js/images.js'></script>
+		<script src='js/sounds.js'></script>
+		<script src='js/levels.js'></script>
 
 		<script>
-		$('#controls').hide();
-		$('#controlsLink').click(function() {
-			$('#controls').toggle();
-		});
-		var div = document.getElementById("wrapper");
-		var link = document.getElementById("click");
-		function fs()
-		{
-			if (document.webkitIsFullScreen)
+			$('#controls').hide();
+			$('#controlsLink').click(function() {
+				$('#controls').toggle();
+			});
+			var div = document.getElementById("wrapper");
+			var link = document.getElementById("click");
+			function fs()
+			{
+				if (document.webkitIsFullScreen)
 				document.webkitExitFullscreen()
-			else
+				else
 				div.webkitRequestFullscreen(Element.ALLOW_KEYBOARD_INPUT);
-		}
+			}
 
-		link.onclick = fs;
+			link.onclick = fs;
 
-		var canvas = document.getElementById("gamecanvas");
-		var defaultHeight =  canvas.height;
-		var defaultWidth = canvas.width;
+			var canvas = document.getElementById("gamecanvas");
+			var defaultHeight =  canvas.height;
+			var defaultWidth = canvas.width;
 
-		var ctx = canvas.getContext("2d");
+			var ctx = canvas.getContext("2d");
 
-		window.onresize = function() {
-			var newHeight = window.innerHeight - 150;
-			var newWidth = window.innerWidth - 10;
-			if (1.0 * defaultWidth / defaultHeight > 1.0 * newWidth / newHeight)
+			window.onresize = function() {
+				var newHeight = window.innerHeight - 150;
+				var newWidth = window.innerWidth - 10;
+				if (1.0 * defaultWidth / defaultHeight > 1.0 * newWidth / newHeight)
 				newHeight = 1.0 * newWidth / defaultWidth * defaultHeight
-			else
+				else
 				newWidth = 1.0 * newHeight / defaultHeight * defaultWidth;
-			canvas.height = newHeight;
-			canvas.width = newWidth;
-			ctx.scale(1.0 * newWidth/defaultWidth, 1.0 * newHeight/defaultHeight)
-		}
+				canvas.height = newHeight;
+				canvas.width = newWidth;
+				ctx.scale(1.0 * newWidth/defaultWidth, 1.0 * newHeight/defaultHeight)
+			}
 
-		window.onresize();
+			window.onresize();
 
-		//div.mozRequestFullScreen();
+			//div.mozRequestFullScreen();
 		</script>
 
 	</body>
