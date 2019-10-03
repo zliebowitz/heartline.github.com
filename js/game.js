@@ -96,7 +96,7 @@ var loadNextRoom = function() {
 		
 }
 var gamePadExists = function(id) {
-	if (navigator.webkitGetGamepads()[id] != null) {
+	if (navigator.getGamepads()[id] != null) {
 		return true;
 	}
 	return false;

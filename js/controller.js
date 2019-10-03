@@ -302,10 +302,10 @@ GamepadController.prototype = new Controller();
 
 GamepadController.prototype.poll = function() {
 
-	var controller = navigator.webkitGetGamepads()[this.controllerIndex];
+	var controller = navigator.getGamepads()[this.controllerIndex];
 	var threshold = .15;
 	var pressed = function(button) {
-		return controller.buttons[button] && (controller.buttons[button] > threshold);
+		return controller.buttons[button].pressed && (controller.buttons[button].value > threshold);
 	};
 	var b = this.bindings;
 
@@ -343,9 +343,9 @@ GamepadController.prototype.getExistingBindings = function() {
 
 GamepadController.prototype.setBindingCode = function(val) {
 	while(true) {
-		var controller = navigator.webkitGetGamepads()[this.controllerIndex];
+		var controller = navigator.getGamepads()[this.controllerIndex];
 		for (var i = 0; i < controller.buttons.length; i++) {
-			if (controller.buttons[i]) {
+			if (controller.buttons[i].pressed) {
 				this.bindings[val] = i;
 				return;
 			}
